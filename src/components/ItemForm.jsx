@@ -15,16 +15,39 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
 
     const form = e.target;
 
+    const description = form.itemDescription.value;
+    const sku = form.itemSku.value;
+    const brand = form.itemBrand.value;
+    const type = form.itemType.value;
+    const newItemQuantity = form.itemQuantity.value;
+
+    const newItem = {
+      id: window.crypto.randomUUID(),
+      description,
+      sku,
+      brand,
+      type,
+      newItemQuantity,
+    };
+    setItems((items) => [...items, newItem]);
+
     const [itemSKU] = form.item.value.split(" ");
+    const [locationId] = form.item.value.split(" ");
     const [itemTotalQuantity] = form.item.value.split(" ");
+
+    const selectedLocationId = locations.find(
+      (location) => location.id === locationId
+    );
 
     const item = items.find((item) => item.sku === itemSKU);
     const itemId = item.id;
     const selectedStockInLocationId = Number(form.stockInLocationId.value);
     const quantity = Number(form.quantity.value);
+
     const totalQuantity = items.find(
       (item) => item.total === itemTotalQuantity
     );
+    console.log(totalQuantity);
     const selectedItemTotalQuantity = Number(form.quantity.value);
 
     const itemStockOutLocationIdx = item.locations.findIndex(
@@ -33,10 +56,11 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
     const itemStockInLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockInLocationId
     );
-
+    console.log(itemStockInLocationIdx);
     const purchasedQuantityIdx = item.findIndex(
       (itemTotal) => itemTotal.id === itemId
     );
+    console.log(purchasedQuantityIdx);
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
 
     if (item.locations[itemStockOutLocationIdx].quantity <= 0) {
@@ -107,11 +131,12 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
           <option value="lost">Lost</option>
           <option value="add">Add</option>
         </select>
-
+        <label htmlFor="itemId">Select item for action</label>
         <input
+          id="itemId"
           type="text"
           name="item"
-          placeholder="Select item for action"
+          placeholder="Item"
           list="itemOptions"
         />
         <datalist id="itemOptions">
@@ -122,12 +147,17 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
             ></option>
           ))}
         </datalist>
-
+        <label htmlFor="stockOutLocationId">
+          Select stock Out Location for action
+        </label>
         <input
+          id="stockOutLocationId"
           type="text"
           name="stockOutLocationId"
-          placeholder="Select stock Out Location for action"
+          placeholder="Stock Out Location"
           list="itemLocations"
+          value={selectedStockOutLocationId}
+          disabled=""
           onChange={(e) =>
             setSelectedStockOutLocationId(Number(e.target.value))
           }
@@ -153,17 +183,25 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
           </option>
         ))}
       </select> */}
-
+        <label htmlFor="stockInLocationId">
+          Select stock in Location for action
+        </label>
         <input
+          id="stockInLocationId"
           type="text"
           name="stockInLocationId"
-          placeholder="Select stock in Location for action"
+          placeholder="Stock in Location"
           list="itemInLocations"
+          disabled={!selectedStockOutLocationId}
         />
         <datalist id="itemInLocations">
-          {locations.map((location) => (
-            <option key={location.id} value={`${location.name}`}></option>
-          ))}
+          {locations.map((location) =>
+            selectedStockOutLocationId !== location.id ? (
+              <option key={location.id} value={location.id}>
+                {location.name}
+              </option>
+            ) : null
+          )}
         </datalist>
 
         {/* <select
@@ -186,26 +224,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
 
         <input type="number" name="quantity" placeholder="Qty" step="1" />
 
-        <h2 className="text-2xl font-bold">Add</h2>
-        <p>inputs should be here...</p>
-
-        {/* <button type="submit">Action</button> */}
-      </form>
-
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold">Purchase</h2>
-        <select
-          name="actionType"
-          value={selectedActionType}
-          onChange={(e) => setSelectedActionType(e.target.value)}
-        >
-          <option value="movement">Movement</option>
-          <option value="purchase">Purchase</option>
-          <option value="sale">Sale</option>
-          <option value="discarding">Discarding</option>
-          <option value="lost">Lost</option>
-          <option value="add">Add</option>
-        </select>
 
         <input
           type="text"
@@ -213,7 +232,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
           placeholder="Select item for action"
           list="itemOptions"
         />
-         <datalist id="itemOptions">
+        <datalist id="itemOptions">
           {items.map((item) => (
             <option
               key={item.id}
@@ -221,28 +240,82 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
             ></option>
           ))}
         </datalist>
-        {/* <select
-        name="stockInLocationId"
-        defaultValue=""
-        disabled={!selectedStockOutLocationId}
-      >
-        <option value="" disabled>
-          Select stock in location
-        </option>
 
-        {locations.map((location) =>
-          selectedStockOutLocationId !== location.id ? (
+        <label htmlFor="purchaseStockInLocationId">
+          Select stock in Location for action
+        </label>
+        <input
+          id="purchaseStockInLocationId"
+          type="text"
+          name="stockInLocationId"
+          placeholder="Stock in Location"
+          list="itemInLocations"
+        />
+        <datalist id="itemInLocations">
+          {locations.map((location) => (
             <option key={location.id} value={location.id}>
               {location.name}
             </option>
-          ) : null
-        )}
-      </select> */}
+          ))}
+        </datalist>
 
         <input type="number" name="quantity" placeholder="Qty" step="1" />
 
         <h2 className="text-2xl font-bold">Add</h2>
-        <p>inputs should be here...</p>
+        <input type="number" name="itemSku" placeholder="Enter item SKU" />
+        <input
+          type="text"
+          name="itemDescription"
+          placeholder="Enter item description"
+        />
+        <input type="text" name="itemBrand" placeholder="Enter item brand" />
+        <input type="text" name="itemType" placeholder="Enter item type" />
+        <input
+          type="number"
+          name="itemQuantity"
+          placeholder="Enter item quantity"
+          step="1"
+        />
+        <h2 className="text-2xl font-bold">Sale</h2>
+
+        <label htmlFor="saleItemId">Select item for action</label>
+        <input
+          id="saleItemId"
+          type="text"
+          name="item"
+          placeholder="Item"
+          list="saleItemOptions"
+        />
+        <datalist id="saleItemOptions">
+          {items.map((item) => (
+            <option
+              key={item.id}
+              value={`${item.sku} ${item.description} ${item.brand}`}
+            ></option>
+          ))}
+        </datalist>
+        <label htmlFor="saleStockOutLocationId">
+          Select stock Out Location for action
+        </label>
+        <input
+          id="saleStockOutLocationId"
+          type="text"
+          name="stockOutLocationId"
+          placeholder="Stock Out Location"
+          list="itemLocations"
+          value={selectedStockOutLocationId}
+          
+          onChange={(e) =>
+            setSelectedStockOutLocationId(Number(e.target.value))
+          }
+        />
+        <datalist id="itemLocations">
+          {locations.map((location) => (
+            <option key={location.id} value={`${location.name}`}></option>
+          ))}
+        </datalist>
+
+        <input type="number" name="quantity" placeholder="Qty" step="1" />
 
         <button type="submit">Action</button>
       </form>
