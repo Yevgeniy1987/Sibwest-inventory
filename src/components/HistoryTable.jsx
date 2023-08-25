@@ -11,7 +11,6 @@ export function HistoryTable({ histories, setHistories }) {
           <th className="border">stockInLocationId</th>
           <th className="border">stockOutLocationId</th>
           <th className="border">quantity</th>
-          
         </tr>
       </thead>
       <tbody>
