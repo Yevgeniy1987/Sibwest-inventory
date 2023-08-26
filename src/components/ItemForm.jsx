@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { ItemFormMovement } from './ItemFormMovement';
-import { ItemFormPurchase } from './ItemFormPurchase';
-import { ItemFormAdd } from './ItemFormAdd';
+import { useState } from "react";
+import { ItemFormMovement } from "./ItemFormMovement";
+import { ItemFormPurchase } from "./ItemFormPurchase";
+import { ItemFormAdd } from "./ItemFormAdd";
+import { ItemFormSale } from "./ItemFormSale";
+import { ItemFormDiscarding } from "./ItemFormDiscarding";
 
 // "movement | purchase | sale | discarding | lost | add"
 
-const DEFAULT_ACTION_TYPE = 'movement';
+const DEFAULT_ACTION_TYPE = "movement";
 
 export const ItemForm = ({ locations, items, setItems, setHistories }) => {
   const [selectedActionType, setSelectedActionType] =
@@ -16,7 +18,8 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
       <select
         name="actionType"
         value={selectedActionType}
-        onChange={(e) => setSelectedActionType(e.target.value)}>
+        onChange={(e) => setSelectedActionType(e.target.value)}
+      >
         <option value="movement">Movement</option>
         <option value="purchase">Purchase</option>
         <option value="sale">Sale</option>
@@ -25,7 +28,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
         <option value="add">Add</option>
       </select>
 
-      {selectedActionType === 'movement' && (
+      {selectedActionType === "movement" && (
         <ItemFormMovement
           locations={locations}
           items={items}
@@ -34,7 +37,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
         />
       )}
 
-      {selectedActionType === 'purchase' && (
+      {selectedActionType === "purchase" && (
         <ItemFormPurchase
           locations={locations}
           items={items}
@@ -43,8 +46,26 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
         />
       )}
 
-      {selectedActionType === 'add' && (
+      {selectedActionType === "add" && (
         <ItemFormAdd
+          locations={locations}
+          setItems={setItems}
+          setHistories={setHistories}
+        />
+      )}
+
+      {selectedActionType === "sale" && (
+        <ItemFormSale
+          items={items}
+          locations={locations}
+          setItems={setItems}
+          setHistories={setHistories}
+        />
+      )}
+
+      {selectedActionType === "discarding" && (
+        <ItemFormDiscarding
+          items={items}
           locations={locations}
           setItems={setItems}
           setHistories={setHistories}
