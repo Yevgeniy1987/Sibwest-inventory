@@ -8,6 +8,7 @@ export function HistoryTable({ histories, setHistories }) {
           <th className="border">createdAt</th>
           <th className="border">date</th>
           <th className="border">itemId</th>
+          <th className="border">Action Type</th>
           <th className="border">stockInLocationId</th>
           <th className="border">stockOutLocationId</th>
           <th className="border">quantity</th>
