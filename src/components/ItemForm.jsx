@@ -4,6 +4,7 @@ import { ItemFormPurchase } from "./ItemFormPurchase";
 import { ItemFormAdd } from "./ItemFormAdd";
 import { ItemFormSale } from "./ItemFormSale";
 import { ItemFormDiscarding } from "./ItemFormDiscarding";
+import { ItemFormLost } from "./ItemFormLost";
 
 // "movement | purchase | sale | discarding | lost | add"
 
@@ -65,6 +66,15 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
 
       {selectedActionType === "discarding" && (
         <ItemFormDiscarding
+          items={items}
+          locations={locations}
+          setItems={setItems}
+          setHistories={setHistories}
+        />
+      )}
+
+      {selectedActionType === "lost" && (
+        <ItemFormLost
           items={items}
           locations={locations}
           setItems={setItems}

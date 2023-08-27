@@ -3,10 +3,14 @@ import { LocationTableRow } from "./LocationTableRow";
 export function LocationTable({ locations, setLocations }) {
   return (
     <table className="text-center w-full">
-      <thead className="border text-xl capitalize bg-slate-300">
+      <thead className="border text-xl font-bold capitalize bg-slate-400">
         <tr>
-          <th className="border">Location</th>
-          <th className="border">Quantity</th>
+          <th className="border text-xl font-bold capitalize bg-slate-400">
+            Location
+          </th>
+          <th className="border text-xl font-bold capitalize bg-slate-400">
+            Quantity
+          </th>
         </tr>
       </thead>
       <tbody>

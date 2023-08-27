@@ -1,4 +1,4 @@
-export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
+export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -17,6 +17,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
 
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.total -= quantity;
+    item.lost += quantity;
 
     const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
       method: "PATCH",
@@ -40,7 +41,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
       stockOutLocationId: selectedStockOutLocationId,
       stockInLocationId: null,
       quantity,
-      type: "sale",
+      type: "lost",
     };
 
     const createdHistory = await fetch(`http://localhost:3333/histories`, {
@@ -58,7 +59,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <input
+      <input className="bg-indigo-950 border border-white rounded text-white"
         type="text"
         name="item"
         placeholder="Select item for action"
@@ -73,7 +74,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
         ))}
       </datalist>
 
-      <select name="stockOutLocationId" defaultValue="">
+      <select className="border border-white rounded bg-gray-400" name="stockOutLocationId" defaultValue="">
         <option value="" disabled>
           Select stock Out location
         </option>
@@ -87,7 +88,9 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
 
       <input type="number" name="quantity" placeholder="Qty" step="1" />
 
-      <button className="h-10 w-28 bg-indigo-950 border rounded text-white hover:text-black hover:bg-white" type="submit">Sale</button>
+      <button className="h-10 w-28 bg-indigo-950 border border-white rounded text-white hover:text-black hover:bg-white" type="submit">
+        Lost
+      </button>
     </form>
   );
 };

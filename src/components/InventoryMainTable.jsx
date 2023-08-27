@@ -3,16 +3,16 @@ import { InventoryMainTableRow } from './InventoryMainTableRow';
 export function InventoryMainTable({ items, locations, setItems }) {
   return (
     <table className="text-center w-full">
-      <thead className="border text-xl capitalize bg-slate-300">
+      <thead className="border text-xl font-bold capitalize bg-slate-400">
         <tr>
-          <th className="border">SKU</th>
-          <th className="border">Description</th>
-          <th className="border">Brand</th>
-          <th className="border">Type</th>
-          <th className="border">Total</th>
-          <th className="border">Lost</th>
+          <th className="border border-solid border-white p-1">SKU</th>
+          <th className="border border-solid border-white p-1">Description</th>
+          <th className="border border-solid border-white p-1">Brand</th>
+          <th className="border border-solid border-white p-1">Type</th>
+          <th className="border border-solid border-white p-1">Total</th>
+          <th className="border border-solid border-white p-1">Lost</th>
           {locations.map((location) => (
-            <th className="border" key={location.id}>
+            <th className="border border-solid border-white p-1" key={location.id}>
               {location.name}
             </th>
           ))}

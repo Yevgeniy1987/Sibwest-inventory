@@ -3,15 +3,15 @@ import { HistoryTableRow } from "./HistoryTableRow";
 export function HistoryTable({ histories, setHistories }) {
   return (
     <table className="text-center w-full">
-      <thead className="border text-xl capitalize bg-slate-300">
+      <thead className="border text-xl font-bold capitalize bg-slate-400">
         <tr>
-          <th className="border">createdAt</th>
-          <th className="border">date</th>
-          <th className="border">itemId</th>
-          <th className="border">Action Type</th>
-          <th className="border">stockInLocationId</th>
-          <th className="border">stockOutLocationId</th>
-          <th className="border">quantity</th>
+          <th className="border border-solid border-white p-1">createdAt</th>
+          <th className="border border-solid border-white p-1">date</th>
+          <th className="border border-solid border-white p-1">itemId</th>
+          <th className="border border-solid border-white p-1">Action Type</th>
+          <th className="border border-solid border-white p-1">stockInLocationId</th>
+          <th className="border border-solid border-white p-1">stockOutLocationId</th>
+          <th className="border border-solid border-white p-1">quantity</th>
         </tr>
       </thead>
       <tbody>

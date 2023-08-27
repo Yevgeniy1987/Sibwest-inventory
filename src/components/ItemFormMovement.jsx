@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-export const ItemFormMovement = ({ locations, items, setItems, setHistories }) => {
+export const ItemFormMovement = ({
+  locations,
+  items,
+  setItems,
+  setHistories,
+}) => {
   const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
-    useState('');
+    useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
 
-    const [itemSKU] = form.item.value.split(' ');
+    const [itemSKU] = form.item.value.split(" ");
 
     const item = items.find((item) => item.sku === itemSKU);
     const itemId = item.id;
@@ -35,11 +40,11 @@ export const ItemFormMovement = ({ locations, items, setItems, setHistories }) =
     item.locations[itemStockInLocationIdx].quantity += quantity;
 
     fetch(`http://localhost:3333/items/${itemId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(item)
+      body: JSON.stringify(item),
     })
       .then((response) => response.json())
       .then((updatedItem) =>
@@ -58,15 +63,15 @@ export const ItemFormMovement = ({ locations, items, setItems, setHistories }) =
       stockInLocationId: selectedStockInLocationId,
       stockOutLocationId: selectedStockOutLocationId,
       quantity,
-      type: 'movement'
+      type: "movement",
     };
 
     fetch(`http://localhost:3333/histories`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(newHistory)
+      body: JSON.stringify(newHistory),
     })
       .then((response) => response.json())
       .then((createdHistory) =>
@@ -78,55 +83,65 @@ export const ItemFormMovement = ({ locations, items, setItems, setHistories }) =
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <input
-        type="text"
-        name="item"
-        placeholder="Select item for action"
-        list="itemOptions"
-      />
-      <datalist id="itemOptions">
-        {items.map((item) => (
-          <option
-            key={item.id}
-            value={`${item.sku} ${item.description} ${item.brand}`}></option>
-        ))}
-      </datalist>
+      <div className="flex justify-between gap-3">
+        <input
+          className="border bg-blue-300 white rounded"
+          type="text"
+          name="item"
+          placeholder="Select item for action"
+          list="itemOptions"
+        />
+        <datalist id="itemOptions">
+          {items.map((item) => (
+            <option
+              key={item.id}
+              value={`${item.sku} ${item.description} ${item.brand}`}
+            ></option>
+          ))}
+        </datalist>
 
-      <select
-        name="stockOutLocationId"
-        value={selectedStockOutLocationId}
-        onChange={(e) => setSelectedStockOutLocationId(Number(e.target.value))}>
-        <option value="" disabled>
-          Select stock out location
-        </option>
-
-        {locations.map((location) => (
-          <option key={location.id} value={location.id}>
-            {location.name}
+        <select
+          name="stockOutLocationId"
+          value={selectedStockOutLocationId}
+          onChange={(e) =>
+            setSelectedStockOutLocationId(Number(e.target.value))
+          }
+        >
+          <option value="" disabled>
+            Select stock out location
           </option>
-        ))}
-      </select>
 
-      <select
-        name="stockInLocationId"
-        defaultValue=""
-        disabled={!selectedStockOutLocationId}>
-        <option value="" disabled>
-          Select stock in location
-        </option>
-
-        {locations.map((location) =>
-          selectedStockOutLocationId !== location.id ? (
+          {locations.map((location) => (
             <option key={location.id} value={location.id}>
               {location.name}
             </option>
-          ) : null
-        )}
-      </select>
+          ))}
+        </select>
 
-      <input type="number" name="quantity" placeholder="Qty" step="1" />
+        <select
+          name="stockInLocationId"
+          defaultValue=""
+          disabled={!selectedStockOutLocationId}
+        >
+          <option value="" disabled>
+            Select stock in location
+          </option>
 
-      <button type="submit">Move</button>
+          {locations.map((location) =>
+            selectedStockOutLocationId !== location.id ? (
+              <option key={location.id} value={location.id}>
+                {location.name}
+              </option>
+            ) : null
+          )}
+        </select>
+
+        <input type="number" name="quantity" placeholder="Qty" step="1" />
+      </div>
+
+      <button className="h-10 w-28 bg-indigo-950 border rounded text-white hover:text-black hover:bg-white" type="submit">
+        Move
+      </button>
     </form>
   );
 };

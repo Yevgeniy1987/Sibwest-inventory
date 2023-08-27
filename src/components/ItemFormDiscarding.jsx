@@ -92,7 +92,7 @@ export const ItemFormDiscarding = ({
 
       <input type="number" name="quantity" placeholder="Qty" step="1" />
 
-      <button type="submit">Discard</button>
+      <button className="h-10 w-28 bg-indigo-950 border rounded text-white hover:text-black hover:bg-white" type="submit">Discard</button>
     </form>
   );
 };

@@ -29,7 +29,7 @@ function App() {
   return (
     <main>
       <div className="container flex flex-col gap-3">
-        <h1 className="text-center w-full px-6 py-6 text-8xl font-bold bg-contain">
+        <h1 className="text-center w-full px-6 py-6 text-8xl font-bold bg-contain text-orange-300">
           Sibwest inventory table
         </h1>
 
