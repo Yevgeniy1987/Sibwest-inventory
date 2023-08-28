@@ -139,7 +139,7 @@ export const ItemFormMovement = ({
         <input type="number" name="quantity" placeholder="Qty" step="1" />
       </div>
 
-      <button className="h-10 w-28 bg-indigo-950 border rounded text-white hover:text-black hover:bg-white" type="submit">
+      <button className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white" type="submit">
         Move
       </button>
     </form>
