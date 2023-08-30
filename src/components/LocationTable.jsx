@@ -9,7 +9,7 @@ export function LocationTable({ locations, setLocations }) {
             Location
           </th>
           <th className="border text-xl font-bold capitalize bg-slate-400">
-            Quantity
+            Address
           </th>
         </tr>
       </thead>

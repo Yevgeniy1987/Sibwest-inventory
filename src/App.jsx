@@ -51,8 +51,8 @@ function App() {
           <HistoryTable
             items={items}
             histories={histories}
-            setHistories={setHistories}
             setItems={setItems}
+            locations={locations}
           />
         </div>
         <div>

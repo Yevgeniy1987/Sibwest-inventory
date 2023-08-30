@@ -15,6 +15,7 @@ export const ItemFormDiscarding = ({
     const itemId = item.id;
     const selectedStockOutLocationId = Number(form.stockOutLocationId.value);
     const quantity = Number(form.quantity.value);
+    const date = form.selectedDate.value;
 
     const itemStockOutLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
@@ -41,7 +42,7 @@ export const ItemFormDiscarding = ({
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),
-      date: new Date().toISOString(),
+      date: date,
       stockOutLocationId: selectedStockOutLocationId,
       stockInLocationId: null,
       quantity,
@@ -63,12 +64,18 @@ export const ItemFormDiscarding = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <input
-        type="text"
-        name="item"
-        placeholder="Select item for action"
-        list="itemOptions"
-      />
+      
+
+      <label htmlFor="item">Item</label>
+        <input
+          id="item"
+          type="text"
+          name="item"
+          placeholder="Select item for action"
+          list="itemOptions"
+        />
+     
+
       <datalist id="itemOptions">
         {items.map((item) => (
           <option
@@ -89,10 +96,31 @@ export const ItemFormDiscarding = ({
           </option>
         ))}
       </select>
+      <label htmlFor="quantity">Quantity</label>
+        <input
+          id="quantity"
+          type="number"
+          name="quantity"
+          placeholder="Qty"
+          step="1"
+        />
+      
+      <label htmlFor="selectedDate">Date</label>
+        <input
+          id="selectedDate"
+          type="date"
+          name="selectedDate"
+          min="2023-01-01"
+          max="2023-12-31"
+        />
+      
 
-      <input type="number" name="quantity" placeholder="Qty" step="1" />
-
-      <button className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white" type="submit">Discard</button>
+      <button
+        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        type="submit"
+      >
+        Discard
+      </button>
     </form>
   );
 };

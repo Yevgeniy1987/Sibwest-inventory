@@ -12,25 +12,26 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
     const quantity = Number(form.quantity.value);
     const itemLocations = locations.map((location) => ({
       locationId: location.id,
-      quantity: selectedStockInLocationId === location.id ? quantity : 0
+      quantity: selectedStockInLocationId === location.id ? quantity : 0,
     }));
-
+const date = form.date.value.trim();
     const newItem = {
       sku,
       description,
       brand,
       type,
+      date,
       total: quantity,
       locations: itemLocations,
-      lost: 0
+      lost: 0,
     };
 
     const createdItem = await fetch(`http://localhost:3333/items`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(newItem)
+      body: JSON.stringify(newItem),
     }).then((r) => r.json());
 
     setItems((items) => [...items, createdItem]);
@@ -38,19 +39,19 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
     const newHistory = {
       itemId: createdItem.id,
       createdAt: new Date().toISOString(),
-      date: new Date().toISOString(),
+      date: createdItem.date,
       stockInLocationId: selectedStockInLocationId,
       stockOutLocationId: null,
       quantity,
-      type: 'purchase'
+      type: "purchase",
     };
 
     const createdHistory = await fetch(`http://localhost:3333/histories`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(newHistory)
+      body: JSON.stringify(newHistory),
     }).then((response) => response.json());
 
     setHistories((histories) => [...histories, createdHistory]);
@@ -60,11 +61,21 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <input type="text" name="sku" placeholder="Enter SKU" />
-      <input type="text" name="description" placeholder="Enter Description" />
-      <input type="text" name="brand" placeholder="Enter Brand" />
-      <input type="text" name="type" placeholder="Enter Type" />
-
+      <label htmlFor="sku">SKU</label>
+        <input id="sku" type="text" name="sku" placeholder="Enter SKU" />
+      
+      <label htmlFor="description">Description</label>
+        <input id="description" type="text" name="description" placeholder="Enter Description" />
+     
+      <label htmlFor="brand">Brand</label>
+        <input id="brand" type="text" name="brand" placeholder="Enter Brand" />
+     
+      <label htmlFor="type">Item type</label>
+        <input id="type" type="text" name="type" placeholder="Enter Type" />
+      
+      <label htmlFor="date">Date</label>
+        <input id="date" type="date" name="date" min="2023-01-01" max="2023-12-31"/>
+     
       <select name="stockInLocationId" defaultValue="">
         <option value="" disabled>
           Select stock in location
@@ -76,10 +87,16 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
           </option>
         ))}
       </select>
+      <label htmlFor="quantity">Quantity</label>
+        <input id="quantity" type="number" name="quantity" placeholder="Qty" step="1" />
+      
 
-      <input type="number" name="quantity" placeholder="Qty" step="1" />
-
-      <button className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white" type="submit">Add</button>
+      <button
+        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        type="submit"
+      >
+        Add
+      </button>
     </form>
   );
 };

@@ -58,7 +58,9 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <label htmlFor="item">Item</label>
       <input
+        id="item"
         type="text"
         name="item"
         placeholder="Select item for action"
@@ -84,10 +86,29 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
           </option>
         ))}
       </select>
+      <label htmlFor="quantity"></label>
+      <input
+        id="quantity"
+        type="number"
+        name="quantity"
+        placeholder="Qty"
+        step="1"
+      />
+      <label htmlFor="date">Date</label>
+      <input
+        id="date"
+        type="date"
+        name="date"
+        min="2023-01-01"
+        max="2023-12-31"
+      />
 
-      <input type="number" name="quantity" placeholder="Qty" step="1" />
-
-      <button className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white" type="submit">Sale</button>
+      <button
+        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        type="submit"
+      >
+        Sale
+      </button>
     </form>
   );
 };

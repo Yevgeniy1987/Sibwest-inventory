@@ -1,8 +1,7 @@
 import { useState } from "react";
-import {Calendar} from "react-production-calendar";
 
-useState
-export function HistoryTableRow({ history, setHistories }) {
+useState;
+export function HistoryTableRow({ history, locations, items }) {
   const {
     type,
     itemId,
@@ -13,24 +12,33 @@ export function HistoryTableRow({ history, setHistories }) {
     quantity,
   } = history;
 
-  const [calendarValue,setCalendarValue]=useState(new Date().toLocaleString())
+  const item = items.find((item) => item.id === itemId);
+
+  const stockInLocation = locations.find(
+    (location) => location.id === stockInLocationId
+  );
+  const stockOutLocation = locations.find(
+    (location) => location.id === stockOutLocationId
+  );
 
   return (
     <tr className="text-white border border-solid border-white p-1 hover:bg-amber-200 font-medium">
-      <td className="border border-solid border-white p-1">{createdAt}</td>
-      <Calendar onChange={setCalendarValue} value={calendarValue}/>
-      <td className="border border-solid border-white p-1">{date}</td>
-      <td className="border border-solid border-white p-1">{itemId}</td>
-
+      <td className="border border-solid border-white p-1">{new Date(createdAt).toLocaleString()}</td>
+      <td className="border border-solid border-white p-1">{new Date(date).toLocaleString()}</td>
+      <td className="border border-solid border-white p-1">
+        {item?.sku || "N/A"}
+      </td>
+      <td className="border border-solid border-white p-1">
+        {item?.description || "N/A"}
+      </td>
       <td className="border border-solid border-white p-1">{type}</td>
       <td className="border border-solid border-white p-1">
-        {stockInLocationId}
+        {stockInLocation?.name || "N/A"}
       </td>
       <td className="border border-solid border-white p-1">
-        {stockOutLocationId}
+        {stockOutLocation?.name || "N/A"}
       </td>
       <td className="border border-solid border-white p-1">{quantity}</td>
-     
     </tr>
   );
 }
