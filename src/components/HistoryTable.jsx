@@ -3,45 +3,50 @@ import { HistoryTableRow } from "./HistoryTableRow";
 
 export function HistoryTable({ histories, locations, items, setHistories }) {
   const [filters, setFilters] = useState({
-    sku: "",
+    itemId: "",
   });
   useEffect(() => {
-    (async function () {
-      let queryString = "";
+    // (async function () {
+    //   let queryString = "";
 
-      for (const filterKey in filters) {
-        const filterValue = filters[filterKey];
+    //   for (const filterKey in filters) {
+    //     const filterValue = filters[filterKey];
 
-        if (filterKey === "sku" && filterValue) {
-          const items = await fetch(
-            `http://localhost:3333/items?sku=${filterValue}`
-          )
-            .then((response) => response.json())
-            .then((historiesData) => setHistories(historiesData));
+    //     if (filterKey === "sku" && filterValue) {
+    //       const items = await fetch(
+    //         `http://localhost:3333/items?sku=${filterValue}`
+    //       )
+    //         .then((response) => response.json())
+    //         .then((historiesData) => setHistories(historiesData));
 
-          if (items.length > 0) {
-            const item = items[0] 
-            queryString += `itemId=${item.Id}`;
-          }
+    //       if (items.length > 0) {
+    //         const item = items[0]
+    //         queryString += `itemId=${item.Id}`;
+    //       }
 
-          // queryString += `sku_like=${filterValue}&`;
-        }
-      }
-      //  const queryArray = Object.entries(filters)
-      //  const queryStringArray = queryArray.map(array=>`${array.join('=')}&`)
-      //  const queryString = queryStringArray.join('')
+    const queryArray = Object.entries(filters);
+    const queryStringArray = queryArray.map(array =>
+      array[1] ? `${array.join("=")}&` : ""
+    )
+    const queryString = queryStringArray.join("")
 
-      fetch(`http://localhost:3333/histories?${queryString}`)
-        .then((response) => response.json())
-        .then((historiesData) => setHistories(historiesData));
-    })();
+    fetch(`http://localhost:3333/histories?${queryString}`)
+      .then((response) => response.json())
+      .then((historiesData) => setHistories(historiesData));
   }, [filters]);
 
-  const handleSKUFilter = (e) => {
+  const handleSKUFilter = async e => {
     e.preventDefault();
     const sku = e.target.sku.value.trim();
-    setFilters({ ...filters, sku });
-  };
+
+    const items = await fetch(`http://localhost:3333/items?sku=${sku}`).then(
+      (response) => response.json()
+    );
+
+    const item = items[0]
+
+    setFilters({ ...filters, itemId: item?.id || sku})
+  }
 
   return (
     <table className="text-center w-full">
@@ -70,7 +75,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
           <td className="border border-solid border-white p-1">
             <form className="flex gap-1" onSubmit={handleSKUFilter}>
               <input
-                type="text"
+                type="search"
                 name="sku"
                 className="text-black"
                 placeholder="Filter by sku"
