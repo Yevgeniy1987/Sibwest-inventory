@@ -15,10 +15,9 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
     useState(DEFAULT_ACTION_TYPE);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="container flex flex-col gap-3">
       <select
         name="actionType"
-        value={selectedActionType}
         onChange={(e) => setSelectedActionType(e.target.value)}
       >
         <option value="movement">Movement</option>

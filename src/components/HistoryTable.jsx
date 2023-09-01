@@ -4,6 +4,10 @@ import { HistoryTableRow } from "./HistoryTableRow";
 export function HistoryTable({ histories, locations, items, setHistories }) {
   const [filters, setFilters] = useState({
     itemId: "",
+    description: "",
+    stockInLocationId: "",
+    stockOutLocation: "",
+    type: "",
   });
   useEffect(() => {
     // (async function () {
@@ -25,17 +29,17 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
     //       }
 
     const queryArray = Object.entries(filters);
-    const queryStringArray = queryArray.map(array =>
+    const queryStringArray = queryArray.map((array) =>
       array[1] ? `${array.join("=")}&` : ""
-    )
-    const queryString = queryStringArray.join("")
+    );
+    const queryString = queryStringArray.join("");
 
     fetch(`http://localhost:3333/histories?${queryString}`)
       .then((response) => response.json())
       .then((historiesData) => setHistories(historiesData));
   }, [filters]);
 
-  const handleSKUFilter = async e => {
+  const handleSKUFilter = async (e) => {
     e.preventDefault();
     const sku = e.target.sku.value.trim();
 
@@ -43,13 +47,62 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
       (response) => response.json()
     );
 
-    const item = items[0]
+    const item = items[0];
 
-    setFilters({ ...filters, itemId: item?.id || sku})
-  }
+    setFilters({ ...filters, itemId: item?.sku || sku });
+  };
+  const handleDescriptionFilter = async (e) => {
+    e.preventDefault();
+    const description = e.target.description.value.trim();
+
+    const items = await fetch(
+      `http://localhost:3333/items?description=${description}`
+    ).then((response) => response.json());
+
+    const item = items[1];
+
+    setFilters({ ...filters, description: item?.description || description });
+  };
+
+  const handleActionTypeFilter = async (e) => {
+    const actionType = e.target.value
+      .trim()
+      .replaceAll(/\s{2,}/g, " ")
+      .toLowerCase();
+
+    setFilters({
+      ...filters,
+      actionType,
+    });
+  };
+
+  const handleStockInLocationFilter = async (e) => {
+    e.preventDefault();
+    const stockInLocationId = e.target.stockInLocationId.value
+      .trim()
+      .replaceAll(/\s{2,}/g, " ")
+      .toLowerCase();
+
+    setFilters({
+      ...filters,
+      stockInLocationId,
+    });
+  };
+  const handleStockOutLocationFilter = async (e) => {
+    e.preventDefault();
+    const stockOutLocationId = e.target.stockOutLocationId.value
+      .trim()
+      .replaceAll(/\s{2,}/g, " ")
+      .toLowerCase();
+
+    setFilters({
+      ...filters,
+      stockOutLocationId,
+    });
+  };
 
   return (
-    <table className="text-center w-full">
+    <table className="text-center w-full container">
       <thead className="border text-xl font-bold capitalize bg-slate-400">
         <tr>
           <th className="border border-solid border-white p-1">Created Date</th>
@@ -83,10 +136,80 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
               <button type="submit">&#128269;</button>
             </form>
           </td>
-          <td className="border border-solid border-white p-1"></td>
-          <td className="border border-solid border-white p-1"></td>
-          <td className="border border-solid border-white p-1"></td>
-          <td className="border border-solid border-white p-1"></td>
+          <td className="border border-solid border-white p-1">
+            <form className="flex gap-1" onSubmit={handleDescriptionFilter}>
+              <input
+                type="search"
+                name="description"
+                className="text-black"
+                placeholder="Filter by description"
+              />
+              <button type="submit">&#128269;</button>
+            </form>
+          </td>
+          <td className="border border-solid border-white p-1">
+            <select
+              className="text-black"
+              name="actionType"
+              onChange={handleActionTypeFilter}
+              defaultValue=""
+            >
+              <option value="" disabled>
+              Filter Action type
+            </option> 
+              <option value="movement">Movement</option>
+              <option value="purchase">Purchase</option>
+              <option value="sale">Sale</option>
+              <option value="discarding">Discarding</option>
+              <option value="lost">Lost</option>
+              <option value="add">Add</option>
+
+
+            </select>
+            {/* <option value="" disabled>
+              Filter stock in location
+            </option> */}
+
+            
+          </td>
+          <td className="border border-solid border-white p-1">
+            <form
+              className="flex gap-1 text-black"
+              onSubmit={handleStockInLocationFilter}
+            >
+              <select name="stockInLocationId" defaultValue="">
+                <option value="" disabled>
+                  Filter stock in location
+                </option>
+
+                {locations.map((location) => (
+                  <option key={location.id} value={location.id}>
+                    {location.name}
+                  </option>
+                ))}
+              </select>
+              <button type="submit">&#128269;</button>
+            </form>
+          </td>
+          <td className="border border-solid border-white p-1">
+            <form
+              className="flex gap-1 text-black"
+              onSubmit={handleStockOutLocationFilter}
+            >
+              <select name="stockOutLocationId" defaultValue="">
+                <option value="" disabled>
+                  Filter stock out location
+                </option>
+
+                {locations.map((location) => (
+                  <option key={location.id} value={location.id}>
+                    {location.name}
+                  </option>
+                ))}
+              </select>
+              <button type="submit">&#128269;</button>
+            </form>
+          </td>
           <td className="border border-solid border-white p-1"></td>
         </tr>
         {histories.map((history) => (
