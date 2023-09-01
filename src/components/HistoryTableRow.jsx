@@ -1,7 +1,4 @@
-import { useState } from "react";
-
-useState;
-export function HistoryTableRow({ history, locations, items }) {
+export function HistoryTableRow({ history, locations, items, setHistories }) {
   const {
     type,
     itemId,
@@ -23,8 +20,12 @@ export function HistoryTableRow({ history, locations, items }) {
 
   return (
     <tr className="text-white border border-solid border-white p-1 hover:bg-amber-200 font-medium">
-      <td className="border border-solid border-white p-1">{new Date(createdAt).toLocaleString()}</td>
-      <td className="border border-solid border-white p-1">{new Date(date).toLocaleString()}</td>
+      <td className="border border-solid border-white p-1">
+        {new Date(createdAt).toLocaleString()}
+      </td>
+      <td className="border border-solid border-white p-1">
+        {new Date(date).toLocaleString()}
+      </td>
       <td className="border border-solid border-white p-1">
         {item?.sku || "N/A"}
       </td>

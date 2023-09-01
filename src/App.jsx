@@ -21,9 +21,9 @@ function App() {
       .then((response) => response.json())
       .then((locationsData) => setLocations(locationsData));
 
-    fetch("http://localhost:3333/histories")
-      .then((response) => response.json())
-      .then((historiesData) => setHistories(historiesData));
+    // fetch("http://localhost:3333/histories")
+    //   .then((response) => response.json())
+    //   .then((historiesData) => setHistories(historiesData));
   }, []);
 
   return (
@@ -53,6 +53,7 @@ function App() {
             histories={histories}
             setItems={setItems}
             locations={locations}
+            setHistories={setHistories}
           />
         </div>
         <div>
