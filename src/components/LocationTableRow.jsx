@@ -1,11 +1,11 @@
 export function LocationTableRow({ location }) {
   const { name, locationId, address } = location || {};
   return (
-    <tr>
-      <td className="text-white border border-solid border-white p-1 hover:bg-amber-400 font-medium">
+    <tr  className= "hover:bg-gray-300 font-medium">
+      <td className="text-black border border-solid border-black p-1">
         {name}
       </td>
-      <td className="text-white border border-solid border-white p-1 hover:bg-amber-400 font-medium">
+      <td className="text-black border border-solid border-black p-1">
         {address}
       </td>
     </tr>

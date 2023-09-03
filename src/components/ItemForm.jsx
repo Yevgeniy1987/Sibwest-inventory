@@ -8,7 +8,7 @@ import { ItemFormLost } from "./ItemFormLost";
 
 // "movement | purchase | sale | discarding | lost | add"
 
-const DEFAULT_ACTION_TYPE = "movement";
+const DEFAULT_ACTION_TYPE = "chooseAction";
 
 export const ItemForm = ({ locations, items, setItems, setHistories }) => {
   const [selectedActionType, setSelectedActionType] =
@@ -16,10 +16,11 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
 
   return (
     <div className="container flex flex-col gap-3">
-      <select
+      <select className="w-1/5 rounded border border-solid border-black"
         name="actionType"
         onChange={(e) => setSelectedActionType(e.target.value)}
       >
+        <option className="w-1/2" value="chooseAction">Choose action</option>
         <option value="movement">Movement</option>
         <option value="purchase">Purchase</option>
         <option value="sale">Sale</option>
@@ -27,6 +28,8 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
         <option value="lost">Lost</option>
         <option value="add">Add</option>
       </select>
+
+      {selectedActionType === "chooseAction" && ""}
 
       {selectedActionType === "movement" && (
         <ItemFormMovement

@@ -10,24 +10,6 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
     type: "",
   });
   useEffect(() => {
-    // (async function () {
-    //   let queryString = "";
-
-    //   for (const filterKey in filters) {
-    //     const filterValue = filters[filterKey];
-
-    //     if (filterKey === "sku" && filterValue) {
-    //       const items = await fetch(
-    //         `http://localhost:3333/items?sku=${filterValue}`
-    //       )
-    //         .then((response) => response.json())
-    //         .then((historiesData) => setHistories(historiesData));
-
-    //       if (items.length > 0) {
-    //         const item = items[0]
-    //         queryString += `itemId=${item.Id}`;
-    //       }
-
     const queryArray = Object.entries(filters);
     const queryStringArray = queryArray.map((array) =>
       array[1] ? `${array.join("=")}&` : ""
@@ -51,18 +33,6 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     setFilters({ ...filters, itemId: item?.sku || sku });
   };
-  const handleDescriptionFilter = async (e) => {
-    e.preventDefault();
-    const description = e.target.description.value.trim();
-
-    const items = await fetch(
-      `http://localhost:3333/items?description=${description}`
-    ).then((response) => response.json());
-
-    const item = items[1];
-
-    setFilters({ ...filters, description: item?.description || description });
-  };
 
   const handleActionTypeFilter = async (e) => {
     const actionType = e.target.value
@@ -72,7 +42,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     setFilters({
       ...filters,
-      actionType,
+      type: actionType,
     });
   };
 
@@ -103,29 +73,31 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
   return (
     <table className="text-center w-full container">
-      <thead className="border text-xl font-bold capitalize bg-slate-400">
+      <thead className="border border-solid border-black text-xl font-bold capitalize bg-slate-400">
         <tr>
-          <th className="border border-solid border-white p-1">Created Date</th>
-          <th className="border border-solid border-white p-1">Date</th>
-          <th className="border border-solid border-white p-1">SKU</th>
-          <th className="border border-solid border-white p-1">
+          <th className="border border-solid border-black p-1">Created Date</th>
+          <th className="border border-solid  border-black p-1">Date</th>
+          <th className="border border-solid  border-black p-1">SKU</th>
+          <th className="border border-solid  border-black p-1">
             Item Description
           </th>
-          <th className="border border-solid border-white p-1">Action Type</th>
-          <th className="border border-solid border-white p-1">
+          <th className="border border-solid  border-black p-1">Action Type</th>
+          <th className="border border-solid  border-black p-1">
             Stock In Location
           </th>
-          <th className="border border-solid border-white p-1">
+          <th className="border border-solid  border-black p-1">
             Stock Out Location
           </th>
-          <th className="border border-solid border-white p-1">Quantity</th>
+          <th className="border border-solid border-black first-line:p-1">
+            Quantity
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr className="text-white border border-solid border-white p-1 font-medium">
-          <td className="border border-solid border-white p-1"></td>
-          <td className="border border-solid border-white p-1"></td>
-          <td className="border border-solid border-white p-1">
+        <tr className="text-black border border-solid border-white p-1 font-medium">
+          <td className="border border-solid  border-black p-1"></td>
+          <td className="border border-solid  border-black p-1"></td>
+          <td className="border border-solid  border-black p-1">
             <form className="flex gap-1" onSubmit={handleSKUFilter}>
               <input
                 type="search"
@@ -136,18 +108,8 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
               <button type="submit">&#128269;</button>
             </form>
           </td>
-          <td className="border border-solid border-white p-1">
-            <form className="flex gap-1" onSubmit={handleDescriptionFilter}>
-              <input
-                type="search"
-                name="description"
-                className="text-black"
-                placeholder="Filter by description"
-              />
-              <button type="submit">&#128269;</button>
-            </form>
-          </td>
-          <td className="border border-solid border-white p-1">
+          <td className="border border-solid  border-black p-1"></td>
+          <td className="border border-solid border-black p-1">
             <select
               className="text-black"
               name="actionType"
@@ -155,24 +117,19 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
               defaultValue=""
             >
               <option value="" disabled>
-              Filter Action type
-            </option> 
+                Filter Action type
+              </option>
               <option value="movement">Movement</option>
               <option value="purchase">Purchase</option>
               <option value="sale">Sale</option>
               <option value="discarding">Discarding</option>
               <option value="lost">Lost</option>
-              <option value="add">Add</option>
-
-
             </select>
             {/* <option value="" disabled>
               Filter stock in location
             </option> */}
-
-            
           </td>
-          <td className="border border-solid border-white p-1">
+          <td className="border border-solid border-black p-1">
             <form
               className="flex gap-1 text-black"
               onSubmit={handleStockInLocationFilter}
@@ -191,7 +148,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
               <button type="submit">&#128269;</button>
             </form>
           </td>
-          <td className="border border-solid border-white p-1">
+          <td className="border border-solid border-black p-1">
             <form
               className="flex gap-1 text-black"
               onSubmit={handleStockOutLocationFilter}
@@ -210,7 +167,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
               <button type="submit">&#128269;</button>
             </form>
           </td>
-          <td className="border border-solid border-white p-1"></td>
+          <td className="border border-solid border-black p-1"></td>
         </tr>
         {histories.map((history) => (
           <HistoryTableRow
