@@ -47,27 +47,25 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
   };
 
   const handleStockInLocationFilter = async (e) => {
-    e.preventDefault();
-    const stockInLocationId = e.target.stockInLocationId.value
+    const stockInLocationId = e.target.value
       .trim()
       .replaceAll(/\s{2,}/g, " ")
       .toLowerCase();
 
     setFilters({
       ...filters,
-      stockInLocationId,
+      stockInLocationId
     });
   };
   const handleStockOutLocationFilter = async (e) => {
-    e.preventDefault();
-    const stockOutLocationId = e.target.stockOutLocationId.value
+    const stockOutLocationId = e.target.value
       .trim()
       .replaceAll(/\s{2,}/g, " ")
       .toLowerCase();
 
     setFilters({
       ...filters,
-      stockOutLocationId,
+      stockOutLocationId
     });
   };
 
@@ -116,56 +114,45 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
               onChange={handleActionTypeFilter}
               defaultValue=""
             >
-              <option value="" disabled>
-                Filter Action type
-              </option>
+              <option value="">Filter Action type</option>
               <option value="movement">Movement</option>
               <option value="purchase">Purchase</option>
               <option value="sale">Sale</option>
               <option value="discarding">Discarding</option>
               <option value="lost">Lost</option>
             </select>
-            {/* <option value="" disabled>
-              Filter stock in location
-            </option> */}
           </td>
           <td className="border border-solid border-black p-1">
-            <form
+            <select
               className="flex gap-1 text-black"
-              onSubmit={handleStockInLocationFilter}
+              name="stockInLocationId"
+              defaultValue=""
+              onChange={handleStockInLocationFilter}
             >
-              <select name="stockInLocationId" defaultValue="">
-                <option value="" disabled>
-                  Filter stock in location
-                </option>
+              <option value="">Filter stock in location</option>
 
-                {locations.map((location) => (
-                  <option key={location.id} value={location.id}>
-                    {location.name}
-                  </option>
-                ))}
-              </select>
-              <button type="submit">&#128269;</button>
-            </form>
+              {locations.map((location) => (
+                <option key={location.id} value={location.id}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
           </td>
           <td className="border border-solid border-black p-1">
-            <form
+            <select
+              name="stockOutLocationId"
+              defaultValue=""
               className="flex gap-1 text-black"
-              onSubmit={handleStockOutLocationFilter}
+              onChange={handleStockOutLocationFilter}
             >
-              <select name="stockOutLocationId" defaultValue="">
-                <option value="" disabled>
-                  Filter stock out location
-                </option>
+              <option value="">Filter stock out location</option>
 
-                {locations.map((location) => (
-                  <option key={location.id} value={location.id}>
-                    {location.name}
-                  </option>
-                ))}
-              </select>
-              <button type="submit">&#128269;</button>
-            </form>
+              {locations.map((location) => (
+                <option key={location.id} value={location.id}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
           </td>
           <td className="border border-solid border-black p-1"></td>
         </tr>

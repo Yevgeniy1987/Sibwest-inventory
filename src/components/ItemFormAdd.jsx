@@ -61,20 +61,20 @@ const date = form.date.value.trim();
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label htmlFor="sku">SKU</label>
-        <input id="sku" type="text" name="sku" placeholder="Enter SKU" />
+      <label htmlFor="sku" className="text-start font-bold w-1/4">SKU</label>
+        <input id="sku" type="text" name="sku" placeholder="Enter SKU" className="border border-solid rounded border-black w-1/4"/>
       
-      <label htmlFor="description">Description</label>
-        <input id="description" type="text" name="description" placeholder="Enter Description" />
+      <label htmlFor="description" className="text-start font-bold w-1/4">Description</label>
+        <input id="description" type="text" name="description" placeholder="Enter Description" className="border border-solid rounded border-black w-1/4"/>
      
-      <label htmlFor="brand">Brand</label>
-        <input id="brand" type="text" name="brand" placeholder="Enter Brand" />
+      <label htmlFor="brand" className="text-start font-bold w-1/4">Brand</label>
+        <input id="brand" type="text" name="brand" placeholder="Enter Brand" className="border border-solid rounded border-black w-1/4"/>
      
-      <label htmlFor="type">Item type</label>
-        <input id="type" type="text" name="type" placeholder="Enter Type" />
+      <label htmlFor="type" className="text-start font-bold w-1/4">Item type</label>
+        <input id="type" type="text" name="type" placeholder="Enter Type" className="border border-solid rounded border-black w-1/4"/>
       
-      <label htmlFor="date">Date</label>
-        <input id="date" type="date" name="date" min="2023-01-01" max="2023-12-31"/>
+      <label htmlFor="date" className="text-start font-bold w-1/4">Date</label>
+        <input id="date" type="date" name="date" min="2023-01-01" max="2023-12-31" className="border border-solid rounded border-black w-1/4"/>
      
       <select name="stockInLocationId" defaultValue="">
         <option value="" disabled>
@@ -87,7 +87,7 @@ const date = form.date.value.trim();
           </option>
         ))}
       </select>
-      <label htmlFor="quantity">Quantity</label>
+      <label htmlFor="quantity" className="text-start font-bold w-1/4">Quantity</label>
         <input id="quantity" type="number" name="quantity" placeholder="Qty" step="1" />
       
 

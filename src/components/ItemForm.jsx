@@ -16,7 +16,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
 
   return (
     <div className="container flex flex-col gap-3">
-      <select className="w-1/5 rounded border border-solid border-black"
+      <select className="w-1/4 rounded border border-solid border-black text-center"
         name="actionType"
         onChange={(e) => setSelectedActionType(e.target.value)}
       >
