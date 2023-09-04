@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { InventoryMainTableRow } from './InventoryMainTableRow';
 
 export function InventoryMainTable({ items, locations, setItems }) {
+
+  // const [isLoading, setIsLoading] = useState(false);
+
   return (
     <table className="container text-center w-full">
       <thead className="border text-xl font-bold capitalize bg-slate-400">
@@ -19,6 +23,13 @@ export function InventoryMainTable({ items, locations, setItems }) {
         </tr>
       </thead>
       <tbody>
+      {/* {isLoading && (
+          <tr>
+            <td colSpan={10} className="text-black text-l font-bold py-4">
+              Loading...
+            </td>
+          </tr>
+        )} */}
         {items.map((item) => (
           <InventoryMainTableRow
             key={item.id}

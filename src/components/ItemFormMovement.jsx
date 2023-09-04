@@ -30,13 +30,13 @@ export const ItemFormMovement = ({
 
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
 
-    if (item.locations[itemStockOutLocationIdx].quantity < 0) {
+    if (item.locations[itemStockOutLocationIdx].quantity -quantity < 0) {
       alert(
         `Not enough items in stock (${item.locations[itemStockOutLocationIdx].quantity})`
       );
       return;
     }
-
+    item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.locations[itemStockInLocationIdx].quantity += quantity;
 
     fetch(`http://localhost:3333/items/${itemId}`, {
@@ -89,6 +89,7 @@ export const ItemFormMovement = ({
           Item
         </label>
         <input
+          required
           id="item"
           type="text"
           name="item"
@@ -111,6 +112,7 @@ export const ItemFormMovement = ({
           Stock out location
         </label>
         <select
+          required
           id="stockOutLocation"
           name="stockOutLocationId"
           value={selectedStockOutLocationId}
@@ -136,6 +138,7 @@ export const ItemFormMovement = ({
           Stock in location
         </label>
         <select
+          required
           id="stockInLocation"
           name="stockInLocationId"
           className="border text-start border-solid border-black rounded w-1/4"
@@ -158,6 +161,7 @@ export const ItemFormMovement = ({
           Quantity
         </label>
         <input
+          required
           id="quantity"
           type="number"
           name="quantity"

@@ -21,6 +21,13 @@ export const ItemFormDiscarding = ({
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
     );
 
+    if (item.locations[itemStockOutLocationIdx].quantity - quantity < 0) {
+      alert(
+        `Not enough items in stock (${item.locations[itemStockOutLocationIdx].quantity})`
+      );
+      return;
+    }
+
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.total -= quantity;
 
@@ -68,6 +75,7 @@ export const ItemFormDiscarding = ({
         Item
       </label>
       <input
+        required
         id="item"
         type="text"
         name="item"
@@ -85,9 +93,15 @@ export const ItemFormDiscarding = ({
         ))}
       </datalist>
       <label htmlFor="stockOutLocation" className="text-start font-bold w-1/4">
-      Stock Out location
+        Stock Out location
       </label>
-      <select id="stockOutLocation" name="stockOutLocationId" defaultValue="" className="border border-solid rounded border-black w-1/4">
+      <select
+        id="stockOutLocation"
+        name="stockOutLocationId"
+        defaultValue=""
+        className="border border-solid rounded border-black w-1/4"
+        required
+      >
         <option value="" disabled>
           Select stock Out location
         </option>
@@ -102,6 +116,7 @@ export const ItemFormDiscarding = ({
         Quantity
       </label>
       <input
+        required
         id="quantity"
         type="number"
         name="quantity"

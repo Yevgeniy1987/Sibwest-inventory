@@ -73,6 +73,7 @@ export const ItemFormPurchase = ({
         placeholder="Select item for action"
         list="itemOptions"
         className="border border-solid border-black rounded w-1/4 text-black"
+        required
       />
       <datalist id="itemOptions">
         {items.map((item) => (
@@ -82,11 +83,16 @@ export const ItemFormPurchase = ({
           ></option>
         ))}
       </datalist>
-      <label
-        className="font-bold text-start  w-1/4"
-        htmlFor="stockInLocation"
-      >Stock in location </label>
-      <select className="border border-solid border-black rounded w-1/4 text-black" id="stockInLocation" name="stockInLocationId" defaultValue="">
+      <label className="font-bold text-start  w-1/4" htmlFor="stockInLocation">
+        Stock in location{" "}
+      </label>
+      <select
+        className="border border-solid border-black rounded w-1/4 text-black"
+        id="stockInLocation"
+        name="stockInLocationId"
+        defaultValue=""
+        required
+      >
         <option value="" disabled>
           Select stock in location
         </option>
@@ -97,8 +103,11 @@ export const ItemFormPurchase = ({
           </option>
         ))}
       </select>
-      <label className="font-bold text-start  w-1/4" htmlFor="quantity">Quantity</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="quantity">
+        Quantity
+      </label>
       <input
+        required
         id="quantity"
         type="number"
         name="quantity"

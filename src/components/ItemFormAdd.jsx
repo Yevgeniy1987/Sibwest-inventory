@@ -65,6 +65,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         SKU
       </label>
       <input
+      required
         id="sku"
         type="text"
         name="sku"
@@ -76,6 +77,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         Description
       </label>
       <input
+      required
         id="description"
         type="text"
         name="description"
@@ -120,6 +122,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
       Stock in location
       </label>
       <select
+      required
       id="stockInLocation"
         name="stockInLocationId"
         defaultValue=""
@@ -139,6 +142,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         Quantity
       </label>
       <input
+      required
         id="quantity"
         type="number"
         name="quantity"

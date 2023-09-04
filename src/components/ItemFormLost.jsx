@@ -15,7 +15,15 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
     );
 
+    if (item.locations[itemStockOutLocationIdx].quantity - quantity < 0) {
+      alert(
+        `Not enough items in stock (${item.locations[itemStockOutLocationIdx].quantity})`
+      );
+      return;
+    }
+
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
+
     item.total -= quantity;
     item.lost += quantity;
 
@@ -58,8 +66,13 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 justify-center">
-      <label className="font-bold text-start  w-1/4" htmlFor="item">Item</label>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-3 justify-center"
+    >
+      <label className="font-bold text-start  w-1/4" htmlFor="item">
+        Item
+      </label>
       <input
         className="border border-solid border-black rounded w-1/4 text-black"
         id="item"
@@ -67,6 +80,7 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
         name="item"
         placeholder="Select item for action"
         list="itemOptions"
+        required
       />
       <datalist id="itemOptions">
         {items.map((item) => (
@@ -76,12 +90,15 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
           ></option>
         ))}
       </datalist>
-      <label className="font-bold text-start  w-1/4" htmlFor="stockOutLocation">Stock out location</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="stockOutLocation">
+        Stock out location
+      </label>
       <select
         id="stockOutLocation"
         className="border border-solid border-black rounded w-1/4"
         name="stockOutLocationId"
         defaultValue=""
+        required
       >
         <option value="" disabled>
           Select stock Out location
@@ -93,8 +110,11 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
           </option>
         ))}
       </select>
-      <label className="font-bold text-start  w-1/4" htmlFor="quantity">Quantity</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="quantity">
+        Quantity
+      </label>
       <input
+        required
         id="quantity"
         type="number"
         name="quantity"
@@ -103,7 +123,9 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
         className="border border-solid rounded border-black w-1/4"
       />
 
-      <label className="font-bold text-start  w-1/4" htmlFor="date">Date</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="date">
+        Date
+      </label>
       <input
         id="date"
         type="date"

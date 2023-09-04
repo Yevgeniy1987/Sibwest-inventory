@@ -15,6 +15,13 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
     );
 
+    if (item.locations[itemStockOutLocationIdx].quantity - quantity < 0) {
+      alert(
+        `Not enough items in stock (${item.locations[itemStockOutLocationIdx].quantity})`
+      );
+      return;
+    }
+
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.total -= quantity;
 
@@ -68,6 +75,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
         placeholder="Select item for action"
         list="itemOptions"
         className="border border-solid border-black rounded w-1/4 text-black"
+        required
       />
       <datalist id="itemOptions">
         {items.map((item) => (
@@ -80,7 +88,13 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
       <label className="font-bold text-start  w-1/4" htmlFor="stockOutLocation">
         Stock Out location
       </label>
-      <select id="stockOutLocationId" name="stockOutLocation" defaultValue="" className="border border-solid border-black rounded w-1/4 text-black">
+      <select
+        id="stockOutLocationId"
+        name="stockOutLocation"
+        defaultValue=""
+        className="border border-solid border-black rounded w-1/4 text-black"
+        required
+      >
         <option value="" disabled>
           Select stock Out location
         </option>
@@ -91,7 +105,9 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
           </option>
         ))}
       </select>
-      <label className="font-bold text-start  w-1/4" htmlFor="quantity">Quantity</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="quantity">
+        Quantity
+      </label>
       <input
         id="quantity"
         type="number"
@@ -99,6 +115,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
         placeholder="Qty"
         step="1"
         className="border border-solid border-black rounded w-1/4 text-black"
+        required
       />
       <label className="font-bold text-start  w-1/4" htmlFor="date">
         Date

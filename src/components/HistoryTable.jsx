@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { HistoryTableRow } from "./HistoryTableRow";
 
 export function HistoryTable({ histories, locations, items, setHistories }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [filters, setFilters] = useState({
     itemId: "",
     description: "",
@@ -16,9 +18,12 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
     );
     const queryString = queryStringArray.join("");
 
+    setIsLoading(true);
+
     fetch(`http://localhost:3333/histories?${queryString}`)
       .then((response) => response.json())
-      .then((historiesData) => setHistories(historiesData));
+      .then((historiesData) => setHistories(historiesData))
+      .finally(() => setIsLoading(false));
   }, [filters]);
 
   const handleSKUFilter = async (e) => {
@@ -27,7 +32,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     const items = await fetch(`http://localhost:3333/items?sku=${sku}`).then(
       (response) => response.json()
-    );
+    ).finally(() => setIsLoading(false));;
 
     const item = items[0];
 
@@ -54,7 +59,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     setFilters({
       ...filters,
-      stockInLocationId
+      stockInLocationId,
     });
   };
   const handleStockOutLocationFilter = async (e) => {
@@ -65,7 +70,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     setFilters({
       ...filters,
-      stockOutLocationId
+      stockOutLocationId,
     });
   };
 
@@ -156,14 +161,23 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
           </td>
           <td className="border border-solid border-black p-1"></td>
         </tr>
-        {histories.map((history) => (
-          <HistoryTableRow
-            key={history.id}
-            history={history}
-            locations={locations}
-            items={items}
-          />
-        ))}
+        {isLoading && (
+          <tr>
+            <td colSpan={8} className="text-black text-l font-bold py-4">
+              Loading...
+            </td>
+          </tr>
+        )}
+
+        {!isLoading &&
+          histories.map((history) => (
+            <HistoryTableRow
+              key={history.id}
+              history={history}
+              locations={locations}
+              items={items}
+            />
+          ))}
       </tbody>
     </table>
   );
