@@ -1,4 +1,11 @@
+import classNames from "classnames";
+import { useState } from "react";
+
+
 export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,6 +31,8 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
 
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.total -= quantity;
+
+    setIsLoading(true)
 
     const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
       method: "PATCH",
@@ -61,6 +70,8 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
     setHistories((histories) => [...histories, createdHistory]);
 
     form.reset();
+
+    setIsLoading(false)
   };
 
   return (
@@ -129,11 +140,15 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
         className="border border-solid border-black rounded w-1/4 text-black"
       />
 
-      <button
-        className="h-10 w-28 bg-amber-500 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+<button
+        className={classNames(
+          "h-10 w-28 bg-amber-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          isLoading && "bg-gray-400"
+        )}
         type="submit"
+        disabled={isLoading}
       >
-        Sale
+        {isLoading ? "Loading..." : "Sale"}
       </button>
     </form>
   );

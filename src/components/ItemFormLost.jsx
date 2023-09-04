@@ -1,4 +1,10 @@
+import classNames from "classnames";
+import { useState } from "react";
+
 export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -26,6 +32,8 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
 
     item.total -= quantity;
     item.lost += quantity;
+
+    setIsLoading(true)
 
     const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
       method: "PATCH",
@@ -63,6 +71,8 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
     setHistories((histories) => [...histories, createdHistory]);
 
     form.reset();
+
+    setIsLoading(false)
   };
 
   return (
@@ -135,11 +145,15 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
         className="border border-solid rounded border-black w-1/4"
       />
 
-      <button
-        className="h-10 w-28 bg-red-500 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+<button
+        className={classNames(
+          "h-10 w-28 bg-red-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          isLoading && "bg-gray-400"
+        )}
         type="submit"
+        disabled={isLoading}
       >
-        Lost
+        {isLoading ? "Loading..." : "Lost"}
       </button>
     </form>
   );

@@ -1,4 +1,10 @@
+import classNames from "classnames";
+import { useState } from "react";
+
+useState;
 export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,7 +31,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
       locations: itemLocations,
       lost: 0,
     };
-
+    setIsLoading(true);
     const createdItem = await fetch(`http://localhost:3333/items`, {
       method: "POST",
       headers: {
@@ -57,6 +63,8 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
     setHistories((histories) => [...histories, createdHistory]);
 
     form.reset();
+
+    setIsLoading(false);
   };
 
   return (
@@ -65,7 +73,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         SKU
       </label>
       <input
-      required
+        required
         id="sku"
         type="text"
         name="sku"
@@ -77,7 +85,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         Description
       </label>
       <input
-      required
+        required
         id="description"
         type="text"
         name="description"
@@ -119,11 +127,11 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         className="border border-solid rounded border-black w-1/4"
       />
       <label htmlFor="stockInLocation" className="text-start font-bold w-1/4">
-      Stock in location
+        Stock in location
       </label>
       <select
-      required
-      id="stockInLocation"
+        required
+        id="stockInLocation"
         name="stockInLocationId"
         defaultValue=""
         className="border border-solid rounded border-black w-1/4"
@@ -142,7 +150,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
         Quantity
       </label>
       <input
-      required
+        required
         id="quantity"
         type="number"
         name="quantity"
@@ -152,10 +160,14 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
       />
 
       <button
-        className="h-10 w-28 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        className={classNames(
+          "h-10 w-28 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          isLoading && "bg-gray-400"
+        )}
         type="submit"
+        disabled={isLoading}
       >
-        Add
+        {isLoading ? "Loading..." : "Add"}
       </button>
     </form>
   );

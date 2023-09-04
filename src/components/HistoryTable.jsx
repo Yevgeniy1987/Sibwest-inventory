@@ -20,7 +20,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     setIsLoading(true);
 
-    fetch(`http://localhost:3333/histories?${queryString}`)
+   fetch(`http://localhost:3333/histories?${queryString}`)
       .then((response) => response.json())
       .then((historiesData) => setHistories(historiesData))
       .finally(() => setIsLoading(false));

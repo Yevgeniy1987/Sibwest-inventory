@@ -1,4 +1,6 @@
+import classNames from "classnames";
 import { useState } from "react";
+
 
 export const ItemFormMovement = ({
   locations,
@@ -6,6 +8,9 @@ export const ItemFormMovement = ({
   setItems,
   setHistories,
 }) => {
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
     useState("");
 
@@ -38,6 +43,8 @@ export const ItemFormMovement = ({
     }
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.locations[itemStockInLocationIdx].quantity += quantity;
+
+    setIsLoading(true)
 
     fetch(`http://localhost:3333/items/${itemId}`, {
       method: "PATCH",
@@ -79,7 +86,9 @@ export const ItemFormMovement = ({
       );
 
     form.reset();
-    className = "border border-solid border-black rounded w-1/4 text-black";
+
+    setIsLoading(false)
+   
   };
 
   return (
@@ -182,11 +191,15 @@ export const ItemFormMovement = ({
         className="border border-solid border-black rounded w-1/4 text-black"
       />
 
-      <button
-        className="h-10 w-28 bg-amber-500 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+<button
+        className={classNames(
+          "h-10 w-28 bg-amber-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          isLoading && "bg-gray-400"
+        )}
         type="submit"
+        disabled={isLoading}
       >
-        Move
+        {isLoading ? "Loading..." : "Move"}
       </button>
     </form>
   );
