@@ -324,3 +324,10 @@ h1 {
   margin: 15px 0 17px 0;
   text-shadow: 0 13.36px 8.896px #6f6e6d, 0 -2px 1px #0b0b0b;
 }
+
+.container {
+  max-width: 1200px;
+  width:100%;
+  margin: 0 auto;
+}
+

@@ -79,19 +79,22 @@ export const ItemFormMovement = ({
       );
 
     form.reset();
+    className = "border border-solid border-black rounded w-1/4 text-black";
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <div className="flex justify-between gap-3">
-        <label htmlFor="item">Item</label>
+      <div className="flex flex-col justify-between gap-3">
+        <label htmlFor="item" className="font-bold text-start  w-1/4">
+          Item
+        </label>
         <input
-          className="border bg-blue-300 white rounded"
           id="item"
           type="text"
           name="item"
           placeholder="Select item for action"
           list="itemOptions"
+          className="border border-solid border-black rounded w-1/4 text-black"
         />
         <datalist id="itemOptions">
           {items.map((item) => (
@@ -101,10 +104,17 @@ export const ItemFormMovement = ({
             ></option>
           ))}
         </datalist>
-
+        <label
+          className="font-bold text-start  w-1/4"
+          htmlFor="stockOutLocation"
+        >
+          Stock out location
+        </label>
         <select
+          id="stockOutLocation"
           name="stockOutLocationId"
           value={selectedStockOutLocationId}
+          className="border border-solid border-black rounded w-1/4"
           onChange={(e) =>
             setSelectedStockOutLocationId(Number(e.target.value))
           }
@@ -119,9 +129,16 @@ export const ItemFormMovement = ({
             </option>
           ))}
         </select>
-
+        <label
+          className="border font-bold text-start  w-1/4"
+          htmlFor="stockInLocation"
+        >
+          Stock in location
+        </label>
         <select
+          id="stockInLocation"
           name="stockInLocationId"
+          className="border text-start border-solid border-black rounded w-1/4"
           defaultValue=""
           disabled={!selectedStockOutLocationId}
         >
@@ -137,26 +154,32 @@ export const ItemFormMovement = ({
             ) : null
           )}
         </select>
-        <label htmlFor="quantity"></label>
+        <label className="font-bold text-start  w-1/4" htmlFor="quantity">
+          Quantity
+        </label>
         <input
           id="quantity"
           type="number"
           name="quantity"
           placeholder="Qty"
           step="1"
+          className="border border-solid border-black rounded w-1/4 text-black"
         />
       </div>
-      <label htmlFor="date">Date</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="date">
+        Date
+      </label>
       <input
         id="date"
         type="date"
         name="date"
         min="2023-01-01"
         max="2023-12-31"
+        className="border border-solid border-black rounded w-1/4 text-black"
       />
 
       <button
-        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        className="h-10 w-28 bg-amber-500 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
         type="submit"
       >
         Move

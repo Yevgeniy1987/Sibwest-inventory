@@ -31,7 +31,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     const item = items[0];
 
-    setFilters({ ...filters, itemId: item?.sku || sku });
+    setFilters({ ...filters, itemId: item?.id || sku });
   };
 
   const handleActionTypeFilter = async (e) => {

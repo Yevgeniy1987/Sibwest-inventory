@@ -64,17 +64,17 @@ export const ItemFormDiscarding = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      
-
-      <label htmlFor="item">Item</label>
-        <input
-          id="item"
-          type="text"
-          name="item"
-          placeholder="Select item for action"
-          list="itemOptions"
-        />
-     
+      <label htmlFor="item" className="text-start font-bold w-1/4">
+        Item
+      </label>
+      <input
+        id="item"
+        type="text"
+        name="item"
+        placeholder="Select item for action"
+        list="itemOptions"
+        className="border border-solid rounded border-black w-1/4"
+      />
 
       <datalist id="itemOptions">
         {items.map((item) => (
@@ -84,8 +84,10 @@ export const ItemFormDiscarding = ({
           ></option>
         ))}
       </datalist>
-
-      <select name="stockOutLocationId" defaultValue="">
+      <label htmlFor="stockOutLocation" className="text-start font-bold w-1/4">
+      Stock Out location
+      </label>
+      <select id="stockOutLocation" name="stockOutLocationId" defaultValue="" className="border border-solid rounded border-black w-1/4">
         <option value="" disabled>
           Select stock Out location
         </option>
@@ -96,27 +98,32 @@ export const ItemFormDiscarding = ({
           </option>
         ))}
       </select>
-      <label htmlFor="quantity">Quantity</label>
-        <input
-          id="quantity"
-          type="number"
-          name="quantity"
-          placeholder="Qty"
-          step="1"
-        />
-      
-      <label htmlFor="selectedDate">Date</label>
-        <input
-          id="selectedDate"
-          type="date"
-          name="selectedDate"
-          min="2023-01-01"
-          max="2023-12-31"
-        />
-      
+      <label htmlFor="quantity" className="text-start font-bold w-1/4">
+        Quantity
+      </label>
+      <input
+        id="quantity"
+        type="number"
+        name="quantity"
+        placeholder="Qty"
+        step="1"
+        className="border border-solid rounded border-black w-1/4"
+      />
+
+      <label htmlFor="selectedDate" className="text-start font-bold w-1/4">
+        Date
+      </label>
+      <input
+        id="selectedDate"
+        type="date"
+        name="selectedDate"
+        min="2023-01-01"
+        max="2023-12-31"
+        className="border border-solid rounded border-black w-1/4"
+      />
 
       <button
-        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        className="h-10 w-28 bg-red-500 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
         type="submit"
       >
         Discard

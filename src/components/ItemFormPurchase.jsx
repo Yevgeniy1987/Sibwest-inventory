@@ -63,13 +63,16 @@ export const ItemFormPurchase = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label htmlFor="item">Item</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="item">
+        Item
+      </label>
       <input
         id="item"
         type="text"
         name="item"
         placeholder="Select item for action"
         list="itemOptions"
+        className="border border-solid border-black rounded w-1/4 text-black"
       />
       <datalist id="itemOptions">
         {items.map((item) => (
@@ -79,8 +82,11 @@ export const ItemFormPurchase = ({
           ></option>
         ))}
       </datalist>
-
-      <select name="stockInLocationId" defaultValue="">
+      <label
+        className="font-bold text-start  w-1/4"
+        htmlFor="stockInLocation"
+      >Stock in location </label>
+      <select className="border border-solid border-black rounded w-1/4 text-black" id="stockInLocation" name="stockInLocationId" defaultValue="">
         <option value="" disabled>
           Select stock in location
         </option>
@@ -91,24 +97,28 @@ export const ItemFormPurchase = ({
           </option>
         ))}
       </select>
-      <label htmlFor="quantity"></label>
+      <label className="font-bold text-start  w-1/4" htmlFor="quantity">Quantity</label>
       <input
         id="quantity"
         type="number"
         name="quantity"
         placeholder="Qty"
         step="1"
+        className="border border-solid border-black rounded w-1/4 text-black"
       />
-      <label htmlFor="date">Date</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="date">
+        Date
+      </label>
       <input
         id="date"
         type="date"
         name="date"
         min="2023-01-01"
         max="2023-12-31"
+        className="border border-solid border-black rounded w-1/4 text-black"
       />
       <button
-        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        className="h-10 w-28 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
         type="submit"
       >
         Purchase

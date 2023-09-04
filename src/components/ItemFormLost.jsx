@@ -58,10 +58,10 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label htmlFor="item">Item</label>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 justify-center">
+      <label className="font-bold text-start  w-1/4" htmlFor="item">Item</label>
       <input
-        className="bg-indigo-950 border border-white rounded text-white"
+        className="border border-solid border-black rounded w-1/4 text-black"
         id="item"
         type="text"
         name="item"
@@ -76,9 +76,10 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
           ></option>
         ))}
       </datalist>
-
+      <label className="font-bold text-start  w-1/4" htmlFor="stockOutLocation">Stock out location</label>
       <select
-        className="border border-white rounded bg-gray-400"
+        id="stockOutLocation"
+        className="border border-solid border-black rounded w-1/4"
         name="stockOutLocationId"
         defaultValue=""
       >
@@ -92,26 +93,28 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
           </option>
         ))}
       </select>
-      <label htmlFor="quantity">Quantity</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="quantity">Quantity</label>
       <input
         id="quantity"
         type="number"
         name="quantity"
         placeholder="Qty"
         step="1"
+        className="border border-solid rounded border-black w-1/4"
       />
 
-      <label htmlFor="date">Date</label>
+      <label className="font-bold text-start  w-1/4" htmlFor="date">Date</label>
       <input
         id="date"
         type="date"
         name="date"
         min="2023-01-01"
         max="2023-12-31"
+        className="border border-solid rounded border-black w-1/4"
       />
 
       <button
-        className="h-10 w-28 bg-indigo-950 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+        className="h-10 w-28 bg-red-500 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
         type="submit"
       >
         Lost
