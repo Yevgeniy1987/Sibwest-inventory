@@ -80,76 +80,81 @@ export const ItemFormDiscarding = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label htmlFor="item" className="text-start font-bold w-1/4">
-        Item
-      </label>
-      <input
-        required
-        id="item"
-        type="text"
-        name="item"
-        placeholder="Select item for action"
-        list="itemOptions"
-        className="border border-solid rounded border-black w-1/4"
-      />
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex flex-col gap-3">
+        <label htmlFor="item" className="text-start font-bold w-full">
+          Item
+        </label>
+        <input
+          required
+          id="item"
+          type="text"
+          name="item"
+          placeholder="Select item for action"
+          list="itemOptions"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
 
-      <datalist id="itemOptions">
-        {items.map((item) => (
-          <option
-            key={item.id}
-            value={`${item.sku} ${item.description} ${item.brand}`}
-          ></option>
-        ))}
-      </datalist>
-      <label htmlFor="stockOutLocation" className="text-start font-bold w-1/4">
-        Stock Out location
-      </label>
-      <select
-        id="stockOutLocation"
-        name="stockOutLocationId"
-        defaultValue=""
-        className="border border-solid rounded border-black w-1/4"
-        required
-      >
-        <option value="" disabled>
-          Select stock Out location
-        </option>
-
-        {locations.map((location) => (
-          <option key={location.id} value={location.id}>
-            {location.name}
+        <datalist id="itemOptions">
+          {items.map((item) => (
+            <option
+              key={item.id}
+              value={`${item.sku} ${item.description} ${item.brand}`}
+            ></option>
+          ))}
+        </datalist>
+        <label
+          htmlFor="stockOutLocation"
+          className="text-start font-bold w-full"
+        >
+          Stock Out location
+        </label>
+        <select
+          id="stockOutLocation"
+          name="stockOutLocationId"
+          defaultValue=""
+          className="border p-1 border-solid rounded border-black w-full"
+          required
+        >
+          <option value="" disabled>
+            Select stock Out location
           </option>
-        ))}
-      </select>
-      <label htmlFor="quantity" className="text-start font-bold w-1/4">
-        Quantity
-      </label>
-      <input
-        required
-        id="quantity"
-        type="number"
-        name="quantity"
-        placeholder="Qty"
-        step="1"
-        className="border border-solid rounded border-black w-1/4"
-      />
 
-      <label htmlFor="selectedDate" className="text-start font-bold w-1/4">
-        Date
-      </label>
-      <input
-        id="selectedDate"
-        type="date"
-        name="selectedDate"
-        min="2023-01-01"
-        max="2023-12-31"
-        className="border border-solid rounded border-black w-1/4"
-      />
+          {locations.map((location) => (
+            <option key={location.id} value={location.id}>
+              {location.name}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="quantity" className="text-start font-bold w-full">
+          Quantity
+        </label>
+        <input
+          required
+          id="quantity"
+          type="number"
+          name="quantity"
+          placeholder="Qty"
+          step="1"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
+
+        <label htmlFor="selectedDate" className="text-start font-bold w-full">
+          Date
+        </label>
+        <input
+          id="selectedDate"
+          type="date"
+          name="selectedDate"
+          min="2023-01-01"
+          max="2023-12-31"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
+      </div>
 
       <button
         className={classNames(
-          "h-10 w-28 bg-red-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          "px-8 py-4 mt-3 bg-red-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
           isLoading && "bg-gray-400"
         )}
         type="submit"

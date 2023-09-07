@@ -1,20 +1,18 @@
 import classNames from "classnames";
 import { useState } from "react";
 
-
 export const ItemFormMovement = ({
   locations,
   items,
   setItems,
   setHistories,
 }) => {
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
     useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -35,7 +33,7 @@ export const ItemFormMovement = ({
 
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
 
-    if (item.locations[itemStockOutLocationIdx].quantity -quantity < 0) {
+    if (item.locations[itemStockOutLocationIdx].quantity - quantity < 0) {
       alert(
         `Not enough items in stock (${item.locations[itemStockOutLocationIdx].quantity})`
       );
@@ -44,9 +42,9 @@ export const ItemFormMovement = ({
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.locations[itemStockInLocationIdx].quantity += quantity;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
-    fetch(`http://localhost:3333/items/${itemId}`, {
+    await fetch(`http://localhost:3333/items/${itemId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -73,7 +71,7 @@ export const ItemFormMovement = ({
       type: "movement",
     };
 
-    fetch(`http://localhost:3333/histories`, {
+    await fetch(`http://localhost:3333/histories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -87,14 +85,13 @@ export const ItemFormMovement = ({
 
     form.reset();
 
-    setIsLoading(false)
-   
+    setIsLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <div className="flex flex-col justify-between gap-3">
-        <label htmlFor="item" className="font-bold text-start  w-1/4">
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex flex-col gap-3">
+        <label htmlFor="item" className="font-bold text-start  w-full">
           Item
         </label>
         <input
@@ -104,7 +101,7 @@ export const ItemFormMovement = ({
           name="item"
           placeholder="Select item for action"
           list="itemOptions"
-          className="border border-solid border-black rounded w-1/4 text-black"
+          className="border p-1 border-solid border-black rounded w-full text-black"
         />
         <datalist id="itemOptions">
           {items.map((item) => (
@@ -115,7 +112,7 @@ export const ItemFormMovement = ({
           ))}
         </datalist>
         <label
-          className="font-bold text-start  w-1/4"
+          className="font-bold text-start  w-full"
           htmlFor="stockOutLocation"
         >
           Stock out location
@@ -125,7 +122,7 @@ export const ItemFormMovement = ({
           id="stockOutLocation"
           name="stockOutLocationId"
           value={selectedStockOutLocationId}
-          className="border border-solid border-black rounded w-1/4"
+          className="border p-1 border-solid border-black rounded w-full"
           onChange={(e) =>
             setSelectedStockOutLocationId(Number(e.target.value))
           }
@@ -141,7 +138,7 @@ export const ItemFormMovement = ({
           ))}
         </select>
         <label
-          className="border font-bold text-start  w-1/4"
+          className="border font-bold text-start  w-full"
           htmlFor="stockInLocation"
         >
           Stock in location
@@ -150,7 +147,7 @@ export const ItemFormMovement = ({
           required
           id="stockInLocation"
           name="stockInLocationId"
-          className="border text-start border-solid border-black rounded w-1/4"
+          className="border p-1 text-start border-solid border-black rounded w-full"
           defaultValue=""
           disabled={!selectedStockOutLocationId}
         >
@@ -166,7 +163,7 @@ export const ItemFormMovement = ({
             ) : null
           )}
         </select>
-        <label className="font-bold text-start  w-1/4" htmlFor="quantity">
+        <label className="font-bold text-start  w-full" htmlFor="quantity">
           Quantity
         </label>
         <input
@@ -176,24 +173,24 @@ export const ItemFormMovement = ({
           name="quantity"
           placeholder="Qty"
           step="1"
-          className="border border-solid border-black rounded w-1/4 text-black"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+        />
+        <label className="font-bold text-start w-full" htmlFor="date">
+          Date
+        </label>
+        <input
+          id="date"
+          type="date"
+          name="date"
+          min="2023-01-01"
+          max="2023-12-31"
+          className="border p-1 border-solid border-black rounded w-full text-black"
         />
       </div>
-      <label className="font-bold text-start  w-1/4" htmlFor="date">
-        Date
-      </label>
-      <input
-        id="date"
-        type="date"
-        name="date"
-        min="2023-01-01"
-        max="2023-12-31"
-        className="border border-solid border-black rounded w-1/4 text-black"
-      />
 
-<button
+      <button
         className={classNames(
-          "h-10 w-28 bg-amber-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          "px-8 py-4 mt-3 bg-amber-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
           isLoading && "bg-gray-400"
         )}
         type="submit"

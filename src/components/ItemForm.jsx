@@ -15,74 +15,79 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
     useState(DEFAULT_ACTION_TYPE);
 
   return (
-    <div className="container flex flex-col gap-3">
-      <select className="w-1/4 rounded border border-solid border-black text-center"
-        name="actionType"
-        onChange={(e) => setSelectedActionType(e.target.value)}
-      >
-        <option className="w-1/2" value="chooseAction">Choose action</option>
-        <option value="movement">Movement</option>
-        <option value="purchase">Purchase</option>
-        <option value="sale">Sale</option>
-        <option value="discarding">Discarding</option>
-        <option value="lost">Lost</option>
-        <option value="add">Add</option>
-      </select>
+    <div className="flex justify-center">
+      <div className="items-center flex flex-col gap-3 w-[500px]">
+        <select
+          className="w-full p-1 rounded border border-solid border-black text-center"
+          name="actionType"
+          onChange={(e) => setSelectedActionType(e.target.value)}
+        >
+          <option value="chooseAction">
+            Choose action
+          </option>
+          <option value="movement">Movement</option>
+          <option value="purchase">Purchase</option>
+          <option value="sale">Sale</option>
+          <option value="discarding">Discarding</option>
+          <option value="lost">Lost</option>
+          <option value="add">Add</option>
+        </select>
 
-      {selectedActionType === "chooseAction" && ""}
+        {selectedActionType === "chooseAction" && ""}
 
-      {selectedActionType === "movement" && (
-        <ItemFormMovement
-          locations={locations}
-          items={items}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-      )}
+        {selectedActionType === "movement" && (
+          <ItemFormMovement
+            locations={locations}
+            items={items}
+            setItems={setItems}
+            setHistories={setHistories}
+          />
+        )}
 
-      {selectedActionType === "purchase" && (
-        <ItemFormPurchase
-          locations={locations}
-          items={items}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-      )}
+        {selectedActionType === "purchase" && (
+          <ItemFormPurchase
+            locations={locations}
+            items={items}
+            setItems={setItems}
+            setHistories={setHistories}
+          />
+        )}
 
-      {selectedActionType === "add" && (
-        <ItemFormAdd
-          locations={locations}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-      )}
+        {selectedActionType === "add" && (
+          <ItemFormAdd
+            locations={locations}
+            setItems={setItems}
+            setHistories={setHistories}
+          />
+        )}
 
-      {selectedActionType === "sale" && (
-        <ItemFormSale
-          items={items}
-          locations={locations}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-      )}
+        {selectedActionType === "sale" && (
+          <ItemFormSale
+            items={items}
+            locations={locations}
+            setItems={setItems}
+            setHistories={setHistories}
+          />
+        )}
 
-      {selectedActionType === "discarding" && (
-        <ItemFormDiscarding
-          items={items}
-          locations={locations}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-      )}
+        {selectedActionType === "discarding" && (
+          <ItemFormDiscarding
+            items={items}
+            locations={locations}
+            setItems={setItems}
+            setHistories={setHistories}
+          />
+        )}
 
-      {selectedActionType === "lost" && (
-        <ItemFormLost
-          items={items}
-          locations={locations}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-      )}
+        {selectedActionType === "lost" && (
+          <ItemFormLost
+            items={items}
+            locations={locations}
+            setItems={setItems}
+            setHistories={setHistories}
+          />
+        )}
+      </div>
     </div>
   );
 };

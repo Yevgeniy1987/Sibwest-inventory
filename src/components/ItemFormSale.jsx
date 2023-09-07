@@ -1,9 +1,7 @@
 import classNames from "classnames";
 import { useState } from "react";
 
-
 export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -32,7 +30,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
     item.locations[itemStockOutLocationIdx].quantity -= quantity;
     item.total -= quantity;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
       method: "PATCH",
@@ -71,78 +69,83 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
 
     form.reset();
 
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label className="font-bold text-start  w-1/4" htmlFor="item">
-        Item
-      </label>
-      <input
-        id="item"
-        type="text"
-        name="item"
-        placeholder="Select item for action"
-        list="itemOptions"
-        className="border border-solid border-black rounded w-1/4 text-black"
-        required
-      />
-      <datalist id="itemOptions">
-        {items.map((item) => (
-          <option
-            key={item.id}
-            value={`${item.sku} ${item.description} ${item.brand}`}
-          ></option>
-        ))}
-      </datalist>
-      <label className="font-bold text-start  w-1/4" htmlFor="stockOutLocation">
-        Stock Out location
-      </label>
-      <select
-        id="stockOutLocationId"
-        name="stockOutLocation"
-        defaultValue=""
-        className="border border-solid border-black rounded w-1/4 text-black"
-        required
-      >
-        <option value="" disabled>
-          Select stock Out location
-        </option>
-
-        {locations.map((location) => (
-          <option key={location.id} value={location.id}>
-            {location.name}
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex flex-col gap-3">
+        <label className="font-bold text-start  w-full" htmlFor="item">
+          Item
+        </label>
+        <input
+          id="item"
+          type="text"
+          name="item"
+          placeholder="Select item for action"
+          list="itemOptions"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+          required
+        />
+        <datalist id="itemOptions">
+          {items.map((item) => (
+            <option
+              key={item.id}
+              value={`${item.sku} ${item.description} ${item.brand}`}
+            ></option>
+          ))}
+        </datalist>
+        <label
+          className="font-bold text-start  w-full"
+          htmlFor="stockOutLocation"
+        >
+          Stock Out location
+        </label>
+        <select
+          id="stockOutLocationId"
+          name="stockOutLocation"
+          defaultValue=""
+          className="border p-1 border-solid border-black rounded w-full text-black"
+          required
+        >
+          <option value="" disabled>
+            Select stock Out location
           </option>
-        ))}
-      </select>
-      <label className="font-bold text-start  w-1/4" htmlFor="quantity">
-        Quantity
-      </label>
-      <input
-        id="quantity"
-        type="number"
-        name="quantity"
-        placeholder="Qty"
-        step="1"
-        className="border border-solid border-black rounded w-1/4 text-black"
-        required
-      />
-      <label className="font-bold text-start  w-1/4" htmlFor="date">
-        Date
-      </label>
-      <input
-        id="date"
-        type="date"
-        name="date"
-        min="2023-01-01"
-        max="2023-12-31"
-        className="border border-solid border-black rounded w-1/4 text-black"
-      />
 
-<button
+          {locations.map((location) => (
+            <option key={location.id} value={location.id}>
+              {location.name}
+            </option>
+          ))}
+        </select>
+        <label className="font-bold text-start  w-full" htmlFor="quantity">
+          Quantity
+        </label>
+        <input
+          id="quantity"
+          type="number"
+          name="quantity"
+          placeholder="Qty"
+          step="1"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+          required
+        />
+        <label className="font-bold text-start  w-full" htmlFor="date">
+          Date
+        </label>
+        <input
+          id="date"
+          type="date"
+          name="date"
+          min="2023-01-01"
+          max="2023-12-31"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+        />
+      </div>
+
+      <button
         className={classNames(
-          "h-10 w-28 bg-amber-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          "px-8 py-4 mt-3 bg-amber-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
           isLoading && "bg-gray-400"
         )}
         type="submit"

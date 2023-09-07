@@ -68,100 +68,105 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label htmlFor="sku" className="text-start font-bold w-1/4">
-        SKU
-      </label>
-      <input
-        required
-        id="sku"
-        type="text"
-        name="sku"
-        placeholder="Enter SKU"
-        className="border border-solid rounded border-black w-1/4"
-      />
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex flex-col gap-3">
+        <label htmlFor="sku" className="text-start font-bold w-full">
+          SKU
+        </label>
+        <input
+          required
+          id="sku"
+          type="text"
+          name="sku"
+          placeholder="Enter SKU"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
 
-      <label htmlFor="description" className="text-start font-bold w-1/4">
-        Description
-      </label>
-      <input
-        required
-        id="description"
-        type="text"
-        name="description"
-        placeholder="Enter Description"
-        className="border border-solid rounded border-black w-1/4"
-      />
+        <label htmlFor="description" className="text-start font-bold w-full">
+          Description
+        </label>
+        <input
+          required
+          id="description"
+          type="text"
+          name="description"
+          placeholder="Enter Description"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
 
-      <label htmlFor="brand" className="text-start font-bold w-1/4">
-        Brand
-      </label>
-      <input
-        id="brand"
-        type="text"
-        name="brand"
-        placeholder="Enter Brand"
-        className="border border-solid rounded border-black w-1/4"
-      />
+        <label htmlFor="brand" className="text-start font-bold w-full">
+          Brand
+        </label>
+        <input
+          id="brand"
+          type="text"
+          name="brand"
+          placeholder="Enter Brand"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
 
-      <label htmlFor="type" className="text-start font-bold w-1/4">
-        Item type
-      </label>
-      <input
-        id="type"
-        type="text"
-        name="type"
-        placeholder="Enter Type"
-        className="border border-solid rounded border-black w-1/4"
-      />
+        <label htmlFor="type" className="text-start font-bold w-full">
+          Item type
+        </label>
+        <input
+          id="type"
+          type="text"
+          name="type"
+          placeholder="Enter Type"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
 
-      <label htmlFor="date" className="text-start font-bold w-1/4">
-        Date
-      </label>
-      <input
-        id="date"
-        type="date"
-        name="date"
-        min="2023-01-01"
-        max="2023-12-31"
-        className="border border-solid rounded border-black w-1/4"
-      />
-      <label htmlFor="stockInLocation" className="text-start font-bold w-1/4">
-        Stock in location
-      </label>
-      <select
-        required
-        id="stockInLocation"
-        name="stockInLocationId"
-        defaultValue=""
-        className="border border-solid rounded border-black w-1/4"
-      >
-        <option value="" disabled>
-          Select stock in location
-        </option>
-
-        {locations.map((location) => (
-          <option key={location.id} value={location.id}>
-            {location.name}
+        <label htmlFor="date" className="text-start font-bold w-full">
+          Date
+        </label>
+        <input
+          id="date"
+          type="date"
+          name="date"
+          min="2023-01-01"
+          max="2023-12-31"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
+        <label
+          htmlFor="stockInLocation"
+          className="text-start font-bold w-full"
+        >
+          Stock in location
+        </label>
+        <select
+          required
+          id="stockInLocation"
+          name="stockInLocationId"
+          defaultValue=""
+          className="border p-1 border-solid rounded border-black w-full"
+        >
+          <option value="" disabled>
+            Select stock in location
           </option>
-        ))}
-      </select>
-      <label htmlFor="quantity" className="text-start font-bold w-1/4">
-        Quantity
-      </label>
-      <input
-        required
-        id="quantity"
-        type="number"
-        name="quantity"
-        placeholder="Qty"
-        step="1"
-        className="border border-solid rounded border-black w-1/4"
-      />
+
+          {locations.map((location) => (
+            <option key={location.id} value={location.id}>
+              {location.name}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="quantity" className="text-start font-bold w-full">
+          Quantity
+        </label>
+        <input
+          required
+          id="quantity"
+          type="number"
+          name="quantity"
+          placeholder="Qty"
+          step="1"
+          className="border p-1 border-solid rounded border-black w-full"
+        />
+      </div>
 
       <button
         className={classNames(
-          "h-10 w-28 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
           isLoading && "bg-gray-400"
         )}
         type="submit"

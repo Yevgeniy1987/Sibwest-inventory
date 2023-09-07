@@ -71,73 +71,79 @@ export const ItemFormPurchase = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label className="font-bold text-start  w-1/4" htmlFor="item">
-        Item
-      </label>
-      <input
-        id="item"
-        type="text"
-        name="item"
-        placeholder="Select item for action"
-        list="itemOptions"
-        className="border border-solid border-black rounded w-1/4 text-black"
-        required
-      />
-      <datalist id="itemOptions">
-        {items.map((item) => (
-          <option
-            key={item.id}
-            value={`${item.sku} ${item.description} ${item.brand}`}
-          ></option>
-        ))}
-      </datalist>
-      <label className="font-bold text-start  w-1/4" htmlFor="stockInLocation">
-        Stock in location{" "}
-      </label>
-      <select
-        className="border border-solid border-black rounded w-1/4 text-black"
-        id="stockInLocation"
-        name="stockInLocationId"
-        defaultValue=""
-        required
-      >
-        <option value="" disabled>
-          Select stock in location
-        </option>
-
-        {locations.map((location) => (
-          <option key={location.id} value={location.id}>
-            {location.name}
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex flex-col gap-3">
+        <label className="font-bold text-start  w-full" htmlFor="item">
+          Item
+        </label>
+        <input
+          id="item"
+          type="text"
+          name="item"
+          placeholder="Select item for action"
+          list="itemOptions"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+          required
+        />
+        <datalist id="itemOptions">
+          {items.map((item) => (
+            <option
+              key={item.id}
+              value={`${item.sku} ${item.description} ${item.brand}`}
+            ></option>
+          ))}
+        </datalist>
+        <label
+          className="font-bold text-start  w-full"
+          htmlFor="stockInLocation"
+        >
+          Stock in location{" "}
+        </label>
+        <select
+          className="border p-1 border-solid border-black rounded w-full text-black"
+          id="stockInLocation"
+          name="stockInLocationId"
+          defaultValue=""
+          required
+        >
+          <option value="" disabled>
+            Select stock in location
           </option>
-        ))}
-      </select>
-      <label className="font-bold text-start  w-1/4" htmlFor="quantity">
-        Quantity
-      </label>
-      <input
-        required
-        id="quantity"
-        type="number"
-        name="quantity"
-        placeholder="Qty"
-        step="1"
-        className="border border-solid border-black rounded w-1/4 text-black"
-      />
-      <label className="font-bold text-start  w-1/4" htmlFor="date">
-        Date
-      </label>
-      <input
-        id="date"
-        type="date"
-        name="date"
-        min="2023-01-01"
-        max="2023-12-31"
-        className="border border-solid border-black rounded w-1/4 text-black"
-      />
+
+          {locations.map((location) => (
+            <option key={location.id} value={location.id}>
+              {location.name}
+            </option>
+          ))}
+        </select>
+        <label className="font-bold text-start  w-full" htmlFor="quantity">
+          Quantity
+        </label>
+        <input
+          required
+          id="quantity"
+          type="number"
+          name="quantity"
+          placeholder="Qty"
+          step="1"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+        />
+        <label className="font-bold text-start  w-full" htmlFor="date">
+          Date
+        </label>
+        <input
+          id="date"
+          type="date"
+          name="date"
+          min="2023-01-01"
+          max="2023-12-31"
+          className="border p-1 border-solid border-black rounded w-full text-black"
+        />
+      </div>
+
       <button
         className={classNames(
-          "h-10 w-28 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
           isLoading && "bg-gray-400"
         )}
         type="submit"
