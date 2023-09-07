@@ -20,7 +20,8 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
       locationId: location.id,
       quantity: selectedStockInLocationId === location.id ? quantity : 0,
     }));
-    const date = form.date.value.trim();
+    const date = form.date.value;
+    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;;
     const newItem = {
       sku,
       description,
@@ -45,7 +46,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
     const newHistory = {
       itemId: createdItem.id,
       createdAt: new Date().toISOString(),
-      date: createdItem.date,
+      date: formattedDate,
       stockInLocationId: selectedStockInLocationId,
       stockOutLocationId: null,
       quantity,
@@ -123,8 +124,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
           id="date"
           type="date"
           name="date"
-          min="2023-01-01"
-          max="2023-12-31"
+          max={new Date().toISOString().split('T')[0]}
           className="border p-1 border-solid rounded border-black w-full"
         />
         <label

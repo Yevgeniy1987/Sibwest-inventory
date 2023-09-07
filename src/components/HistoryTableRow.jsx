@@ -24,7 +24,7 @@ export function HistoryTableRow({ history, locations, items, setHistories }) {
         {new Date(createdAt).toLocaleString()}
       </td>
       <td className="border border-solid  border-black p-1">
-        {new Date(date).toLocaleString()}
+        {date ? new Date(date).toLocaleDateString() : "N/A"}
       </td>
       <td className="border border-solid  border-black p-1">
         {item?.sku || "N/A"}

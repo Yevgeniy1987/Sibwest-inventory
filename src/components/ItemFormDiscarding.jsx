@@ -21,7 +21,8 @@ export const ItemFormDiscarding = ({
     const itemId = item.id;
     const selectedStockOutLocationId = Number(form.stockOutLocationId.value);
     const quantity = Number(form.quantity.value);
-    const date = form.selectedDate.value;
+    const date = form.date.value;
+    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;
 
     const itemStockOutLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
@@ -57,7 +58,7 @@ export const ItemFormDiscarding = ({
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),
-      date: date,
+      date: formattedDate,
       stockOutLocationId: selectedStockOutLocationId,
       stockInLocationId: null,
       quantity,
@@ -145,9 +146,8 @@ export const ItemFormDiscarding = ({
         <input
           id="selectedDate"
           type="date"
-          name="selectedDate"
-          min="2023-01-01"
-          max="2023-12-31"
+          name="date"
+          max={new Date().toISOString().split('T')[0]}
           className="border p-1 border-solid rounded border-black w-full"
         />
       </div>

@@ -15,7 +15,10 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
     const itemId = item.id;
     const selectedStockOutLocationId = Number(form.stockOutLocationId.value);
     const quantity = Number(form.quantity.value);
-
+    const date = form.date.value;
+    const formattedDate = date
+      ? new Date(`${date}T12:00:00`).toISOString()
+      : null;
     const itemStockOutLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
     );
@@ -50,7 +53,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),
-      date: new Date().toISOString(),
+      date: formattedDate,
       stockOutLocationId: selectedStockOutLocationId,
       stockInLocationId: null,
       quantity,
@@ -137,8 +140,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
           id="date"
           type="date"
           name="date"
-          min="2023-01-01"
-          max="2023-12-31"
+          max={new Date().toISOString().split("T")[0]}
           className="border p-1 border-solid border-black rounded w-full text-black"
         />
       </div>

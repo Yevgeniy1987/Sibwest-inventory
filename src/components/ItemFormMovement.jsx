@@ -23,6 +23,8 @@ export const ItemFormMovement = ({
     const itemId = item.id;
     const selectedStockInLocationId = Number(form.stockInLocationId.value);
     const quantity = Number(form.quantity.value);
+    const date = form.date.value;
+    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;
 
     const itemStockOutLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
@@ -30,8 +32,6 @@ export const ItemFormMovement = ({
     const itemStockInLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockInLocationId
     );
-
-    item.locations[itemStockOutLocationIdx].quantity -= quantity;
 
     if (item.locations[itemStockOutLocationIdx].quantity - quantity < 0) {
       alert(
@@ -64,7 +64,7 @@ export const ItemFormMovement = ({
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),
-      date: new Date().toISOString(),
+      date: formattedDate,
       stockInLocationId: selectedStockInLocationId,
       stockOutLocationId: selectedStockOutLocationId,
       quantity,
@@ -182,8 +182,7 @@ export const ItemFormMovement = ({
           id="date"
           type="date"
           name="date"
-          min="2023-01-01"
-          max="2023-12-31"
+          max={new Date().toISOString().split("T")[0]}
           className="border p-1 border-solid border-black rounded w-full text-black"
         />
       </div>
