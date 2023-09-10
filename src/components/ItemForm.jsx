@@ -20,7 +20,12 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
   return (
     <>
       <div className="flex justify-start">
-        <button className="px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white" onClick={() => setIsModalOpen(true)}>Action</button>
+        <button
+          className="px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Action
+        </button>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="flex justify-center p-2">
@@ -91,8 +96,8 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
               />
             )}
           </div>
-        </div>{" "}
-      </Modal>{" "}
+        </div>
+      </Modal>
     </>
   );
 };

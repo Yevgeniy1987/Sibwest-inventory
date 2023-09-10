@@ -4,15 +4,14 @@ import { InventoryMainTable } from "./components/InventoryMainTable";
 import { LocationTable } from "./components/LocationTable";
 import { HistoryTable } from "./components/HistoryTable";
 
-
 import "./App.css";
 import { ItemForm } from "./components/ItemForm";
+import { Nav } from "./components/Nav";
 
 function App() {
   const [items, setItems] = useState([]);
   const [locations, setLocations] = useState([]);
   const [histories, setHistories] = useState([]);
-  
 
   useEffect(() => {
     fetch("http://localhost:3333/items")
@@ -30,33 +29,21 @@ function App() {
         <h1 className="text-center w-full px-6 py-6 text-4xl font-bold bg-contain text-orange-300">
           Sibwest inventory table
         </h1>
-       
-       
-        <ItemForm
-          locations={locations}
-          items={items}
-          setItems={setItems}
-          setHistories={setHistories}
-        />
-
-        <div className="">
-          <InventoryMainTable
-            items={items}
+        <div className="flex flex-col items-center">
+          <ItemForm
             locations={locations}
-            setItems={setItems}
-          />
-        </div>
-        <div>
-          <HistoryTable
             items={items}
-            histories={histories}
             setItems={setItems}
-            locations={locations}
             setHistories={setHistories}
           />
-        </div>
-        <div>
-          <LocationTable locations={locations} setLocations={setLocations} />
+          <Nav
+            items={items}
+            locations={locations}
+            setItems={setItems}
+            histories={histories}
+            setHistories={setHistories}
+            setLocations={setLocations}
+          ></Nav>
         </div>
       </div>
     </main>

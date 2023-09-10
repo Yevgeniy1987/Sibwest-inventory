@@ -23,13 +23,7 @@ export function InventoryMainTable({ items, locations, setItems }) {
         </tr>
       </thead>
       <tbody>
-      {/* {isLoading && (
-          <tr>
-            <td colSpan={10} className="text-black text-l font-bold py-4">
-              Loading...
-            </td>
-          </tr>
-        )} */}
+      
         {items.map((item) => (
           <InventoryMainTableRow
             key={item.id}
