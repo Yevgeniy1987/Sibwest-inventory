@@ -2,8 +2,10 @@ import classNames from "classnames";
 import { useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
 
-export const ItemFormPurchase = ({ locations, items, setItems }) => {
-  const [setState] = useGlobalState();
+export const ItemFormPurchase = () => {
+  const [state, setState] = useGlobalState();
+  const items = state.items;
+  const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +41,7 @@ export const ItemFormPurchase = ({ locations, items, setItems }) => {
       body: JSON.stringify(item),
     }).then((r) => r.json());
 
-    setItems((items) => {
+    setState((items) => {
       const itemIdx = items.findIndex((item) => item.id === updatedItem.id);
       items[itemIdx] = updatedItem;
 

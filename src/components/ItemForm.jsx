@@ -5,21 +5,21 @@ import { ItemFormAdd } from "./ItemFormAdd";
 import { ItemFormSale } from "./ItemFormSale";
 import { ItemFormDiscarding } from "./ItemFormDiscarding";
 import { ItemFormLost } from "./ItemFormLost";
-import { Modal } from "./Modal";
+// import { Modal } from "./Modal";
 
 // "movement | purchase | sale | discarding | lost | add"
 
 const DEFAULT_ACTION_TYPE = "movement";
 
-export const ItemForm = ({ locations, items, setItems }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export const ItemForm = () => {
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedActionType, setSelectedActionType] =
     useState(DEFAULT_ACTION_TYPE);
 
   return (
     <>
-      <div className="flex justify-start">
+      {/* <div className="flex justify-start">
         <button
           className="px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
           onClick={() => setIsModalOpen(true)}
@@ -27,8 +27,8 @@ export const ItemForm = ({ locations, items, setItems }) => {
           Action
         </button>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="flex justify-center p-2">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}> */}
+        <div className="flex justify-center">
           <div className="items-center flex flex-col gap-3 w-[500px]">
             <select
               className="w-full p-1 rounded border border-solid border-black text-center"
@@ -43,61 +43,20 @@ export const ItemForm = ({ locations, items, setItems }) => {
               <option value="add">Add</option>
             </select>
 
-            {selectedActionType === "movement" && (
-              <ItemFormMovement
-                locations={locations}
-                items={items}
-                setItems={setItems}
-                
-              />
-            )}
+            {selectedActionType === "movement" && <ItemFormMovement />}
 
-            {selectedActionType === "purchase" && (
-              <ItemFormPurchase
-                locations={locations}
-                items={items}
-                setItems={setItems}
-                
-              />
-            )}
+            {selectedActionType === "purchase" && <ItemFormPurchase />}
 
-            {selectedActionType === "add" && (
-              <ItemFormAdd
-                locations={locations}
-                setItems={setItems}
-                
-              />
-            )}
+            {selectedActionType === "add" && <ItemFormAdd />}
 
-            {selectedActionType === "sale" && (
-              <ItemFormSale
-                items={items}
-                locations={locations}
-                setItems={setItems}
-                
-              />
-            )}
+            {selectedActionType === "sale" && <ItemFormSale />}
 
-            {selectedActionType === "discarding" && (
-              <ItemFormDiscarding
-                items={items}
-                locations={locations}
-                setItems={setItems}
-                
-              />
-            )}
+            {selectedActionType === "discarding" && <ItemFormDiscarding />}
 
-            {selectedActionType === "lost" && (
-              <ItemFormLost
-                items={items}
-                locations={locations}
-                setItems={setItems}
-                
-              />
-            )}
+            {selectedActionType === "lost" && <ItemFormLost />}
           </div>
         </div>
-      </Modal>
+      {/* </Modal> */}
     </>
   );
 };

@@ -2,8 +2,9 @@ import classNames from "classnames";
 import { useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
 
-export const ItemFormAdd = ({ locations, setItems }) => {
-  const [setState] = useGlobalState();
+export const ItemFormAdd = () => {
+  const [state, setState] = useGlobalState();
+  const locations = state.locations;
   
   const [isLoading, setIsLoading] = useState(false);
   

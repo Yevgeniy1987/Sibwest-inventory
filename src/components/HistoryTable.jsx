@@ -83,7 +83,7 @@ export function HistoryTable() {
   };
 
   return (
-    <table className="text-center w-full overflow-auto h-[600px] block relative">
+    <table className="w-full overflow-auto h-[600px] block relative">
       <thead className="border border-solid border-black text-xl font-bold capitalize bg-slate-400 sticky top-0">
         <tr>
           <th className="border border-solid border-black p-1">Created Date</th>

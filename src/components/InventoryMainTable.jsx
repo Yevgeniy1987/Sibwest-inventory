@@ -10,7 +10,7 @@ const locations = state.locations;
   // const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <table className="container text-center w-full">
+    <table className="container w-full ">
       <thead className="border text-xl font-bold capitalize bg-slate-400">
         <tr>
           <th className="border border-solid  border-black p-1">SKU</th>
