@@ -11,7 +11,7 @@ import { Modal } from "./Modal";
 
 const DEFAULT_ACTION_TYPE = "movement";
 
-export const ItemForm = ({ locations, items, setItems, setHistories }) => {
+export const ItemForm = ({ locations, items, setItems }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedActionType, setSelectedActionType] =
@@ -48,7 +48,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
                 locations={locations}
                 items={items}
                 setItems={setItems}
-                setHistories={setHistories}
+                
               />
             )}
 
@@ -57,7 +57,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
                 locations={locations}
                 items={items}
                 setItems={setItems}
-                setHistories={setHistories}
+                
               />
             )}
 
@@ -65,7 +65,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
               <ItemFormAdd
                 locations={locations}
                 setItems={setItems}
-                setHistories={setHistories}
+                
               />
             )}
 
@@ -74,7 +74,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
                 items={items}
                 locations={locations}
                 setItems={setItems}
-                setHistories={setHistories}
+                
               />
             )}
 
@@ -83,7 +83,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
                 items={items}
                 locations={locations}
                 setItems={setItems}
-                setHistories={setHistories}
+                
               />
             )}
 
@@ -92,7 +92,7 @@ export const ItemForm = ({ locations, items, setItems, setHistories }) => {
                 items={items}
                 locations={locations}
                 setItems={setItems}
-                setHistories={setHistories}
+                
               />
             )}
           </div>

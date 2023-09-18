@@ -7,8 +7,7 @@ import classNames from "classnames";
 export const Nav = ({
   items,
   locations,
-  histories,
-  setHistories,
+
   setItems,
   setLocations,
 }) => {
@@ -66,9 +65,7 @@ export const Nav = ({
             Main table
           </h2>
           <InventoryMainTable
-            items={items}
-            locations={locations}
-            setItems={setItems}
+            
           />
         </div>
       )}
@@ -79,10 +76,10 @@ export const Nav = ({
           </h2>
           <HistoryTable
             items={items}
-            histories={histories}
+           
             setItems={setItems}
             locations={locations}
-            setHistories={setHistories}
+           
           />
         </div>
       )}

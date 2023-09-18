@@ -1,12 +1,12 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { useGlobalState } from "../context/GlobalContext";
 
-export const ItemFormMovement = ({
-  locations,
-  items,
-  setItems,
-  setHistories,
-}) => {
+export const ItemFormMovement = () => {
+const [state, setState] = useGlobalState();
+const items = state.items;
+const locations = state.locations;
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
@@ -24,7 +24,9 @@ export const ItemFormMovement = ({
     const selectedStockInLocationId = Number(form.stockInLocationId.value);
     const quantity = Number(form.quantity.value);
     const date = form.date.value;
-    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;
+    const formattedDate = date
+      ? new Date(`${date}T12:00:00`).toISOString()
+      : null;
 
     const itemStockOutLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
@@ -53,7 +55,7 @@ export const ItemFormMovement = ({
     })
       .then((response) => response.json())
       .then((updatedItem) =>
-        setItems((items) => {
+        setState((items) => {
           const itemIdx = items.findIndex((item) => item.id === updatedItem.id);
           items[itemIdx] = updatedItem;
 
@@ -80,7 +82,10 @@ export const ItemFormMovement = ({
     })
       .then((response) => response.json())
       .then((createdHistory) =>
-        setHistories((histories) => [...histories, createdHistory])
+        setState((state) => ({
+          ...state,
+          histories: [...state.histories, createdHistory],
+        }))
       );
 
     form.reset();

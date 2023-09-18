@@ -1,4 +1,10 @@
-export function HistoryTableRow({ history, locations, items, setHistories }) {
+import { useGlobalState } from "../context/GlobalContext";
+
+export function HistoryTableRow() {
+  const [state] = useGlobalState();
+  const items = state.items;
+  const locations = state.locations;
+
   const {
     type,
     itemId,

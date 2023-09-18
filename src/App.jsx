@@ -7,20 +7,29 @@ import { HistoryTable } from "./components/HistoryTable";
 import "./App.css";
 import { ItemForm } from "./components/ItemForm";
 import { Nav } from "./components/Nav";
+import { useGlobalState } from "./context/GlobalContext";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [histories, setHistories] = useState([]);
+  const [state, setState] = useGlobalState();
+
+  const items = state.items;
+  const locations = state.locations;
+
+  // const [locations, setLocations] = useState([]);
+  // const [histories, setHistories] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:3333/items")
       .then((response) => response.json())
-      .then((itemsData) => setItems(itemsData));
+      .then((itemsData) =>
+        setState((state) => ({ ...state, items: itemsData }))
+      );
 
     fetch("http://localhost:3333/locations")
       .then((response) => response.json())
-      .then((locationsData) => setLocations(locationsData));
+      .then((locationsData) =>
+        setState((state) => ({ ...state, locations: locationsData }))
+      );
   }, []);
 
   return (
@@ -30,20 +39,8 @@ function App() {
           Sibwest inventory table
         </h1>
         <div className="flex flex-col items-center">
-          <ItemForm
-            locations={locations}
-            items={items}
-            setItems={setItems}
-            setHistories={setHistories}
-          />
-          <Nav
-            items={items}
-            locations={locations}
-            setItems={setItems}
-            histories={histories}
-            setHistories={setHistories}
-            setLocations={setLocations}
-          ></Nav>
+          <ItemForm locations={locations} items={items} />
+          <Nav></Nav>
         </div>
       </div>
     </main>

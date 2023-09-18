@@ -1,6 +1,10 @@
 import { LocationTableRow } from "./LocationTableRow";
+import { useGlobalState } from "../context/GlobalContext";
 
-export function LocationTable({ locations, setLocations }) {
+export function LocationTable() {
+const [state] = useGlobalState();
+const locations = state.locations;
+
   return (
     <table className="text-center w-full container">
       <thead className="border text-xl font-bold capitalize bg-slate-400">
@@ -18,7 +22,7 @@ export function LocationTable({ locations, setLocations }) {
           <LocationTableRow
             key={location.id}
             location={location}
-            setLocations={setLocations}
+            
           />
         ))}
       </tbody>

@@ -1,7 +1,10 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { useGlobalState } from "../context/GlobalContext";
 
-export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
+export const ItemFormLost = ({ locations, items, setItems }) => {
+  const [setState] = useGlobalState();
+  
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -16,7 +19,9 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
     const selectedStockOutLocationId = Number(form.stockOutLocationId.value);
     const quantity = Number(form.quantity.value);
     const date = form.date.value;
-    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;
+    const formattedDate = date
+      ? new Date(`${date}T12:00:00`).toISOString()
+      : null;
     const itemStockOutLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockOutLocationId
     );
@@ -68,7 +73,10 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
       body: JSON.stringify(newHistory),
     }).then((r) => r.json());
 
-    setHistories((histories) => [...histories, createdHistory]);
+    setState((state) => ({
+      ...state,
+      histories: [...state.histories, createdHistory],
+    }));
 
     form.reset();
 
@@ -141,7 +149,7 @@ export const ItemFormLost = ({ locations, items, setItems, setHistories }) => {
           id="date"
           type="date"
           name="date"
-          max={new Date().toISOString().split('T')[0]}
+          max={new Date().toISOString().split("T")[0]}
           className="border p-1 border-solid rounded border-black w-full"
         />
       </div>

@@ -1,12 +1,10 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { useGlobalState } from "../context/GlobalContext";
 
-export const ItemFormPurchase = ({
-  locations,
-  items,
-  setItems,
-  setHistories,
-}) => {
+export const ItemFormPurchase = ({ locations, items, setItems }) => {
+  const [setState] = useGlobalState();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -21,7 +19,9 @@ export const ItemFormPurchase = ({
     const selectedStockInLocationId = Number(form.stockInLocationId.value);
     const quantity = Number(form.quantity.value);
     const date = form.date.value;
-    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;
+    const formattedDate = date
+      ? new Date(`${date}T12:00:00`).toISOString()
+      : null;
     const itemStockInLocationIdx = item.locations.findIndex(
       (itemLocation) => itemLocation.locationId === selectedStockInLocationId
     );
@@ -64,7 +64,10 @@ export const ItemFormPurchase = ({
       body: JSON.stringify(newHistory),
     }).then((r) => r.json());
 
-    setHistories((histories) => [...histories, createdHistory]);
+    setState((state) => ({
+      ...state,
+      histories: [...state.history, createdHistory],
+    }));
 
     form.reset();
 

@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { InventoryMainTableRow } from './InventoryMainTableRow';
+import { useGlobalState } from '../context/GlobalContext';
 
-export function InventoryMainTable({ items, locations, setItems }) {
+export function InventoryMainTable() {
+const [state] = useGlobalState();
+const items = state.items;
+const locations = state.locations;
 
   // const [isLoading, setIsLoading] = useState(false);
 
@@ -28,8 +32,7 @@ export function InventoryMainTable({ items, locations, setItems }) {
           <InventoryMainTableRow
             key={item.id}
             item={item}
-            setItems={setItems}
-            locations={locations}
+            
           />
         ))}
       </tbody>

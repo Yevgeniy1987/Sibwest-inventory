@@ -1,7 +1,10 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { useGlobalState } from "../context/GlobalContext";
 
-export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
+export const ItemFormSale = ({ locations, items, setItems }) => {
+  const [setState] = useGlobalState();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -68,7 +71,10 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
       body: JSON.stringify(newHistory),
     }).then((r) => r.json());
 
-    setHistories((histories) => [...histories, createdHistory]);
+    setState((state) => ({
+      ...state,
+      histories: [...state.histories, createdHistory]
+    }));
 
     form.reset();
 
@@ -132,6 +138,7 @@ export const ItemFormSale = ({ locations, items, setItems, setHistories }) => {
           step="1"
           className="border p-1 border-solid border-black rounded w-full text-black"
           required
+          onChange={(e) => setState(e.target.value)}
         />
         <label className="font-bold text-start  w-full" htmlFor="date">
           Date

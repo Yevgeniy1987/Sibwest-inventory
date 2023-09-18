@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { HistoryTableRow } from "./HistoryTableRow";
+import { useGlobalState } from "../context/GlobalContext";
 
-export function HistoryTable({ histories, locations, items, setHistories }) {
+export function HistoryTable() {
+  const [state, setState] = useGlobalState();
+  const histories = state.histories;
+  const items = state.items;
+  const locations = state.locations;
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
@@ -20,21 +26,23 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
     setIsLoading(true);
 
-   fetch(`http://localhost:3333/histories?${queryString}`)
+    fetch(`http://localhost:3333/histories?${queryString}`)
       .then((response) => response.json())
-      .then((historiesData) => setHistories(historiesData))
+      .then((historiesData) =>
+        setState((state) => ({ ...state, histories: historiesData }))
+      )
       .finally(() => setIsLoading(false));
   }, [filters]);
 
   const handleSKUFilter = async (e) => {
-    e.preventDefault();
+    e.preventDefault();  
     const sku = e.target.sku.value.trim();
 
-    const items = await fetch(`http://localhost:3333/items?sku=${sku}`).then(
-      (response) => response.json()
-    ).finally(() => setIsLoading(false));;
+    const itemSku = await fetch(`http://localhost:3333/items?sku=${sku}`)
+      .then((response) => response.json())
+      .finally(() => setIsLoading(false));
 
-    const item = items[0];
+    const item = itemSku[0];
 
     setFilters({ ...filters, itemId: item?.id || sku });
   };
@@ -171,12 +179,7 @@ export function HistoryTable({ histories, locations, items, setHistories }) {
 
         {!isLoading &&
           histories.map((history) => (
-            <HistoryTableRow
-              key={history.id}
-              history={history}
-              locations={locations}
-              items={items}
-            />
+            <HistoryTableRow key={history.id} history={history} />
           ))}
       </tbody>
     </table>

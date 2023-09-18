@@ -1,9 +1,12 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { useGlobalState } from "../context/GlobalContext";
 
-useState;
-export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
+export const ItemFormAdd = ({ locations, setItems }) => {
+  const [setState] = useGlobalState();
+  
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +24,9 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
       quantity: selectedStockInLocationId === location.id ? quantity : 0,
     }));
     const date = form.date.value;
-    const formattedDate = date ? new Date(`${date}T12:00:00`).toISOString() : null;;
+    const formattedDate = date
+      ? new Date(`${date}T12:00:00`).toISOString()
+      : null;
     const newItem = {
       sku,
       description,
@@ -61,7 +66,10 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
       body: JSON.stringify(newHistory),
     }).then((response) => response.json());
 
-    setHistories((histories) => [...histories, createdHistory]);
+    setState((state) => ({
+      ...state,
+      histories: [...state.histories, createdHistory],
+    }));
 
     form.reset();
 
@@ -124,7 +132,7 @@ export const ItemFormAdd = ({ locations, setItems, setHistories }) => {
           id="date"
           type="date"
           name="date"
-          max={new Date().toISOString().split('T')[0]}
+          max={new Date().toISOString().split("T")[0]}
           className="border p-1 border-solid rounded border-black w-full"
         />
         <label
