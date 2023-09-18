@@ -1,5 +1,5 @@
 export function LocationTableRow({ location }) {
-  const { name, locationId, address } = location || {};
+  const { name, address } = location || {};
   return (
     <tr  className= "hover:bg-gray-300 font-medium">
       <td className="text-black border border-solid border-black p-1">

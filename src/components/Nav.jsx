@@ -4,18 +4,12 @@ import { HistoryTable } from "./HistoryTable";
 import { LocationTable } from "./LocationTable";
 import classNames from "classnames";
 
-export const Nav = ({
-  items,
-  locations,
+export const Nav = () => {
+  const [selectedType, setSelectedType] = useState("history");
 
-  setItems,
-  setLocations,
-}) => {
-  const [isActive, setIsActive] = useState("history");
-
-  const isMain = isActive === "main";
-  const isHistory = isActive === "history";
-  const isLocation = isActive === "location";
+  const isMain = selectedType === "main";
+  const isHistory = selectedType === "history";
+  const isLocation = selectedType === "location";
 
   return (
     <div>
@@ -28,7 +22,7 @@ export const Nav = ({
             )}
             value="main"
             onClick={() => {
-              setIsActive("main");
+              setSelectedType("main");
             }}
           >
             Main Table
@@ -40,7 +34,7 @@ export const Nav = ({
             )}
             value="history"
             onClick={() => {
-              setIsActive("history");
+              setSelectedType("history");
             }}
           >
             History Table
@@ -52,43 +46,35 @@ export const Nav = ({
             )}
             value="location"
             onClick={() => {
-              setIsActive("location");
+              setSelectedType("location");
             }}
           >
             Location Table
           </button>
         </div>
       </nav>
-      {isActive === "main" && (
+      {isMain && (
         <div className="">
           <h2 className="text-center  px-6 py-6 text-3xl font-bold text-grey-300">
             Main table
           </h2>
-          <InventoryMainTable
-            
-          />
+          <InventoryMainTable />
         </div>
       )}
-      {isActive === "history" && (
+      {isHistory && (
         <div>
           <h2 className="text-center  px-6 py-6 text-3xl font-bold text-grey-300">
             History table
           </h2>
-          <HistoryTable
-            items={items}
-           
-            setItems={setItems}
-            locations={locations}
-           
-          />
+          <HistoryTable />
         </div>
       )}
-      {isActive === "location" && (
+      {isLocation && (
         <div>
           <h2 className="text-center  px-6 py-6 text-3xl font-bold text-grey-300">
             Location table
           </h2>
-          <LocationTable locations={locations} setLocations={setLocations} />
+          <LocationTable />
         </div>
       )}
     </div>
