@@ -1,41 +1,49 @@
-import { useState, useEffect } from "react";
-import { HistoryTableRow } from "./HistoryTableRow";
-import { useGlobalState } from "../context/GlobalContext";
+import { useState, useEffect } from 'react';
+import { HistoryTableRow } from './HistoryTableRow';
+import { useGlobalState } from '../context/GlobalContext';
+import { api } from '../service/api';
 
 export function HistoryTable() {
   const [state, setState] = useGlobalState();
+
   const histories = state.histories;
-  const items = state.items;
   const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
-    itemId: "",
-    description: "",
-    stockInLocationId: "",
-    stockOutLocation: "",
-    type: "",
+    itemId: '',
+    description: '',
+    stockInLocationId: '',
+    stockOutLocation: '',
+    type: ''
   });
+
   useEffect(() => {
     const queryArray = Object.entries(filters);
     const queryStringArray = queryArray.map((array) =>
-      array[1] ? `${array.join("=")}&` : ""
+      array[1] ? `${array.join('=')}&` : ''
     );
-    const queryString = queryStringArray.join("");
+    const queryString = queryStringArray.join('');
 
     setIsLoading(true);
 
-    fetch(`http://localhost:3333/histories?${queryString}`)
-      .then((response) => response.json())
-      .then((historiesData) =>
-        setState((state) => ({ ...state, histories: historiesData }))
-      )
+    api
+      .get(`/histories?${queryString}`)
+      .then(([historiesData, historiesError]) => {
+        if (historiesData) {
+          setState((state) => ({ ...state, histories: historiesData }));
+        }
+
+        if (historiesError) {
+          console.log(historiesError);
+        }
+      })
       .finally(() => setIsLoading(false));
   }, [filters]);
 
   const handleSKUFilter = async (e) => {
-    e.preventDefault();  
+    e.preventDefault();
     const sku = e.target.sku.value.trim();
 
     const itemSku = await fetch(`http://localhost:3333/items?sku=${sku}`)
@@ -50,35 +58,36 @@ export function HistoryTable() {
   const handleActionTypeFilter = async (e) => {
     const actionType = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, " ")
+      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({
       ...filters,
-      type: actionType,
+      type: actionType
     });
   };
 
   const handleStockInLocationFilter = async (e) => {
     const stockInLocationId = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, " ")
+      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({
       ...filters,
-      stockInLocationId,
+      stockInLocationId
     });
   };
+
   const handleStockOutLocationFilter = async (e) => {
     const stockOutLocationId = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, " ")
+      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({
       ...filters,
-      stockOutLocationId,
+      stockOutLocationId
     });
   };
 
@@ -125,8 +134,7 @@ export function HistoryTable() {
               className="text-black"
               name="actionType"
               onChange={handleActionTypeFilter}
-              defaultValue=""
-            >
+              defaultValue="">
               <option value="">Filter Action type</option>
               <option value="movement">Movement</option>
               <option value="purchase">Purchase</option>
@@ -140,8 +148,7 @@ export function HistoryTable() {
               className="flex gap-1 text-black"
               name="stockInLocationId"
               defaultValue=""
-              onChange={handleStockInLocationFilter}
-            >
+              onChange={handleStockInLocationFilter}>
               <option value="">Filter stock in location</option>
 
               {locations.map((location) => (
@@ -156,8 +163,7 @@ export function HistoryTable() {
               name="stockOutLocationId"
               defaultValue=""
               className="flex gap-1 text-black"
-              onChange={handleStockOutLocationFilter}
-            >
+              onChange={handleStockOutLocationFilter}>
               <option value="">Filter stock out location</option>
 
               {locations.map((location) => (
