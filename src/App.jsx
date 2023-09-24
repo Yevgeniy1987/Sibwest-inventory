@@ -38,9 +38,9 @@ function App() {
     <main>
       <div className="container flex flex-col gap-3">
         {isLogged && (
-          <div className='flex gap-1'>
-            <p>Logged in as {user.email}</p>
-            <button onClick={logOut}>Log out</button>
+          <div className='flex gap-1 items-center justify-end'>
+            <p className="">Logged in as {user.email}</p>
+            <button className="px-8 py-2 mt-1 border border-solid border-black rounded text-black hover:bg-gray-300" onClick={logOut}>Log out</button>
           </div>
         )}
         <h1 className="text-center w-full text-4xl font-bold bg-contain text-orange-300">
