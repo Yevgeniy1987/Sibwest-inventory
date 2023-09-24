@@ -11,9 +11,14 @@ import { ItemForm } from './components/ItemForm';
 import { useGlobalState } from './context/GlobalContext';
 import { NavLink } from './components/NavLink';
 import { LoginForm } from './components/LoginForm';
+import { useAuthState } from './context/AuthContext';
 
 function App() {
   const [_, setState] = useGlobalState();
+  const [authState] = useAuthState();
+  const { logOut, isLogged, user } = authState;
+
+  console.log({ authState });
 
   useEffect(() => {
     fetch('http://localhost:3333/items')
@@ -32,6 +37,12 @@ function App() {
   return (
     <main>
       <div className="container flex flex-col gap-3">
+        {isLogged && (
+          <div className='flex gap-1'>
+            <p>Logged in as {user.email}</p>
+            <button onClick={logOut}>Log out</button>
+          </div>
+        )}
         <h1 className="text-center w-full text-4xl font-bold bg-contain text-orange-300">
           Sibwest inventory table
         </h1>
@@ -55,10 +66,10 @@ function App() {
             <LocationTable />
           </Route>
           <Route path="/action">
-            <ItemForm  />
+            <ItemForm />
           </Route>
           <Route path="/login">
-            <LoginForm/>
+            <LoginForm />
           </Route>
         </Switch>
         {/* <div className="flex flex-col items-center">

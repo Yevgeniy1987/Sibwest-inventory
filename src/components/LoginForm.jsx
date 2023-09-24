@@ -2,7 +2,8 @@ import { useAuthState } from '../context/AuthContext';
 import { api } from '../service/api';
 
 export const LoginForm = () => {
-  const [_, setState] = useAuthState();
+  const [authState] = useAuthState();
+  const { logIn } = authState;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -10,15 +11,15 @@ export const LoginForm = () => {
     const email = e.target.email.value.trim();
     const password = e.target.password.value.trim();
 
-    const [loggedUser, loginError] = await api.post('/login', { email, password });
+    const [loggedUser, loginError] = await api.post('/login', {
+      email,
+      password
+    });
 
-    if (loggedUser){
-      setState({isLogged: true, ...loggedUser})
-      
-      window.localStorage.setItem('token', loggedUser.accessToken);
-      api.defaults.headers.common['Authorization'] = `Bearer ${loggedUser.accessToken}`;
+    if (loggedUser) {
+      logIn(loggedUser)
     }
-    
+
     console.log(loggedUser, loginError);
   };
 

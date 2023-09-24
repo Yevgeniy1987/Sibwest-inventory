@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { InventoryMainTableRow } from './InventoryMainTableRow';
 import { useGlobalState } from '../context/GlobalContext';
 
+
 export function InventoryMainTable() {
 const [state] = useGlobalState();
 const items = state.items;
