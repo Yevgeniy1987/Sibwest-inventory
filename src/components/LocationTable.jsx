@@ -1,23 +1,26 @@
 import { NavLink } from "./NavLink";
 import { Switch, Route } from "wouter";
+import { useRoute } from "wouter";
+import { useState, useEffect } from "react";
 
 import { LocationTableRow } from "./LocationTableRow";
 import { useGlobalState } from "../context/GlobalContext";
 import { AddLocation } from "./AddLocation";
 
 export function LocationTable() {
+  
   const [state] = useGlobalState();
   const locations = state.locations;
 
   return (
     <>
       <nav className="mb-3 flex justify-center gap-3">
-        <NavLink href="location/addLocation">Add location</NavLink>
+        <NavLink  href="/location/addLocation">Add location </NavLink>
       </nav>
 
       <Switch>
-        <Route path="location/">
-          <AddLocation />
+        <Route path="/location/addLocation">
+          <AddLocation isOpen/>
         </Route>
       </Switch>
       <table className="w-full container">

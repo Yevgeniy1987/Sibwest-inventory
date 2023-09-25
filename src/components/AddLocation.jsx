@@ -1,12 +1,24 @@
 import { useRoute } from "wouter";
 import { useGlobalState } from "../context/GlobalContext";
 import { useState } from "react";
+import classNames from "classnames";
 
-export const AddLocation = () => {
-  const [_, setState] = useGlobalState();
+export const AddLocation = ({ isOpen }) => {
+  if (!isOpen) return null;
 
-  const route = useRoute("/location/:type");
-  console.log(route);
+  const [state, setState] = useGlobalState();
+  const locations = state.locations;
+
+  const [, params] = useRoute("/location/:type");
+ 
+
+  useEffect(() => {
+    setIsShown(params.type);
+  }, [params]);
+
+  // const [, params] = useRoute("/location/:type");
+
+  const [selectedAddForm, setSelectedAddForm] = useState(params.type);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +44,7 @@ export const AddLocation = () => {
     }).then((r) => r.json());
 
     setState((locations) => [...locations, createdLocation]);
+    setIsLoading(false);
   };
   return (
     <form onSubmit={handleSubmit} className="w-full">
