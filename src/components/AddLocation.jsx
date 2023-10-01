@@ -1,24 +1,12 @@
-import { useRoute } from "wouter";
-import { useGlobalState } from "../context/GlobalContext";
-import { useState } from "react";
-import classNames from "classnames";
+import { useState } from 'react';
+import classNames from 'classnames';
 
-export const AddLocation = ({ isOpen }) => {
-  if (!isOpen) return null;
+import { useGlobalState } from '../context/GlobalContext';
+import { api } from '../service/api';
 
+export const AddLocation = () => {
   const [state, setState] = useGlobalState();
-  const locations = state.locations;
-
-  const [, params] = useRoute("/location/:type");
- 
-
-  useEffect(() => {
-    setIsShown(params.type);
-  }, [params]);
-
-  // const [, params] = useRoute("/location/:type");
-
-  const [selectedAddForm, setSelectedAddForm] = useState(params.type);
+  const items = state.items;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,19 +19,46 @@ export const AddLocation = ({ isOpen }) => {
     const address = form.address.value.trim();
 
     const newLocation = {
-      location,
-      address,
+      name: location,
+      address
     };
+
     setIsLoading(true);
+
     const createdLocation = await fetch(`http://localhost:3333/locations`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8'
       },
-      body: JSON.stringify(newLocation),
+      body: JSON.stringify(newLocation)
     }).then((r) => r.json());
 
-    setState((locations) => [...locations, createdLocation]);
+    setState((state) => ({
+      ...state,
+      locations: [...state.locations, createdLocation]
+    }));
+
+    const createdLocationId = createdLocation.id;
+
+    const updatedItemPromises = items.map((item) =>
+      api.patch(`/items/${item.id}`, {
+        locations: [
+          ...item.locations,
+          { locationId: createdLocationId, quantity: 0 }
+        ]
+      })
+    );
+
+    const updatedItemResponses = await Promise.all(updatedItemPromises);
+
+    updatedItemResponses.forEach((response) => {
+      const [, error] = response 
+      if (error) {
+        console.log(response[1]);
+      }
+    });
+
+    form.reset();
     setIsLoading(false);
   };
   return (
@@ -76,13 +91,12 @@ export const AddLocation = ({ isOpen }) => {
 
       <button
         className={classNames(
-          "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
-          isLoading && "bg-gray-400"
+          'px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white',
+          isLoading && 'bg-gray-400'
         )}
         type="submit"
-        disabled={isLoading}
-      >
-        {isLoading ? "Loading..." : "Add"}
+        disabled={isLoading}>
+        {isLoading ? 'Loading...' : 'Add'}
       </button>
     </form>
   );

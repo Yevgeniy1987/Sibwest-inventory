@@ -1,28 +1,25 @@
-import { NavLink } from "./NavLink";
-import { Switch, Route } from "wouter";
-import { useRoute } from "wouter";
-import { useState, useEffect } from "react";
+import { NavLink } from './NavLink';
+import { Router, Switch, Route } from 'wouter';
+import { useState, useEffect } from 'react';
 
-import { LocationTableRow } from "./LocationTableRow";
-import { useGlobalState } from "../context/GlobalContext";
-import { AddLocation } from "./AddLocation";
+import { LocationTableRow } from './LocationTableRow';
+import { useGlobalState } from '../context/GlobalContext';
+import { AddLocation } from './AddLocation';
 
 export function LocationTable() {
-  
   const [state] = useGlobalState();
   const locations = state.locations;
 
+  const [isAddLocationOpen, setIsAddLocationOpen] = useState(false)
+
   return (
     <>
-      <nav className="mb-3 flex justify-center gap-3">
-        <NavLink  href="/location/addLocation">Add location </NavLink>
-      </nav>
+      <div className="mb-3 flex justify-center gap-3">
+        <button onClick={() => setIsAddLocationOpen(p => !p)}>{isAddLocationOpen ? 'Hide': 'Open'} Add location</button>
+      </div>
 
-      <Switch>
-        <Route path="/location/addLocation">
-          <AddLocation isOpen/>
-        </Route>
-      </Switch>
+      {isAddLocationOpen && <AddLocation />}
+
       <table className="w-full container">
         <thead className="border text-xl font-bold capitalize bg-slate-400">
           <tr>
