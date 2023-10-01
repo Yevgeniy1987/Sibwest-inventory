@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import classNames from 'classnames';
+import { useState, FormEvent } from "react";
+import classNames from "classnames";
 
-import { useGlobalState } from '../context/GlobalContext';
-import { api } from '../service/api';
+import { useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 export const AddLocation = () => {
   const [state, setState] = useGlobalState();
@@ -10,32 +10,35 @@ export const AddLocation = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const form = e.target;
+    const form = e.target as typeof e.target & {
+      location: HTMLInputElement;
+      address: HTMLInputElement;
+    };
 
     const location = form.location.value.trim();
     const address = form.address.value.trim();
 
     const newLocation = {
       name: location,
-      address
+      address,
     };
 
     setIsLoading(true);
 
     const createdLocation = await fetch(`http://localhost:3333/locations`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(newLocation)
+      body: JSON.stringify(newLocation),
     }).then((r) => r.json());
 
     setState((state) => ({
       ...state,
-      locations: [...state.locations, createdLocation]
+      locations: [...state.locations, createdLocation],
     }));
 
     const createdLocationId = createdLocation.id;
@@ -44,15 +47,15 @@ export const AddLocation = () => {
       api.patch(`/items/${item.id}`, {
         locations: [
           ...item.locations,
-          { locationId: createdLocationId, quantity: 0 }
-        ]
+          { locationId: createdLocationId, quantity: 0 },
+        ],
       })
     );
 
     const updatedItemResponses = await Promise.all(updatedItemPromises);
 
     updatedItemResponses.forEach((response) => {
-      const [, error] = response 
+      const [, error] = response;
       if (error) {
         console.log(response[1]);
       }
@@ -91,12 +94,13 @@ export const AddLocation = () => {
 
       <button
         className={classNames(
-          'px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white',
-          isLoading && 'bg-gray-400'
+          "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          isLoading && "bg-gray-400"
         )}
         type="submit"
-        disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Add'}
+        disabled={isLoading}
+      >
+        {isLoading ? "Loading..." : "Add"}
       </button>
     </form>
   );
