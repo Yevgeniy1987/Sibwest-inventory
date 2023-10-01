@@ -1,24 +1,30 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useGlobalState } from "../context/GlobalContext";
 
 export const ItemFormAdd = () => {
   const [state, setState] = useGlobalState();
   const locations = state.locations;
-  
+
   const [isLoading, setIsLoading] = useState(false);
-  
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const form = e.target;
+    const form = e.target as typeof e.target & {
+      sku: HTMLInputElement;
+      description: HTMLInputElement;
+      brand: HTMLInputElement;
+      type: HTMLInputElement;
+      quantity: HTMLInputElement;
+      date: HTMLInputElement;
+      stockInLocationId: ChangeEvent<HTMLSelectElement>
+    };
 
     const sku = form.sku.value.trim();
     const description = form.description.value.trim();
     const brand = form.brand.value.trim();
     const type = form.type.value.trim();
-    const selectedStockInLocationId = Number(form.stockInLocationId.value);
+    const selectedStockInLocationId = Number(form.stockInLocationId);
     const quantity = Number(form.quantity.value);
     const itemLocations = locations.map((location) => ({
       locationId: location.id,

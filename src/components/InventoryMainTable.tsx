@@ -1,7 +1,7 @@
-import { InventoryMainTableRow } from './InventoryMainTableRow';
-import { useGlobalState } from '../context/GlobalContext';
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import { api } from '../service/api';
+import { InventoryMainTableRow } from "./InventoryMainTableRow";
+import { useGlobalState } from "../context/GlobalContext";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { api } from "../service/api";
 
 export function InventoryMainTable() {
   const [state, setState] = useGlobalState();
@@ -11,18 +11,18 @@ export function InventoryMainTable() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
-    sku: '',
-    description: '',
-    type: '',
-    brand: ''
+    sku: "",
+    description: "",
+    type: "",
+    brand: "",
   });
 
   useEffect(() => {
     const queryArray = Object.entries(filters);
     const queryStringArray = queryArray.map((array) =>
-      array[1] ? `${array.join('=')}&` : ''
+      array[1] ? `${array.join("=")}&` : ""
     );
-    const queryString = queryStringArray.join('');
+    const queryString = queryStringArray.join("");
 
     setIsLoading(true);
 
@@ -52,13 +52,15 @@ export function InventoryMainTable() {
     setFilters({ ...filters, sku });
   };
 
-  const handleBrandFilter = async (e) => {
+  const handleBrandFilter = async (e: FormEvent) => {
     e.preventDefault();
-    const brand = e.target.brand.value.trim();
+    const form = e.target as typeof e.target & { brand: HTMLInputElement };
+
+    const brand = form.brand.value.trim();
 
     setFilters({
       ...filters,
-      brand
+      brand,
     });
   };
 
@@ -67,21 +69,22 @@ export function InventoryMainTable() {
 
     setFilters({
       ...filters,
-      type
+      type,
     });
   };
 
-  const handleDescriptionFilter = async (e) => {
+  const handleDescriptionFilter = async (e: FormEvent) => {
     e.preventDefault();
 
-    const description = e.target.description.value
+    const form = e.target as typeof e.target & { description: HTMLInputElement };
+
+    const description = form.description.value
       .trim()
-      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({
       ...filters,
-      description
+      description,
     });
   };
 
@@ -98,7 +101,8 @@ export function InventoryMainTable() {
           {locations.map((location) => (
             <th
               className="border border-solid  border-black p-1"
-              key={location.id}>
+              key={location.id}
+            >
               {location.name}
             </th>
           ))}
@@ -144,7 +148,8 @@ export function InventoryMainTable() {
               className="flex gap-1 text-black"
               name="stockInLocationId"
               defaultValue=""
-              onChange={handleTypeFilter}>
+              onChange={handleTypeFilter}
+            >
               <option value="">Filter type</option>
 
               {items.map((item) => (
@@ -171,16 +176,12 @@ export function InventoryMainTable() {
   );
 }
 
-
-
 // function foo<T>(a: T):T {
 //   return a
 // }
 
 // const res1 = foo(1)
 // const res2 = foo<number>(res1)
-
-
 
 // type Event1<T = Element> = {
 //   preventDefault: () => void,

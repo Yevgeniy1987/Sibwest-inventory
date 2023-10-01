@@ -1,6 +1,4 @@
-import { NavLink } from './NavLink';
-import { Router, Switch, Route } from 'wouter';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { LocationTableRow } from './LocationTableRow';
 import { useGlobalState } from '../context/GlobalContext';
