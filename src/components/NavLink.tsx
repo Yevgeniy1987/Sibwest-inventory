@@ -6,7 +6,7 @@ type ProviderProps ={
  children: ReactNode 
 }
 
-export const NavLink = ({ children }: ProviderProps, className, ...props ) => {
+export const NavLink = ({ children}: ProviderProps, className:string, ...props ) => {
   const [isActive] = useRoute(props.href);
 
   return (

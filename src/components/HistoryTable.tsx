@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { HistoryTableRow } from './HistoryTableRow';
 import { useGlobalState } from '../context/GlobalContext';
 import { api } from '../service/api';
@@ -12,7 +12,7 @@ export function HistoryTable() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
-    itemId: '',
+    itemId:  '',
     description: '',
     stockInLocationId: '',
     stockOutLocation: '',
@@ -42,9 +42,12 @@ export function HistoryTable() {
       .finally(() => setIsLoading(false));
   }, [filters]);
 
-  const handleSKUFilter = async (e) => {
+  const handleSKUFilter = async (e: FormEvent) => {
     e.preventDefault();
-    const sku = e.target.sku.value.trim();
+    const form = e.target as typeof e.target & {
+      sku: HTMLInputElement;
+   }; 
+    const sku = form.sku.value.trim();
 
     const itemSku = await fetch(`http://localhost:3333/items?sku=${sku}`)
       .then((response) => response.json())
@@ -54,11 +57,10 @@ export function HistoryTable() {
 
     setFilters({ ...filters, itemId: item?.id || sku });
   };
-
-  const handleActionTypeFilter = async (e) => {
+  
+  const handleActionTypeFilter = async (e: ChangeEvent<HTMLSelectElement>) => {
     const actionType = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({
@@ -67,10 +69,9 @@ export function HistoryTable() {
     });
   };
 
-  const handleStockInLocationFilter = async (e) => {
+  const handleStockInLocationFilter = async (e:ChangeEvent<HTMLSelectElement>) => {
     const stockInLocationId = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({
@@ -79,10 +80,9 @@ export function HistoryTable() {
     });
   };
 
-  const handleStockOutLocationFilter = async (e) => {
+  const handleStockOutLocationFilter = async (e:ChangeEvent<HTMLSelectElement>) => {
     const stockOutLocationId = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, ' ')
       .toLowerCase();
 
     setFilters({

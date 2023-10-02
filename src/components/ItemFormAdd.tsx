@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useState, FormEvent, ChangeEvent } from "react";
-import { useGlobalState } from "../context/GlobalContext";
+import { ItemType, useGlobalState } from "../context/GlobalContext";
 
 export const ItemFormAdd = () => {
   const [state, setState] = useGlobalState();
@@ -18,6 +18,7 @@ export const ItemFormAdd = () => {
       quantity: HTMLInputElement;
       date: HTMLInputElement;
       stockInLocationId: ChangeEvent<HTMLSelectElement>
+      reset: () => void,
     };
 
     const sku = form.sku.value.trim();
@@ -53,7 +54,7 @@ export const ItemFormAdd = () => {
       body: JSON.stringify(newItem),
     }).then((r) => r.json());
 
-    setItems((items) => [...items, createdItem]);
+    setItems((items:ItemType) => [...items, createdItem]);
 
     const newHistory = {
       itemId: createdItem.id,
@@ -192,3 +193,7 @@ export const ItemFormAdd = () => {
     </form>
   );
 };
+function setItems(_arg0: (items: ItemType) => any[]) {
+  throw new Error("Function not implemented.");
+}
+

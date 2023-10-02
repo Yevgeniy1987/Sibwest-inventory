@@ -16,6 +16,7 @@ export const AddLocation = () => {
     const form = e.target as typeof e.target & {
       location: HTMLInputElement;
       address: HTMLInputElement;
+      reset: () => void
     };
 
     const location = form.location.value.trim();
@@ -54,7 +55,7 @@ export const AddLocation = () => {
 
     const updatedItemResponses = await Promise.all(updatedItemPromises);
 
-    updatedItemResponses.forEach((response) => {
+    updatedItemResponses.forEach((response: any[]) => {
       const [, error] = response;
       if (error) {
         console.log(response[1]);

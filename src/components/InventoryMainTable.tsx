@@ -76,11 +76,11 @@ export function InventoryMainTable() {
   const handleDescriptionFilter = async (e: FormEvent) => {
     e.preventDefault();
 
-    const form = e.target as typeof e.target & { description: HTMLInputElement };
+    const form = e.target as typeof e.target & {
+      description: HTMLInputElement;
+    };
 
-    const description = form.description.value
-      .trim()
-      .toLowerCase();
+    const description = form.description.value.trim().toLowerCase();
 
     setFilters({
       ...filters,

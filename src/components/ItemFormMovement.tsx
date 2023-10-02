@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
 
 export const ItemFormMovement = () => {
@@ -12,10 +12,17 @@ const locations = state.locations;
   const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
     useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const form = e.target;
+    const form = e.target as typeof e.target & {
+      item: HTMLInputElement;
+      stockOutLocationId: ChangeEvent<HTMLSelectElement>;
+      stockInLocationId: ChangeEvent<HTMLSelectElement>;
+      quantity: HTMLInputElement;
+      date: HTMLInputElement;
+      reset: () => void,
+    };
 
     const [itemSKU] = form.item.value.split(" ");
 

@@ -1,4 +1,4 @@
-export function LocationTableRow({ location }) {
+export function LocationTableRow({ location }:{location:LocationType}) {
   const { name, address } = location || {};
   return (
     <tr  className= "hover:bg-gray-300 font-medium">

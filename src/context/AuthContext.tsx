@@ -1,8 +1,8 @@
-import { useContext, createContext, useState, useEffect } from 'react';
+import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from 'wouter';
 import { api } from '../service/api';
 
-export const AuthContext = createContext();
+export const AuthContext = createContext('');
 
 const accessToken = window.localStorage.getItem('token');
 
@@ -11,6 +11,10 @@ if (accessToken) {
 }
 
 const userId = window.localStorage.getItem('userId');
+
+type ProviderProps = {
+  children: ReactNode;
+};
 
 const initialState = {
   isLogged: !!accessToken,
@@ -21,14 +25,14 @@ const initialState = {
   logOut: () => {}
 };
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: ProviderProps) => {
   const [location, setLocation] = useLocation();
   const [state, setState] = useState(initialState);
 
   const [initialization, setInitialization] = useState(true);
 
   useEffect(() => {
-    const logIn = (loggedUser) => {
+    const logIn = (loggedUser: { user: any; accessToken: any; isLogged?: boolean; userId?: string | null; logIn?: () => void; logOut?: () => void; }) => {
       setState((state) => ({ ...state, isLogged: true, userId: loggedUser.user.id, ...loggedUser }));
       window.localStorage.setItem('token', loggedUser.accessToken);
       window.localStorage.setItem('userId', loggedUser.user.id);
@@ -51,8 +55,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     api.interceptors.response.use(
-      (resp) => [resp.data, null],
-      (error) => {
+      (resp: { data: any; }) => [resp.data, null],
+      (error: { response: { status: number; }; }) => {
         if (error.response.status === 401) {
           logOut();
         }

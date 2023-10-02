@@ -29,7 +29,7 @@ type LocationType = {
   address: string;
 };
 
-type HistoryType = {
+export type HistoryType = {
   itemId: number;
   createdAt: string;
   date: string;
