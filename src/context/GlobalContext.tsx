@@ -23,7 +23,7 @@ export type ItemType = {
   locations: ItemLocationType[];
 };
 
-type LocationType = {
+export type LocationType = {
   id: number;
   name: string;
   address: string;

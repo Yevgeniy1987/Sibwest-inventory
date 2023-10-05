@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import { Link, useRoute } from 'wouter';
-import { ReactNode } from 'react';
+import { ReactNode, ComponentProps } from 'react';
 
-type ProviderProps ={
- children: ReactNode 
-}
+type NavLinkProps = {
+  children: ReactNode;
+  className?: string;
+} & ComponentProps<typeof Link>;
 
-export const NavLink = ({ children}: ProviderProps, className:string, ...props ) => {
+export const NavLink = ({ children, className, ...props }: NavLinkProps) => {
   const [isActive] = useRoute(props.href);
 
   return (
@@ -21,3 +22,4 @@ export const NavLink = ({ children}: ProviderProps, className:string, ...props )
     </Link>
   );
 };
+

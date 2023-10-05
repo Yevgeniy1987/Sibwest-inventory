@@ -1,7 +1,7 @@
 import {HistoryType, useGlobalState } from '../context/GlobalContext';
  
 
-export function HistoryTableRow({ history }:{history: HistoryType}) {
+export function HistoryTableRow({ history }: {history: HistoryType}) {
   const [state] = useGlobalState();
 
   const items = state.items;

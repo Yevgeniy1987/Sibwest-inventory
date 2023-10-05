@@ -15,7 +15,7 @@ export function HistoryTable() {
     itemId:  '',
     description: '',
     stockInLocationId: '',
-    stockOutLocation: '',
+    stockOutLocationId: '',
     type: ''
   });
 
@@ -83,6 +83,7 @@ export function HistoryTable() {
   const handleStockOutLocationFilter = async (e:ChangeEvent<HTMLSelectElement>) => {
     const stockOutLocationId = e.target.value
       .trim()
+      .replaceAll(/\s{2,}/g, '')
       .toLowerCase();
 
     setFilters({

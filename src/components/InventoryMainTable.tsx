@@ -1,7 +1,8 @@
 import { InventoryMainTableRow } from "./InventoryMainTableRow";
-import { useGlobalState } from "../context/GlobalContext";
+import { useGlobalState, ItemType } from "../context/GlobalContext";
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { api } from "../service/api";
+
 
 export function InventoryMainTable() {
   const [state, setState] = useGlobalState();
@@ -27,9 +28,7 @@ export function InventoryMainTable() {
     setIsLoading(true);
 
     api
-      .get(`/items?${queryString}`)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      .get<ItemType[]>(`/items?${queryString}`)
       .then(([itemsData, itemsError]) => {
         if (itemsData) {
           setState((state) => ({ ...state, items: itemsData }));

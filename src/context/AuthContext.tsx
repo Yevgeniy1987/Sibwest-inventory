@@ -1,6 +1,7 @@
 import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from 'wouter';
-import { api } from '../service/api';
+import { api } from '../service/api'
+import { AxiosError, AxiosResponse } from 'axios';
 
 export const AuthContext = createContext('');
 
@@ -15,6 +16,12 @@ const userId = window.localStorage.getItem('userId');
 type ProviderProps = {
   children: ReactNode;
 };
+
+type User = {
+  id: number,
+  email: string,
+  password: string,
+}
 
 const initialState = {
   isLogged: !!accessToken,
@@ -54,19 +61,24 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       api.defaults.headers.common['Authorization'] = undefined;
     };
 
-    api.interceptors.response.use(
-      (resp: { data: any; }) => [resp.data, null],
-      (error: { response: { status: number; }; }) => {
-        if (error.response.status === 401) {
-          logOut();
-        }
-
-        return [null, error];
+    const onResponse = (resp: AxiosResponse): [AxiosResponse['data'], null] => [resp.data, null]
+    const onError = (error: AxiosError): [null, AxiosError] => {
+      if (!error.response || error.response.status === 401) {
+        logOut();
       }
+
+      return [null, error];
+    }
+
+    api.interceptors.response.use(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      onResponse,
+      onError
     );
 
     if(state.userId) {
-      api.get(`/users/${userId}`).then(([user]) => {
+      api.get<User>(`/users/${userId}`).then(([user]) => {
         if (user) {
           setState((state) => ({ ...state, user }));
         }
@@ -99,3 +111,36 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 export const useAuthState = () => {
   return useContext(AuthContext);
 };
+
+
+// type User = { 
+//   name: string;
+//   age: number;
+// }
+
+
+// const o: User = {
+//   name: 'John',
+//   age: 30,
+// }
+
+
+// let age: User['age'];
+
+// age = o.age
+
+
+
+// function foo<T>(a: T):T {
+//   return a
+// }
+
+
+// const b = foo<string>(1)
+
+
+// function bar(a:string): string{
+//   return a
+// }
+
+// let c = bar(1)
