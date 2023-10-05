@@ -3,9 +3,9 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
 
 export const ItemFormMovement = () => {
-const [state, setState] = useGlobalState();
-const items = state.items;
-const locations = state.locations;
+  const [state, setState] = useGlobalState();
+  const items = state.items;
+  const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,14 +21,25 @@ const locations = state.locations;
       stockInLocationId: ChangeEvent<HTMLSelectElement>;
       quantity: HTMLInputElement;
       date: HTMLInputElement;
-      reset: () => void,
+      reset: () => void;
     };
 
+
+    
     const [itemSKU] = form.item.value.split(" ");
 
     const item = items.find((item) => item.sku === itemSKU);
+
+    if (!item) {
+      //Guard clause
+      console.log(`Item not found with SKU ${itemSKU}`);
+      alert("Item not found");
+      return;
+    }
+
     const itemId = item.id;
-    const selectedStockInLocationId = Number(form.stockInLocationId.value);
+    const selectedStockInLocationId = Number(form.stockInLocationId);
+    const selectedStockOutLocationId = Number(form.stockOutLocationId);
     const quantity = Number(form.quantity.value);
     const date = form.date.value;
     const formattedDate = date
@@ -62,11 +73,11 @@ const locations = state.locations;
     })
       .then((response) => response.json())
       .then((updatedItem) =>
-        setState((items) => {
-          const itemIdx = items.findIndex((item) => item.id === updatedItem.id);
+        setState((state) => {
+          const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
           items[itemIdx] = updatedItem;
 
-          return [...items];
+          return {...state, items: [...items]};
         })
       );
 
