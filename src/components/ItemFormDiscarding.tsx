@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 useState;
 export const ItemFormDiscarding = () => {
@@ -55,21 +56,28 @@ export const ItemFormDiscarding = () => {
 
     setIsLoading(true);
 
-    const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(item),
-    }).then((r) => r.json());
+    const [updatedItem] = await api.patch(`/items/${itemId}`,item).then(([itemsData, itemsError]) => {
+      if (itemsData) {
+        setState((state) => {
+          const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
+          items[itemIdx] = updatedItem;
+    
+          return {...state, items: [...items]};
+        });
+      }
+      if (itemsError) {
+        console.log(itemsError);
+      }
+    }); 
+         // const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json; charset=utf-8",
+    //   },
+    //   body: JSON.stringify(item),
+    // }).then((r) => r.json());
 
-    setState((state) => {
-      const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
-      items[itemIdx] = updatedItem;
-
-      return {...state, items: [...items]};
-    });
-
+    
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),

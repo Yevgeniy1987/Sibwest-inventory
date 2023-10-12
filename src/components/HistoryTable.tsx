@@ -49,9 +49,11 @@ export function HistoryTable() {
    }; 
     const sku = form.sku.value.trim();
 
-    const itemSku = await fetch(`http://localhost:3333/items?sku=${sku}`)
-      .then((response) => response.json())
-      .finally(() => setIsLoading(false));
+    const itemSku = await api.get(`/items?sku=${sku}`)
+
+    // const itemSku = await fetch(`http://localhost:3333/items?sku=${sku}`)
+    //   .then((response) => response.json())
+    //   .finally(() => setIsLoading(false));
 
     const item = itemSku[0];
 

@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import classNames from "classnames";
 
 import { useGlobalState } from "../context/GlobalContext";
+import { LocationType } from "../context/GlobalContext";
 import { api } from "../service/api";
 
 export const AddLocation = () => {
@@ -16,7 +17,7 @@ export const AddLocation = () => {
     const form = e.target as typeof e.target & {
       location: HTMLInputElement;
       address: HTMLInputElement;
-      reset: () => void
+      reset: () => void;
     };
 
     const location = form.location.value.trim();
@@ -29,18 +30,18 @@ export const AddLocation = () => {
 
     setIsLoading(true);
 
-    const createdLocation = await fetch(`http://localhost:3333/locations`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newLocation),
-    }).then((r) => r.json());
-
-    setState((state) => ({
-      ...state,
-      locations: [...state.locations, createdLocation],
-    }));
+    const [createdLocation] = await api.post(`/locations`, newLocation)
+      .then(([locationsData, locationsError]) => {
+        if (locationsData) {
+          setState((state) => ({
+            ...state,
+            locations: [...state.locations, createdLocation],
+          }));
+        }
+        if (locationsError) {
+          console.log(locationsError);
+        }
+      });
 
     const createdLocationId = createdLocation.id;
 

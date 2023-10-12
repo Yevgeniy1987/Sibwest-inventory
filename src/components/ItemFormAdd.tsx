@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useState, FormEvent, ChangeEvent } from "react";
-import {  useGlobalState } from "../context/GlobalContext";
+import {  HistoryType, useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 export const ItemFormAdd = () => {
   const [state, setState] = useGlobalState();
@@ -67,19 +68,31 @@ export const ItemFormAdd = () => {
       quantity,
       type: "purchase",
     };
+    const [createdHistory] = await api.post<HistoryType[]>(`/histories`, newHistory).then(([historiesData, historiesError]) => {
+      if (historiesData) {
+        setState((state) => ({
+            ...state,
+            histories: [...state.histories, createdHistory],
+          }));
 
-    const createdHistory = await fetch(`http://localhost:3333/histories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newHistory),
-    }).then((response) => response.json());
+        }
+        if (historiesError) {
+          console.log(historiesError);
+        }
+      });
+    
+    // const createdHistory = await fetch(`http://localhost:3333/histories`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json; charset=utf-8",
+    //   },
+    //   body: JSON.stringify(newHistory),
+    // }).then((response) => response.json());
 
-    setState((state) => ({
-      ...state,
-      histories: [...state.histories, createdHistory],
-    }));
+    // setState((state) => ({
+    //   ...state,
+    //   histories: [...state.histories, createdHistory],
+    // }));
 
     form.reset();
 
