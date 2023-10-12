@@ -10,7 +10,7 @@ export const ItemFormMovement = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
-    useState("");
+    useState<undefined | number>();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -39,7 +39,6 @@ export const ItemFormMovement = () => {
 
     const itemId = item.id;
     const selectedStockInLocationId = Number(form.stockInLocationId);
-    const selectedStockOutLocationId = Number(form.stockOutLocationId);
     const quantity = Number(form.quantity.value);
     const date = form.date.value;
     const formattedDate = date
@@ -223,3 +222,6 @@ export const ItemFormMovement = () => {
     </form>
   );
 };
+
+
+

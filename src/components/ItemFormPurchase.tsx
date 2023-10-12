@@ -81,7 +81,7 @@ export const ItemFormPurchase = () => {
 
     setState((state) => ({
       ...state,
-      histories: [...state.history, createdHistory],
+      histories: [...state.histories, createdHistory],
     }));
 
     form.reset();

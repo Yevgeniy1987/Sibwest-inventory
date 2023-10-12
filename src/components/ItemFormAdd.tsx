@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useState, FormEvent, ChangeEvent } from "react";
-import { ItemType, useGlobalState } from "../context/GlobalContext";
+import {  useGlobalState } from "../context/GlobalContext";
 
 export const ItemFormAdd = () => {
   const [state, setState] = useGlobalState();
@@ -45,7 +45,9 @@ export const ItemFormAdd = () => {
       locations: itemLocations,
       lost: 0,
     };
+
     setIsLoading(true);
+
     const createdItem = await fetch(`http://localhost:3333/items`, {
       method: "POST",
       headers: {
@@ -54,7 +56,7 @@ export const ItemFormAdd = () => {
       body: JSON.stringify(newItem),
     }).then((r) => r.json());
 
-    setItems((items:ItemType) => [...items, createdItem]);
+    setState((state) => ({...state, items: [...state.items, createdItem]}));
 
     const newHistory = {
       itemId: createdItem.id,
@@ -193,7 +195,6 @@ export const ItemFormAdd = () => {
     </form>
   );
 };
-function setItems(_arg0: (items: ItemType) => any[]) {
-  throw new Error("Function not implemented.");
-}
+
+
 
