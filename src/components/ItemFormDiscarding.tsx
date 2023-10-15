@@ -76,14 +76,6 @@ export const ItemFormDiscarding = () => {
       return { ...state, items: [...items] };
     });
 
-    // const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json; charset=utf-8",
-    //   },
-    //   body: JSON.stringify(item),
-    // }).then((r) => r.json());
-
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),

@@ -1,12 +1,12 @@
 import classNames from "classnames";
 import { FormEvent, useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 export const ItemFormSale = () => {
   const [state, setState] = useGlobalState();
   const items = state.items;
   const locations = state.locations;
-
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,10 +25,11 @@ export const ItemFormSale = () => {
 
     const item = items.find((item) => item.sku === itemSKU);
 
-    if (!item) { //Guard clause
+    if (!item) {
+      //Guard clause
       console.log(`Item not found with SKU ${itemSKU}`);
-      alert('Item not found')
-      return
+      alert("Item not found");
+      return;
     }
 
     const itemId = item.id;
@@ -56,19 +57,22 @@ export const ItemFormSale = () => {
 
     setIsLoading(true);
 
-    const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(item),
-    }).then((r) => r.json());
+    const [updatedItem, updatedItemError] = await api.patch(
+      `/items/${itemId}`,
+      item
+    );
+
+    if (updatedItemError) {
+      return console.log(updatedItemError);
+    }
 
     setState((state) => {
-      const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
+      const itemIdx = state.items.findIndex(
+        (item) => item.id === updatedItem.id
+      );
       items[itemIdx] = updatedItem;
 
-      return {...state, items: [...items]};
+      return { ...state, items: [...items] };
     });
 
     const newHistory = {
@@ -81,17 +85,17 @@ export const ItemFormSale = () => {
       type: "sale",
     };
 
-    const createdHistory = await fetch(`http://localhost:3333/histories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newHistory),
-    }).then((r) => r.json());
+    const [createdHistory, createdHistoryError] = await api.post(
+      `/histories`,
+      newHistory
+    );
+    if (createdHistoryError) {
+      return console.log(createdHistoryError);
+    }
 
     setState((state) => ({
       ...state,
-      histories: [...state.histories, createdHistory]
+      histories: [...state.histories, createdHistory],
     }));
 
     form.reset();

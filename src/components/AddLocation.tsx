@@ -2,7 +2,6 @@ import { useState, FormEvent } from "react";
 import classNames from "classnames";
 
 import { useGlobalState } from "../context/GlobalContext";
-import { LocationType } from "../context/GlobalContext";
 import { api } from "../service/api";
 
 export const AddLocation = () => {

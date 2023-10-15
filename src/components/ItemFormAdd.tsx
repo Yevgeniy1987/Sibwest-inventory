@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import { useState, FormEvent, ChangeEvent } from 'react';
-import { HistoryType, useGlobalState } from '../context/GlobalContext';
-import { api } from '../service/api';
+import classNames from "classnames";
+import { useState, FormEvent, ChangeEvent } from "react";
+import { HistoryType, useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 export const ItemFormAdd = () => {
   const [state, setState] = useGlobalState();
@@ -31,7 +31,7 @@ export const ItemFormAdd = () => {
     const quantity = Number(form.quantity.value);
     const itemLocations = locations.map((location) => ({
       locationId: location.id,
-      quantity: selectedStockInLocationId === location.id ? quantity : 0
+      quantity: selectedStockInLocationId === location.id ? quantity : 0,
     }));
     const date = form.date.value;
     const formattedDate = date
@@ -46,17 +46,17 @@ export const ItemFormAdd = () => {
       date,
       total: quantity,
       locations: itemLocations,
-      lost: 0
+      lost: 0,
     };
 
     setIsLoading(true);
 
     const createdItem = await fetch(`http://localhost:3333/items`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(newItem)
+      body: JSON.stringify(newItem),
     }).then((r) => r.json());
 
     setState((state) => ({ ...state, items: [...state.items, createdItem] }));
@@ -68,7 +68,7 @@ export const ItemFormAdd = () => {
       stockInLocationId: selectedStockInLocationId,
       stockOutLocationId: null,
       quantity,
-      type: 'purchase'
+      type: "purchase",
     };
 
     const [createdHistory, createdHistoryError] = await api.post<HistoryType>(
@@ -79,22 +79,9 @@ export const ItemFormAdd = () => {
     if (!createdHistoryError) {
       setState((state) => ({
         ...state,
-        histories: [...state.histories, createdHistory]
+        histories: [...state.histories, createdHistory],
       }));
     }
-
-    // const createdHistory = await fetch(`http://localhost:3333/histories`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json; charset=utf-8",
-    //   },
-    //   body: JSON.stringify(newHistory),
-    // }).then((response) => response.json());
-
-    // setState((state) => ({
-    //   ...state,
-    //   histories: [...state.histories, createdHistory],
-    // }));
 
     form.reset();
 
@@ -157,12 +144,13 @@ export const ItemFormAdd = () => {
           id="date"
           type="date"
           name="date"
-          max={new Date().toISOString().split('T')[0]}
+          max={new Date().toISOString().split("T")[0]}
           className="border p-1 border-solid rounded border-black w-full"
         />
         <label
           htmlFor="stockInLocation"
-          className="text-start font-bold w-full">
+          className="text-start font-bold w-full"
+        >
           Stock in location
         </label>
         <select
@@ -170,7 +158,8 @@ export const ItemFormAdd = () => {
           id="stockInLocation"
           name="stockInLocationId"
           defaultValue=""
-          className="border p-1 border-solid rounded border-black w-full">
+          className="border p-1 border-solid rounded border-black w-full"
+        >
           <option value="" disabled>
             Select stock in location
           </option>
@@ -197,12 +186,13 @@ export const ItemFormAdd = () => {
 
       <button
         className={classNames(
-          'px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white',
-          isLoading && 'bg-gray-400'
+          "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white",
+          isLoading && "bg-gray-400"
         )}
         type="submit"
-        disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Add'}
+        disabled={isLoading}
+      >
+        {isLoading ? "Loading..." : "Add"}
       </button>
     </form>
   );
