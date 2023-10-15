@@ -49,15 +49,14 @@ export function HistoryTable() {
    }; 
     const sku = form.sku.value.trim();
 
-    const itemSku = await api.get(`/items?sku=${sku}`)
+    const [items, itemsError] = await api.get(`/items?sku=${sku}`)
 
-    // const itemSku = await fetch(`http://localhost:3333/items?sku=${sku}`)
-    //   .then((response) => response.json())
-    //   .finally(() => setIsLoading(false));
+    if (!itemsError) {
+      const item = items[0];
 
-    const item = itemSku[0];
+      setFilters({ ...filters, itemId: item?.id || sku });
+    }
 
-    setFilters({ ...filters, itemId: item?.id || sku });
   };
   
   const handleActionTypeFilter = async (e: ChangeEvent<HTMLSelectElement>) => {

@@ -74,9 +74,10 @@ export const ItemFormMovement = () => {
       .then((updatedItem) =>
         setState((state) => {
           const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
-          items[itemIdx] = updatedItem;
+          const newState = {...state}
+          newState.items[itemIdx] = updatedItem;
 
-          return {...state, items: [...items]};
+          return {...newState, items: [...newState.items]};
         })
       );
 
