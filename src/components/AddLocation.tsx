@@ -30,18 +30,17 @@ export const AddLocation = () => {
 
     setIsLoading(true);
 
-    const [createdLocation] = await api.post(`/locations`, newLocation)
-      .then(([locationsData, locationsError]) => {
-        if (locationsData) {
-          setState((state) => ({
-            ...state,
-            locations: [...state.locations, createdLocation],
-          }));
-        }
-        if (locationsError) {
-          console.log(locationsError);
-        }
-      });
+    const [createdLocation, createdLocationError] = await api.post(
+      `/locations`,
+      newLocation
+    );
+
+    if (!createdLocationError) {
+      setState((state) => ({
+        ...state,
+        locations: [...state.locations, createdLocation],
+      }));
+    }
 
     const createdLocationId = createdLocation.id;
 

@@ -19,17 +19,18 @@ export const ItemFormDiscarding = () => {
       stockOutLocationId: ChangeEvent<HTMLSelectElement>;
       quantity: HTMLInputElement;
       date: HTMLInputElement;
-      reset: () => void,
+      reset: () => void;
     };
 
     const [itemSKU] = form.item.value.split(" ");
 
     const item = items.find((item) => item.sku === itemSKU);
 
-    if (!item) { //Guard clause
+    if (!item) {
+      //Guard clause
       console.log(`Item not found with SKU ${itemSKU}`);
-      alert('Item not found')
-      return
+      alert("Item not found");
+      return;
     }
 
     const itemId = item.id;
@@ -56,18 +57,23 @@ export const ItemFormDiscarding = () => {
 
     setIsLoading(true);
 
-    const [updatedItem, updatedItemError] = await api.patch<ItemType>(`/items/${itemId}`, item)
+    const [updatedItem, updatedItemError] = await api.patch<ItemType>(
+      `/items/${itemId}`,
+      item
+    );
 
     if (updatedItemError) {
       //handle error
-      return
+      return;
     }
 
     setState((state) => {
-      const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
+      const itemIdx = state.items.findIndex(
+        (item) => item.id === updatedItem.id
+      );
       items[itemIdx] = updatedItem;
 
-      return {...state, items: [...items]};
+      return { ...state, items: [...items] };
     });
 
     // const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
@@ -78,7 +84,6 @@ export const ItemFormDiscarding = () => {
     //   body: JSON.stringify(item),
     // }).then((r) => r.json());
 
-    
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),

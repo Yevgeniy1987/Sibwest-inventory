@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { FormEvent, ChangeEvent, useState } from "react";
 import { useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 export const ItemFormPurchase = () => {
   const [state, setState] = useGlobalState();
@@ -9,7 +10,7 @@ export const ItemFormPurchase = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e:FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const form = e.target as typeof e.target & {
@@ -46,19 +47,20 @@ export const ItemFormPurchase = () => {
 
     setIsLoading(true);
 
-    const updatedItem = await fetch(`http://localhost:3333/items/${itemId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(item),
-    }).then((r) => r.json());
-
+    const [updatedItem, updatedItemError] = await api.patch(
+      `/items/${itemId}`,
+      item
+    );
+    if (updatedItemError) {
+      return console.log(updatedItemError);
+    }
     setState((state) => {
-      const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
+      const itemIdx = state.items.findIndex(
+        (item) => item.id === updatedItem.id
+      );
       items[itemIdx] = updatedItem;
 
-      return {...state, items: [...items]};
+      return { ...state, items: [...items] };
     });
 
     const newHistory = {
@@ -71,14 +73,13 @@ export const ItemFormPurchase = () => {
       type: "purchase",
     };
 
-    const createdHistory = await fetch(`http://localhost:3333/histories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newHistory),
-    }).then((r) => r.json());
-
+    const [createdHistory, createdHistoryError] = await api.post(
+      `/histories`,
+      newHistory
+    );
+    if (createdHistoryError) {
+      return console.log(createdHistoryError);
+    }
     setState((state) => ({
       ...state,
       histories: [...state.histories, createdHistory],
