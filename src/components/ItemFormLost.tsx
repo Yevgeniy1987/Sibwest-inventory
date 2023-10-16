@@ -63,7 +63,8 @@ export const ItemFormLost = () => {
     );
 
     if (updatedItemError) {
-      return console.log(updatedItemError);
+      console.log("Watch out! ERROR", updatedItemError);
+      return;
     }
 
     setState((state) => {

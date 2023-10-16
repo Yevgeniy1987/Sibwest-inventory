@@ -1,14 +1,14 @@
 import classNames from "classnames";
-import { useAuthState } from "../context/AuthContext";
+import { FormEvent } from "react";
 import { api } from "../service/api";
-import { FormEvent, useState } from "react";
-import { UserRegisterForm } from "./UserRegisterForm";
+import { useAuthState } from "../context/AuthContext";
+import { useGlobalState } from "../context/GlobalContext";
 
-export const LoginForm = () => {
+export const UserRegisterForm = () => {
+  const [, setState] = useGlobalState();
+
   const [authState] = useAuthState();
-  const { logIn } = authState;
-
-  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
+  const { signUp } = authState;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,34 +21,28 @@ export const LoginForm = () => {
     const email = form.email.value.trim();
     const password = form.password.value.trim();
 
-    const [loggedUser, loginError] = await api.post("/login", {
+    const newUser = {
       email,
       password,
-    });
+    };
 
-    if (loggedUser) {
-      logIn(loggedUser);
-    }
+    const [createdUser] = await api.post(`/users`, newUser);
 
-    console.log(loggedUser, loginError);
-  };
+    setState((state) => ({ ...state, users: [...state.users, createdUser] }));
 
-  return (
-    <>
+    return (
       <form onSubmit={handleSubmit} className="w-full">
         <div className="flex flex-col gap-2 items-center justify-center">
           <input
             type="text"
             name="email"
             placeholder="email"
-            value={"olivier@mail.com"}
             className="border p-1 border-solid rounded border-black"
           />
           <input
             type="text"
             name="password"
             placeholder="password"
-            value={"bestPassw0rd"}
             className="border p-1 border-solid rounded border-black "
           />
           <button
@@ -57,22 +51,10 @@ export const LoginForm = () => {
               "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
             )}
           >
-            Login
+            Register
           </button>
         </div>
       </form>
-      <div>
-        <button
-          onClick={() => setIsRegisterFormOpen((p: any) => !p)}
-          className={classNames(
-            "px-8 py-4 mt-3 bg-red-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
-          )}
-        >
-          Sign up
-        </button>
-      </div>
-
-      {isRegisterFormOpen && <UserRegisterForm />}
-    </>
-  );
+    );
+  };
 };

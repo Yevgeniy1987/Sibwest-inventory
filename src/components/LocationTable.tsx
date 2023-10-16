@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { LocationTableRow } from './LocationTableRow';
-import { useGlobalState } from '../context/GlobalContext';
-import { AddLocation } from './AddLocation';
+import { LocationTableRow } from "./LocationTableRow";
+import { useGlobalState } from "../context/GlobalContext";
+import { AddLocation } from "./AddLocation";
 
 export function LocationTable() {
   const [state] = useGlobalState();
   const locations = state.locations;
 
-  const [isAddLocationOpen, setIsAddLocationOpen] = useState(false)
+  const [isAddLocationOpen, setIsAddLocationOpen] = useState(false);
 
   return (
     <>
       <div className="mb-3 flex justify-center gap-3">
-        <button onClick={() => setIsAddLocationOpen(p => !p)}>{isAddLocationOpen ? 'Hide': 'Open'} Add location</button>
+        <button onClick={() => setIsAddLocationOpen((p) => !p)}>
+          {isAddLocationOpen ? "Hide" : "Open"} Add location
+        </button>
       </div>
 
       {isAddLocationOpen && <AddLocation />}

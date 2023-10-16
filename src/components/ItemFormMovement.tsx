@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useGlobalState } from "../context/GlobalContext";
+import { HistoryType, ItemType, useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
 
 export const ItemFormMovement = () => {
   const [state, setState] = useGlobalState();
@@ -9,8 +10,9 @@ export const ItemFormMovement = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [selectedStockOutLocationId, setSelectedStockOutLocationId] =
-    useState<undefined | number>();
+  const [selectedStockOutLocationId, setSelectedStockOutLocationId] = useState<
+    undefined | number
+  >();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -24,8 +26,6 @@ export const ItemFormMovement = () => {
       reset: () => void;
     };
 
-
-    
     const [itemSKU] = form.item.value.split(" ");
 
     const item = items.find((item) => item.sku === itemSKU);
@@ -63,23 +63,26 @@ export const ItemFormMovement = () => {
 
     setIsLoading(true);
 
-    await fetch(`http://localhost:3333/items/${itemId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(item),
-    })
-      .then((response) => response.json())
-      .then((updatedItem) =>
-        setState((state) => {
-          const itemIdx = state.items.findIndex((item) => item.id === updatedItem.id);
-          const newState = {...state}
-          newState.items[itemIdx] = updatedItem;
+    const [updatedItem, updatedItemError] = await api.patch<ItemType>(
+      `/items/${itemId}`,
+      item
+    );
+    if (updatedItemError) {
+      console.log("Watch out! ERROR", updatedItemError);
+      return;
+    }
 
-          return {...newState, items: [...newState.items]};
-        })
+    setState((state) => {
+      const itemIdx = state.items.findIndex(
+        (item) => item.id === updatedItem.id
       );
+      const newState = { ...state };
+      newState.items[itemIdx] = updatedItem;
+
+      return { ...newState, items: [...newState.items] };
+    });
+
+    
 
     const newHistory = {
       itemId,
@@ -91,21 +94,18 @@ export const ItemFormMovement = () => {
       type: "movement",
     };
 
-    await fetch(`http://localhost:3333/histories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newHistory),
-    })
-      .then((response) => response.json())
-      .then((createdHistory) =>
-        setState((state) => ({
-          ...state,
-          histories: [...state.histories, createdHistory],
-        }))
-      );
+   const [createdHistory, createdHistoryError] = await api.post<HistoryType>(
+      `/histories`,
+      newHistory
+    );
 
+    if (!createdHistoryError) {
+      setState((state) => ({
+        ...state,
+        histories: [...state.histories, createdHistory],
+      }));
+    }
+   
     form.reset();
 
     setIsLoading(false);
@@ -223,6 +223,3 @@ export const ItemFormMovement = () => {
     </form>
   );
 };
-
-
-

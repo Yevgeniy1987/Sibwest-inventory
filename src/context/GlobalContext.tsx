@@ -4,8 +4,8 @@ import {
   useState,
   ReactNode,
   SetStateAction,
-  Dispatch
-} from 'react';
+  Dispatch,
+} from "react";
 
 type ItemLocationType = {
   locationId: number;
@@ -36,14 +36,16 @@ export type HistoryType = {
   stockInLocationId: number;
   stockOutLocationId: number;
   quantity: number;
-  type: 'movement' | 'purchase' | 'sale' | 'discarding' | 'lost' | 'add';
+  type: "movement" | "purchase" | "sale" | "discarding" | "lost" | "add";
   id: number;
 };
 
 type GlobalStateType = {
+  users: any;
   items: ItemType[];
   locations: LocationType[];
   histories: HistoryType[];
+  
 };
 
 type ProviderProps = {
@@ -53,9 +55,9 @@ type ProviderProps = {
 const initialState: GlobalStateType = {
   items: [],
   locations: [],
-  histories: []
+  histories: [],
+  users: [],
 };
-
 
 export const GlobalContext = createContext(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

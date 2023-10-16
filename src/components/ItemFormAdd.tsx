@@ -51,13 +51,12 @@ export const ItemFormAdd = () => {
 
     setIsLoading(true);
 
-    const createdItem = await fetch(`http://localhost:3333/items`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newItem),
-    }).then((r) => r.json());
+    const [createdItem, createdItemError] = await api.post(`/items`, newItem);
+
+    if (createdItemError) {
+      console.log("Watch out! ERROR", createdItemError);
+      return;
+    }
 
     setState((state) => ({ ...state, items: [...state.items, createdItem] }));
 

@@ -1,27 +1,33 @@
-import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
-import { useLocation } from 'wouter';
-import { api } from '../service/api'
-import { AxiosError, AxiosResponse } from 'axios';
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useLocation } from "wouter";
+import { api } from "../service/api";
+import { AxiosError, AxiosResponse } from "axios";
 
-export const AuthContext = createContext('');
+export const AuthContext = createContext("");
 
-const accessToken = window.localStorage.getItem('token');
+const accessToken = window.localStorage.getItem("token");
 
 if (accessToken) {
-  api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 }
 
-const userId = window.localStorage.getItem('userId');
+const userId = window.localStorage.getItem("userId");
 
 type ProviderProps = {
   children: ReactNode;
 };
 
 type User = {
-  id: number,
-  email: string,
-  password: string,
-}
+  id: number;
+  email: string;
+  password: string;
+};
 
 const initialState = {
   isLogged: !!accessToken,
@@ -29,7 +35,7 @@ const initialState = {
   user: {},
   userId,
   logIn: () => {},
-  logOut: () => {}
+  logOut: () => {},
 };
 
 export const AuthProvider = ({ children }: ProviderProps) => {
@@ -38,13 +44,46 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
   const [initialization, setInitialization] = useState(true);
 
+  
+
   useEffect(() => {
-    const logIn = (loggedUser: { user: any; accessToken: any; isLogged?: boolean; userId?: string | null; logIn?: () => void; logOut?: () => void; }) => {
-      setState((state) => ({ ...state, isLogged: true, userId: loggedUser.user.id, ...loggedUser }));
-      window.localStorage.setItem('token', loggedUser.accessToken);
-      window.localStorage.setItem('userId', loggedUser.user.id);
+    const signUp = (registeredUser: {
+      user:any
+      accessToken: any;
+      userId?: string | null;
+     
+    }) => {
+      setState((state) => ({
+        ...state,
+        userId: registeredUser.user.id,
+        ...registeredUser,
+      }));
+      window.localStorage.setItem("token", registeredUser.accessToken);
+      window.localStorage.setItem("userId", registeredUser.user.id);
       api.defaults.headers.common[
-        'Authorization'
+        "Authorization"
+      ] = `Bearer ${registeredUser.accessToken}`;
+    };
+
+    
+    const logIn = (loggedUser: {
+      user: any;
+      accessToken: any;
+      isLogged?: boolean;
+      userId?: string | null;
+      logIn?: () => void;
+      logOut?: () => void;
+    }) => {
+      setState((state) => ({
+        ...state,
+        isLogged: true,
+        userId: loggedUser.user.id,
+        ...loggedUser,
+      }));
+      window.localStorage.setItem("token", loggedUser.accessToken);
+      window.localStorage.setItem("userId", loggedUser.user.id);
+      api.defaults.headers.common[
+        "Authorization"
       ] = `Bearer ${loggedUser.accessToken}`;
     };
 
@@ -54,21 +93,24 @@ export const AuthProvider = ({ children }: ProviderProps) => {
         isLogged: false,
         accessToken: null,
         userId: null,
-        user: {}
+        user: {},
       }));
-      window.localStorage.removeItem('token');
-      window.localStorage.removeItem('userId');
-      api.defaults.headers.common['Authorization'] = undefined;
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("userId");
+      api.defaults.headers.common["Authorization"] = undefined;
     };
 
-    const onResponse = (resp: AxiosResponse): [AxiosResponse['data'], null] => [resp.data, null]
+    const onResponse = (resp: AxiosResponse): [AxiosResponse["data"], null] => [
+      resp.data,
+      null,
+    ];
     const onError = (error: AxiosError): [null, AxiosError] => {
       if (!error.response || error.response.status === 401) {
         logOut();
       }
 
       return [null, error];
-    }
+    };
 
     api.interceptors.response.use(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -77,7 +119,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       onError
     );
 
-    if(state.userId) {
+    if (state.userId) {
       api.get<User>(`/users/${userId}`).then(([user]) => {
         if (user) {
           setState((state) => ({ ...state, user }));
@@ -93,12 +135,12 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     return <h1>Loading...</h1>;
   }
 
-  if (location !== '/login' && !state.isLogged) {
-    setLocation('/login');
+  if (location !== "/login" && !state.isLogged) {
+    setLocation("/login");
   }
 
-  if (location === '/login' && state.isLogged) {
-    setLocation('/main');
+  if (location === "/login" && state.isLogged) {
+    setLocation("/main");
   }
 
   return (
@@ -112,32 +154,25 @@ export const useAuthState = () => {
   return useContext(AuthContext);
 };
 
-
-// type User = { 
+// type User = {
 //   name: string;
 //   age: number;
 // }
-
 
 // const o: User = {
 //   name: 'John',
 //   age: 30,
 // }
 
-
 // let age: User['age'];
 
 // age = o.age
-
-
 
 // function foo<T>(a: T):T {
 //   return a
 // }
 
-
 // const b = foo<string>(1)
-
 
 // function bar(a:string): string{
 //   return a

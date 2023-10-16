@@ -63,7 +63,7 @@ export const ItemFormDiscarding = () => {
     );
 
     if (updatedItemError) {
-      //handle error
+      console.log("Watch out! ERROR", updatedItemError);
       return;
     }
 
