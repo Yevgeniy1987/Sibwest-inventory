@@ -1,6 +1,10 @@
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { ItemType, useGlobalState } from "../context/GlobalContext";
+import {
+  HistoryType,
+  ItemType,
+  useGlobalState,
+} from "../context/GlobalContext";
 import { api } from "../service/api";
 
 useState;
@@ -86,13 +90,15 @@ export const ItemFormDiscarding = () => {
       type: "discarding",
     };
 
-    const createdHistory = await fetch(`http://localhost:3333/histories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(newHistory),
-    }).then((r) => r.json());
+    const [createdHistory, createdHistoryError] = await api.post<HistoryType>(
+      `/histories`,
+      newHistory
+    );
+
+    if (createdHistoryError) {
+      console.log("Watch out! ERROR", createdHistoryError);
+      return;
+    }
 
     setState((state) => ({
       ...state,

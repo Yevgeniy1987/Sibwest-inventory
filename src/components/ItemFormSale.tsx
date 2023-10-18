@@ -90,7 +90,8 @@ export const ItemFormSale = () => {
       newHistory
     );
     if (createdHistoryError) {
-      return console.log(createdHistoryError);
+      console.log("Watch out! ERROR", updatedItemError);
+      return;
     }
 
     setState((state) => ({

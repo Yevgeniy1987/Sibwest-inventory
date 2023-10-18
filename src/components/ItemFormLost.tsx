@@ -92,7 +92,8 @@ export const ItemFormLost = () => {
     );
 
     if (createdHistoryError) {
-      return console.log(createdHistoryError);
+      console.log("Watch out! ERROR", createdHistoryError);
+      return;
     }
 
     setState((state) => ({

@@ -28,7 +28,14 @@ type User = {
   email: string;
   password: string;
 };
-
+// type LoggedUser = {
+//   user: any;
+//   accessToken: any;
+//   isLogged?: boolean;
+//   userId?: string | null;
+//   logIn?: () => void;
+//   logOut?: () => void;
+// };
 const initialState = {
   isLogged: !!accessToken,
   accessToken,
@@ -43,8 +50,6 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const [state, setState] = useState(initialState);
 
   const [initialization, setInitialization] = useState(true);
-
-  
 
   useEffect(() => {
     const logIn = (loggedUser: {
@@ -108,7 +113,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       });
     }
 
-    setState((state) => ({ ...state, logIn, logOut }));
+    setState((state): LoggedUser => ({ ...state, logIn, logOut }));
     setInitialization(false);
   }, []);
 

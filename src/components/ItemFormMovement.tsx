@@ -1,6 +1,10 @@
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { HistoryType, ItemType, useGlobalState } from "../context/GlobalContext";
+import {
+  HistoryType,
+  ItemType,
+  useGlobalState,
+} from "../context/GlobalContext";
 import { api } from "../service/api";
 
 export const ItemFormMovement = () => {
@@ -82,8 +86,6 @@ export const ItemFormMovement = () => {
       return { ...newState, items: [...newState.items] };
     });
 
-    
-
     const newHistory = {
       itemId,
       createdAt: new Date().toISOString(),
@@ -94,7 +96,7 @@ export const ItemFormMovement = () => {
       type: "movement",
     };
 
-   const [createdHistory, createdHistoryError] = await api.post<HistoryType>(
+    const [createdHistory, createdHistoryError] = await api.post<HistoryType>(
       `/histories`,
       newHistory
     );
@@ -105,7 +107,7 @@ export const ItemFormMovement = () => {
         histories: [...state.histories, createdHistory],
       }));
     }
-   
+
     form.reset();
 
     setIsLoading(false);
