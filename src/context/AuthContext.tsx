@@ -47,25 +47,6 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   
 
   useEffect(() => {
-    const signUp = (registeredUser: {
-      user:any
-      accessToken: any;
-      userId?: string | null;
-     
-    }) => {
-      setState((state) => ({
-        ...state,
-        userId: registeredUser.user.id,
-        ...registeredUser,
-      }));
-      window.localStorage.setItem("token", registeredUser.accessToken);
-      window.localStorage.setItem("userId", registeredUser.user.id);
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${registeredUser.accessToken}`;
-    };
-
-    
     const logIn = (loggedUser: {
       user: any;
       accessToken: any;

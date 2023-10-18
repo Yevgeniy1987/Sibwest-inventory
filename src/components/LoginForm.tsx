@@ -1,14 +1,13 @@
-import classNames from "classnames";
-import { useAuthState } from "../context/AuthContext";
-import { api } from "../service/api";
-import { FormEvent, useState } from "react";
-import { UserRegisterForm } from "./UserRegisterForm";
+import classNames from 'classnames';
+import { useAuthState } from '../context/AuthContext';
+import { api } from '../service/api';
+import { FormEvent, useState } from 'react';
 
 export const LoginForm = () => {
+  const [error, setError] = useState(null);
+
   const [authState] = useAuthState();
   const { logIn } = authState;
-
-  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,58 +20,58 @@ export const LoginForm = () => {
     const email = form.email.value.trim();
     const password = form.password.value.trim();
 
-    const [loggedUser, loginError] = await api.post("/login", {
+    const [loggedUser, loginError] = await api.post('/login', {
       email,
-      password,
+      password
     });
 
     if (loggedUser) {
       logIn(loggedUser);
     }
 
+    if(loginError){
+      setError(loginError)
+    }
+
     console.log(loggedUser, loginError);
   };
 
+  const errorMessage = error ? (
+    <div className="text-red-500">{error.response?.data}</div>
+  ) : null;
+
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full">
+      <form onSubmit={handleSubmit} className="w-full" onFocus={() => setError(null)}>
         <div className="flex flex-col gap-2 items-center justify-center">
           <input
             type="text"
             name="email"
             placeholder="email"
-            value={"olivier@mail.com"}
+            // TODO: @Yevgeniy1987 - remove hardcoded values
+            // value={'olivier@mail.com'}
             className="border p-1 border-solid rounded border-black"
           />
           <input
             type="text"
             name="password"
             placeholder="password"
-            value={"bestPassw0rd"}
+            // TODO: @Yevgeniy1987 - remove hardcoded values
+            // value={'bestPassw0rd'}
             className="border p-1 border-solid rounded border-black "
           />
+
+          {errorMessage}
+
           <button
             type="submit"
             className={classNames(
-              "px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
-            )}
-          >
+              'px-8 py-4 mt-3 bg-green-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white'
+            )}>
             Login
           </button>
         </div>
       </form>
-      <div>
-        <button
-          onClick={() => setIsRegisterFormOpen((p: any) => !p)}
-          className={classNames(
-            "px-8 py-4 mt-3 bg-red-600 border border-solid border-white rounded text-white hover:text-black hover:bg-white"
-          )}
-        >
-          Sign up
-        </button>
-      </div>
-
-      {isRegisterFormOpen && <UserRegisterForm />}
     </>
   );
 };

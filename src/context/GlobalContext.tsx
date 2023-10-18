@@ -41,11 +41,9 @@ export type HistoryType = {
 };
 
 type GlobalStateType = {
-  users: any;
   items: ItemType[];
   locations: LocationType[];
   histories: HistoryType[];
-  
 };
 
 type ProviderProps = {
@@ -56,7 +54,6 @@ const initialState: GlobalStateType = {
   items: [],
   locations: [],
   histories: [],
-  users: [],
 };
 
 export const GlobalContext = createContext(

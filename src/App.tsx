@@ -10,8 +10,8 @@ import { LocationTable } from './components/LocationTable';
 import { ItemForm } from './components/ItemForm';
 import { useGlobalState } from './context/GlobalContext';
 import { NavLink } from './components/NavLink';
-import { LoginForm } from './components/LoginForm';
 import { useAuthState } from './context/AuthContext';
+import { SignForm } from './components/SignForm';
 
 function App() {
   const [, setState] = useGlobalState();
@@ -69,7 +69,7 @@ function App() {
             <ItemForm />
           </Route>
           <Route path="/login">
-            <LoginForm />
+            <SignForm />
           </Route>
         </Switch>
         {/* <div className="flex flex-col items-center">
