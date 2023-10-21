@@ -1,30 +1,36 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import { HistoryTableRow } from './HistoryTableRow';
-import { useGlobalState } from '../context/GlobalContext';
-import { api } from '../service/api';
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { HistoryTableRow } from "./HistoryTableRow";
+import { useGlobalState } from "../context/GlobalContext";
+import { api } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setHistories } from "../redux/actions/histories";
+import { historiesSelector } from "../redux/selectors/histories";
 
 export function HistoryTable() {
+  const dispatch = useDispatch();
+  const histories = useSelector(historiesSelector);
+
   const [state, setState] = useGlobalState();
 
-  const histories = state.histories;
+  // const histories = state.histories;
   const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
-    itemId:  '',
-    description: '',
-    stockInLocationId: '',
-    stockOutLocationId: '',
-    type: ''
+    itemId: "",
+    description: "",
+    stockInLocationId: "",
+    stockOutLocationId: "",
+    type: "",
   });
 
   useEffect(() => {
     const queryArray = Object.entries(filters);
     const queryStringArray = queryArray.map((array) =>
-      array[1] ? `${array.join('=')}&` : ''
+      array[1] ? `${array.join("=")}&` : ""
     );
-    const queryString = queryStringArray.join('');
+    const queryString = queryStringArray.join("");
 
     setIsLoading(true);
 
@@ -33,6 +39,7 @@ export function HistoryTable() {
       .then(([historiesData, historiesError]) => {
         if (historiesData) {
           setState((state) => ({ ...state, histories: historiesData }));
+          dispatch(setHistories(historiesData));
         }
 
         if (historiesError) {
@@ -46,50 +53,49 @@ export function HistoryTable() {
     e.preventDefault();
     const form = e.target as typeof e.target & {
       sku: HTMLInputElement;
-   }; 
+    };
     const sku = form.sku.value.trim();
 
-    const [items, itemsError] = await api.get(`/items?sku=${sku}`)
+    const [items, itemsError] = await api.get(`/items?sku=${sku}`);
 
     if (!itemsError) {
       const item = items[0];
 
       setFilters({ ...filters, itemId: item?.id || sku });
     }
-
   };
-  
+
   const handleActionTypeFilter = async (e: ChangeEvent<HTMLSelectElement>) => {
-    const actionType = e.target.value
-      .trim()
-      .toLowerCase();
+    const actionType = e.target.value.trim().toLowerCase();
 
     setFilters({
       ...filters,
-      type: actionType
+      type: actionType,
     });
   };
 
-  const handleStockInLocationFilter = async (e:ChangeEvent<HTMLSelectElement>) => {
-    const stockInLocationId = e.target.value
-      .trim()
-      .toLowerCase();
+  const handleStockInLocationFilter = async (
+    e: ChangeEvent<HTMLSelectElement>
+  ) => {
+    const stockInLocationId = e.target.value.trim().toLowerCase();
 
     setFilters({
       ...filters,
-      stockInLocationId
+      stockInLocationId,
     });
   };
 
-  const handleStockOutLocationFilter = async (e:ChangeEvent<HTMLSelectElement>) => {
+  const handleStockOutLocationFilter = async (
+    e: ChangeEvent<HTMLSelectElement>
+  ) => {
     const stockOutLocationId = e.target.value
       .trim()
-      .replaceAll(/\s{2,}/g, '')
+      .replaceAll(/\s{2,}/g, "")
       .toLowerCase();
 
     setFilters({
       ...filters,
-      stockOutLocationId
+      stockOutLocationId,
     });
   };
 
@@ -136,7 +142,8 @@ export function HistoryTable() {
               className="text-black"
               name="actionType"
               onChange={handleActionTypeFilter}
-              defaultValue="">
+              defaultValue=""
+            >
               <option value="">Filter Action type</option>
               <option value="movement">Movement</option>
               <option value="purchase">Purchase</option>
@@ -150,7 +157,8 @@ export function HistoryTable() {
               className="flex gap-1 text-black"
               name="stockInLocationId"
               defaultValue=""
-              onChange={handleStockInLocationFilter}>
+              onChange={handleStockInLocationFilter}
+            >
               <option value="">Filter stock in location</option>
 
               {locations.map((location) => (
@@ -165,7 +173,8 @@ export function HistoryTable() {
               name="stockOutLocationId"
               defaultValue=""
               className="flex gap-1 text-black"
-              onChange={handleStockOutLocationFilter}>
+              onChange={handleStockOutLocationFilter}
+            >
               <option value="">Filter stock out location</option>
 
               {locations.map((location) => (
