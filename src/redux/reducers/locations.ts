@@ -17,6 +17,7 @@ export const locationsReducer = (
     }
     case ADD_LOCATION: {
       const newState = [...state, action.payload];
+
       return newState;
     }
     default: {

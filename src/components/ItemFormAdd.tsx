@@ -1,12 +1,18 @@
 import classNames from "classnames";
 import { useState, FormEvent, ChangeEvent } from "react";
-import { HistoryType, useGlobalState } from "../context/GlobalContext";
+import { HistoryType } from "../context/GlobalContext";
 import { api } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { locationsSelector } from "../redux/selectors/locations";
+import { addItem } from "../redux/actions/items";
+import { addHistory } from "../redux/actions/histories";
 
 export const ItemFormAdd = () => {
-  
-  const [state, setState] = useGlobalState();
-  const locations = state.locations;
+  const dispatch = useDispatch();
+  const locations = useSelector(locationsSelector);
+
+  // const [state, setState] = useGlobalState();
+  // const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,7 +65,8 @@ export const ItemFormAdd = () => {
       return;
     }
 
-    setState((state) => ({ ...state, items: [...state.items, createdItem] }));
+    // setState((state) => ({ ...state, items: [...state.items, createdItem] }));
+    dispatch(addItem(createdItem));
 
     const newHistory = {
       itemId: createdItem.id,
@@ -77,10 +84,12 @@ export const ItemFormAdd = () => {
     );
 
     if (!createdHistoryError) {
-      setState((state) => ({
-        ...state,
-        histories: [...state.histories, createdHistory],
-      }));
+      // setState((state) => ({
+      //   ...state,
+      //   histories: [...state.histories, createdHistory],
+      // }));
+      dispatch(addHistory(createdHistory));
+
     }
 
     form.reset();

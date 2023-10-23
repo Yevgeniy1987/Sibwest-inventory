@@ -1,12 +1,16 @@
 import { useState } from "react";
 
 import { LocationTableRow } from "./LocationTableRow";
-import { useGlobalState } from "../context/GlobalContext";
+// import { useGlobalState } from "../context/GlobalContext";
 import { AddLocation } from "./AddLocation";
+import { locationsSelector } from "../redux/selectors/locations";
+import { useSelector } from "react-redux";
 
 export function LocationTable() {
-  const [state] = useGlobalState();
-  const locations = state.locations;
+  const locations = useSelector(locationsSelector);
+
+  // const [state] = useGlobalState();
+  // const locations = state.locations;
 
   const [isAddLocationOpen, setIsAddLocationOpen] = useState(false);
 

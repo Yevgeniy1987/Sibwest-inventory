@@ -1,17 +1,21 @@
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, useState } from "react";
-import {
-  HistoryType,
-  ItemType,
-  useGlobalState,
-} from "../context/GlobalContext";
+import { HistoryType, ItemType } from "../context/GlobalContext";
 import { api } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { itemsSelector } from "../redux/selectors/items";
+import { locationsSelector } from "../redux/selectors/locations";
+import { updateItem } from "../redux/actions/items";
+import { addHistory } from "../redux/actions/histories";
 
-useState;
 export const ItemFormDiscarding = () => {
-  const [state, setState] = useGlobalState();
-  const items = state.items;
-  const locations = state.locations;
+  const dispatch = useDispatch();
+  const items = useSelector(itemsSelector);
+  const locations = useSelector(locationsSelector);
+
+  // const [state, setState] = useGlobalState();
+  // const items = state.items;
+  // const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -71,14 +75,16 @@ export const ItemFormDiscarding = () => {
       return;
     }
 
-    setState((state) => {
-      const itemIdx = state.items.findIndex(
-        (item) => item.id === updatedItem.id
-      );
-      items[itemIdx] = updatedItem;
+    // setState((state) => {
+    //   const itemIdx = state.items.findIndex(
+    //     (item) => item.id === updatedItem.id
+    //   );
+    //   items[itemIdx] = updatedItem;
 
-      return { ...state, items: [...items] };
-    });
+    //   return { ...state, items: [...items] };
+    // });
+
+    dispatch(updateItem(updatedItem));
 
     const newHistory = {
       itemId,
@@ -100,11 +106,11 @@ export const ItemFormDiscarding = () => {
       return;
     }
 
-    setState((state) => ({
-      ...state,
-      histories: [...state.histories, createdHistory],
-    }));
-
+    // setState((state) => ({
+    //   ...state,
+    //   histories: [...state.histories, createdHistory],
+    // }));
+    dispatch(addHistory(createdHistory));
     form.reset();
 
     setIsLoading(false);

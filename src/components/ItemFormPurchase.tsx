@@ -1,12 +1,21 @@
 import classNames from "classnames";
 import { FormEvent, ChangeEvent, useState } from "react";
-import { useGlobalState } from "../context/GlobalContext";
+// import { useGlobalState } from "../context/GlobalContext";
 import { api } from "../service/api";
+import { itemsSelector } from "../redux/selectors/items";
+import { locationsSelector } from "../redux/selectors/locations";
+import { useDispatch, useSelector } from "react-redux";
+import { updateItem } from "../redux/actions/items";
+import { addHistory } from "../redux/actions/histories";
 
 export const ItemFormPurchase = () => {
-  const [state, setState] = useGlobalState();
-  const items = state.items;
-  const locations = state.locations;
+  const dispatch = useDispatch();
+  const items = useSelector(itemsSelector);
+  const locations = useSelector(locationsSelector);
+
+  // const [state, setState] = useGlobalState();
+  // const items = state.items;
+  // const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,14 +63,16 @@ export const ItemFormPurchase = () => {
     if (updatedItemError) {
       return console.log(updatedItemError);
     }
-    setState((state) => {
-      const itemIdx = state.items.findIndex(
-        (item) => item.id === updatedItem.id
-      );
-      items[itemIdx] = updatedItem;
+    // setState((state) => {
+    //   const itemIdx = state.items.findIndex(
+    //     (item) => item.id === updatedItem.id
+    //   );
+    //   items[itemIdx] = updatedItem;
 
-      return { ...state, items: [...items] };
-    });
+    //   return { ...state, items: [...items] };
+    // });
+
+    dispatch(updateItem(updatedItem));
 
     const newHistory = {
       itemId,
@@ -81,10 +92,12 @@ export const ItemFormPurchase = () => {
       console.log("Watch out! ERROR", updatedItemError);
       return;
     }
-    setState((state) => ({
-      ...state,
-      histories: [...state.histories, createdHistory],
-    }));
+    // setState((state) => ({
+    //   ...state,
+    //   histories: [...state.histories, createdHistory],
+    // }));
+
+    dispatch(addHistory(createdHistory));
 
     form.reset();
 

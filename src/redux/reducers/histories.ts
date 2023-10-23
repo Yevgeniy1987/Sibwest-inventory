@@ -16,8 +16,8 @@ export const historiesReducer = (
       return action.payload;
     }
     case ADD_HISTORIES: {
-      const newState = [...state, action.payload];
-      return newState;
+      // const newState = [...state, action.payload];
+      return [...state, action.payload];
     }
 
     default: {
