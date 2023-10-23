@@ -1,34 +1,36 @@
-import { InventoryMainTableRow } from './InventoryMainTableRow';
-import { useGlobalState, ItemType } from '../context/GlobalContext';
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import { api } from '../service/api';
-import { useDispatch, useSelector } from 'react-redux';
-import { setItems } from '../redux/actions/items';
-import { itemsSelector } from '../redux/selectors/items';
+import { InventoryMainTableRow } from "./InventoryMainTableRow";
+import { ItemType } from "../context/GlobalContext";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { api } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setItems } from "../redux/actions/items";
+import { itemsSelector } from "../redux/selectors/items";
+import { locationsSelector } from "../redux/selectors/locations";
 
 export function InventoryMainTable() {
   const dispatch = useDispatch();
   const items = useSelector(itemsSelector);
+  const locations = useSelector(locationsSelector);
 
-  const [state, setState] = useGlobalState();
+  // const [state, setState] = useGlobalState();
 
-  const locations = state.locations;
+  // const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
-    sku: '',
-    description: '',
-    type: '',
-    brand: ''
+    sku: "",
+    description: "",
+    type: "",
+    brand: "",
   });
 
   useEffect(() => {
     const queryArray = Object.entries(filters);
     const queryStringArray = queryArray.map((array) =>
-      array[1] ? `${array.join('=')}&` : ''
+      array[1] ? `${array.join("=")}&` : ""
     );
-    const queryString = queryStringArray.join('');
+    const queryString = queryStringArray.join("");
 
     setIsLoading(true);
 
@@ -36,7 +38,7 @@ export function InventoryMainTable() {
       .get<ItemType[]>(`/items?${queryString}`)
       .then(([itemsData, itemsError]) => {
         if (itemsData) {
-          setState((state) => ({ ...state, items: itemsData }));
+          // setState((state) => ({ ...state, items: itemsData }));
           dispatch(setItems(itemsData));
         }
 
@@ -49,7 +51,7 @@ export function InventoryMainTable() {
     // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // // @ts-ignore
     // dispatch(setItemsThunk(queryString));
-  }, [filters, setState]);
+  }, [filters, setItems]);
 
   const handleSKUFilter = async (e: FormEvent) => {
     e.preventDefault();
@@ -69,7 +71,7 @@ export function InventoryMainTable() {
 
     setFilters({
       ...filters,
-      brand
+      brand,
     });
   };
 
@@ -78,7 +80,7 @@ export function InventoryMainTable() {
 
     setFilters({
       ...filters,
-      type
+      type,
     });
   };
 
@@ -93,7 +95,7 @@ export function InventoryMainTable() {
 
     setFilters({
       ...filters,
-      description
+      description,
     });
   };
 
@@ -110,7 +112,8 @@ export function InventoryMainTable() {
           {locations.map((location) => (
             <th
               className="border border-solid  border-black p-1"
-              key={location.id}>
+              key={location.id}
+            >
               {location.name}
             </th>
           ))}
@@ -156,7 +159,8 @@ export function InventoryMainTable() {
               className="flex gap-1 text-black"
               name="stockInLocationId"
               defaultValue=""
-              onChange={handleTypeFilter}>
+              onChange={handleTypeFilter}
+            >
               <option value="">Filter type</option>
 
               {items.map((item) => (
@@ -182,6 +186,7 @@ export function InventoryMainTable() {
     </table>
   );
 }
+
 
 // function foo<T>(a: T):T {
 //   return a

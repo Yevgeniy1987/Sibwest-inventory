@@ -1,16 +1,21 @@
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, useState } from "react";
-import {
-  HistoryType,
-  ItemType,
-  useGlobalState,
-} from "../context/GlobalContext";
+import { HistoryType, ItemType } from "../context/GlobalContext";
 import { api } from "../service/api";
+import { locationsSelector } from "../redux/selectors/locations";
+import { useDispatch, useSelector } from "react-redux";
+import { itemsSelector } from "../redux/selectors/items";
+import { updateItem } from "../redux/actions/items";
+import { addHistory } from "../redux/actions/histories";
 
 export const ItemFormMovement = () => {
-  const [state, setState] = useGlobalState();
-  const items = state.items;
-  const locations = state.locations;
+  const dispatch = useDispatch();
+  const items = useSelector(itemsSelector);
+  const locations = useSelector(locationsSelector);
+
+  // const [state, setState] = useGlobalState();
+  // const items = state.items;
+  // const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,16 +80,16 @@ export const ItemFormMovement = () => {
       console.log("Watch out! ERROR", updatedItemError);
       return;
     }
+    dispatch(updateItem(updatedItem));
+    // setState((state) => {
+    //   const itemIdx = state.items.findIndex(
+    //     (item) => item.id === updatedItem.id
+    //   );
+    //   const newState = { ...state };
+    //   newState.items[itemIdx] = updatedItem;
 
-    setState((state) => {
-      const itemIdx = state.items.findIndex(
-        (item) => item.id === updatedItem.id
-      );
-      const newState = { ...state };
-      newState.items[itemIdx] = updatedItem;
-
-      return { ...newState, items: [...newState.items] };
-    });
+    //   return { ...newState, items: [...newState.items] };
+    // });
 
     const newHistory = {
       itemId,
@@ -102,10 +107,11 @@ export const ItemFormMovement = () => {
     );
 
     if (!createdHistoryError) {
-      setState((state) => ({
-        ...state,
-        histories: [...state.histories, createdHistory],
-      }));
+      dispatch(addHistory(createdHistory));
+      // setState((state) => ({
+      //   ...state,
+      //   histories: [...state.histories, createdHistory],
+      // }));
     }
 
     form.reset();

@@ -1,12 +1,19 @@
 import { useState, FormEvent } from "react";
 import classNames from "classnames";
 
-import { useGlobalState } from "../context/GlobalContext";
+
 import { api } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+
+import { addLocation } from "../redux/actions/locations";
+import { itemsSelector } from "../redux/selectors/items";
 
 export const AddLocation = () => {
-  const [state, setState] = useGlobalState();
-  const items = state.items;
+  const dispatch = useDispatch();
+  const items = useSelector(itemsSelector);
+
+  // const [state, setState] = useGlobalState();
+  // const items = state.items;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,10 +42,11 @@ export const AddLocation = () => {
     );
 
     if (!createdLocationError) {
-      setState((state) => ({
-        ...state,
-        locations: [...state.locations, createdLocation],
-      }));
+      dispatch(addLocation(createdLocation))
+      // setState((state) => ({
+      //   ...state,
+      //   locations: [...state.locations, createdLocation],
+      // }));
     }
 
     const createdLocationId = createdLocation.id;

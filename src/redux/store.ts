@@ -2,10 +2,12 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import { itemsReducer } from "./reducers/items";
 import thunk from "redux-thunk";
 import { historiesReducer } from "./reducers/histories";
+import { locationsReducer } from "./reducers/locations";
 
 const rootReducer = combineReducers({
    items: itemsReducer,
-   histories: historiesReducer
+   histories: historiesReducer,
+   locations: locationsReducer,
 })
 
 const middleware = applyMiddleware(thunk)

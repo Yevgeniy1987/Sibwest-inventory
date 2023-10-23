@@ -1,8 +1,13 @@
-import { ItemType, useGlobalState } from "../context/GlobalContext";
+import { useSelector } from "react-redux";
+import { ItemType } from "../context/GlobalContext";
+import { locationsSelector } from "../redux/selectors/locations";
 
-export function InventoryMainTableRow({ item }: {item: ItemType}) {
-  const [state] = useGlobalState();
-  const locations = state.locations;
+export function InventoryMainTableRow({ item }: { item: ItemType }) {
+  // const dispatch = useDispatch();
+  const locations = useSelector(locationsSelector);
+
+  // const [state] = useGlobalState();
+  // const locations = state.locations;
 
   const {
     sku,

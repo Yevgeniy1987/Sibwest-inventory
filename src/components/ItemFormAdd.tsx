@@ -4,6 +4,7 @@ import { HistoryType, useGlobalState } from "../context/GlobalContext";
 import { api } from "../service/api";
 
 export const ItemFormAdd = () => {
+  
   const [state, setState] = useGlobalState();
   const locations = state.locations;
 

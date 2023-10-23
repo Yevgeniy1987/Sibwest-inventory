@@ -1,19 +1,23 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { HistoryTableRow } from "./HistoryTableRow";
-import { useGlobalState } from "../context/GlobalContext";
+// import { useGlobalState } from "../context/GlobalContext";
 import { api } from "../service/api";
 import { useDispatch, useSelector } from "react-redux";
 import { setHistories } from "../redux/actions/histories";
 import { historiesSelector } from "../redux/selectors/histories";
+import { locationsSelector } from "../redux/selectors/locations";
+
+
 
 export function HistoryTable() {
   const dispatch = useDispatch();
   const histories = useSelector(historiesSelector);
-
-  const [state, setState] = useGlobalState();
+  const locations = useSelector(locationsSelector);
+  
+  // const [state, setState] = useGlobalState();
 
   // const histories = state.histories;
-  const locations = state.locations;
+  // const locations = state.locations;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +42,7 @@ export function HistoryTable() {
       .get(`/histories?${queryString}`)
       .then(([historiesData, historiesError]) => {
         if (historiesData) {
-          setState((state) => ({ ...state, histories: historiesData }));
+          // setState((state) => ({ ...state, histories: historiesData }));
           dispatch(setHistories(historiesData));
         }
 
