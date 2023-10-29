@@ -4,15 +4,36 @@ import { LocationTableRow } from "./LocationTableRow";
 // import { useGlobalState } from "../context/GlobalContext";
 import { AddLocation } from "./AddLocation";
 import { locationsSelector } from "../redux/selectors/locations";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { api } from "../service/api";
+import { LocationType } from "../context/GlobalContext";
+import { setLocations } from "../redux/actions/locations";
 
 export function LocationTable() {
+  const dispatch = useDispatch();
   const locations = useSelector(locationsSelector);
 
   // const [state] = useGlobalState();
   // const locations = state.locations;
 
   const [isAddLocationOpen, setIsAddLocationOpen] = useState(false);
+
+  api
+    .get<LocationType[]>(`/locations`)
+    .then(([locationsData, locationsError]) => {
+      if (locationsData) {
+        // setState((state) => ({ ...state, items: itemsData }));
+        dispatch(setLocations(locationsData));
+      }
+
+      if (locationsError) {
+        console.log(locationsError);
+      }
+    });
+
+  // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // // @ts-ignore
+  // dispatch(setItemsThunk(queryString));
 
   return (
     <>

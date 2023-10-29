@@ -29,7 +29,7 @@ type User = {
   password: string;
 };
 // type LoggedUser = {
-//   user: any;
+//   user: User;
 //   accessToken: any;
 //   isLogged?: boolean;
 //   userId?: string | null;
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       });
     }
 
-    setState((state): LoggedUser => ({ ...state, logIn, logOut }));
+    setState((state) => ({ ...state, logIn, logOut }));
     setInitialization(false);
   }, []);
 
